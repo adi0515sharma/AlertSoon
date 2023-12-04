@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">NotifyMe</string>
+    <string name="web_client_id">925355773313-5akspo09g5me1do635026j43j3fh4d7t.apps.googleusercontent.com</string>
+    <string name="user_pic">user photo</string>
+
+    <string name="facebook_app_id">2512070255615951</string>
+    <string name="fb_login_protocol_scheme">fb2512070255615951</string>
+    <string name="facebook_client_token">bddef37e2b492ea09f24a32b2d90a0b9</string>
+    <string name="snooze">Snooze (10 min)</string>
+
+
+</resources>

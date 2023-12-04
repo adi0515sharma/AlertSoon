@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.NotifyMe" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.AppCompat.DayNight"
+        parent="Theme.AppCompat.Light" >
+
+        <item name="notificationBg">#FAFDFD</item>
+        <item name="onNotificationBg">#191C1D</item>
+        <item name="notificationButtonBg">#006874</item>
+        <item name="onNotificationButtonBg">#FFFFFF</item>
+    </style>
+
+</resources>

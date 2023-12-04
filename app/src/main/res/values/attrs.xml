@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="notificationBg" format="color"/>
+    <attr name="onNotificationBg" format="color"/>
+    <attr name="notificationButtonBg" format="color"/>
+    <attr name="onNotificationButtonBg" format="color"/>
+
+</resources>

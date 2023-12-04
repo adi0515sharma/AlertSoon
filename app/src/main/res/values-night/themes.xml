@@ -1,0 +1,9 @@
+<resources>
+    <style name="Theme.AppCompat.DayNight"
+        parent="Theme.AppCompat" >
+        <item name="notificationBg">#191C1D</item>
+        <item name="onNotificationBg">#E1E3E3</item>
+        <item name="notificationButtonBg">#4FD8EB</item>
+        <item name="onNotificationButtonBg">#00363D</item>
+    </style>
+</resources>

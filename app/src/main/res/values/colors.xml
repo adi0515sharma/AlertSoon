@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="light_low_priority">#147CFC00</color>
+    <color name="low_priority">#6DF4F4F4</color>
+    <color name="light_medium_priority">#12FFFF00</color>
+    <color name="medium_priority">#E8FF00</color>
+    <color name="light_high_priority">#14FF0000</color>
+    <color name="high_priority">#FF1100</color>
+    <color name="task_bg">#7AD3D3D3</color>
+
+
+    <color name="day_notification_bg">#FAFDFD</color>
+    <color name="day_on_notification_bg">#191C1D</color>
+    <color name="day_notification_button_bg">#006874</color>
+    <color name="day_on_notification_button_bg">#FFFFFF</color>
+
+    <color name="night_notification_bg">#191C1D</color>
+    <color name="night_on_notification_bg">#E1E3E3</color>
+    <color name="night_notification_button_bg">#4FD8EB</color>
+    <color name="night_on_notification_button_bg">#00363D</color>
+</resources>
