@@ -5,18 +5,23 @@ before that lets see the ui of application we have 2 modes dark and light.
 ## For creating one time task follow below step
 
 #1. open create task section and select "Type of alarm" as Once
+
 <img src="app/libs/images/creating_one_time_alaram_img_1_ss.png" alt="Your image title" width="250"/>
 
 #2. select date 
+
 <img src="app/libs/images/creating_one_time_alaram_img_2_ss.png" alt="Your image title" width="250"/>
 
 #3. select time
+
 <img src="app/libs/images/creating_one_time_alaram_img_3_ss.png" alt="Your image title" width="250"/>
 
 #4. in dashboard you will see your task
+
 <img src="app/libs/images/creating_one_time_alaram_img_4_ss.png" alt="Your image title" width="250"/>
 
 #5. when you recieve notification. it look something like this  
+
 <img src="app/libs/images/creating_one_time_alaram_img_5_ss.png" alt="Your image title" width="250"/>
 
 ## light mode
