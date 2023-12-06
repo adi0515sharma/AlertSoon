@@ -16,14 +16,14 @@ Open create task section by follow below steps
 
 Now follow below steps to create alarm for your requirement
 
-| One time alarm                                                                                      | Regular alarm                                                     |
-|-----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
-| <br>open create task section</br> ![Image 1](app/libs/images/creating_one_time_alaram_img_1_ss.png) | ![Image 2](app/libs/images/creating_regular_alaram_img_1_ss.png)  |
-| ![Image 3](app/libs/images/creating_one_time_alaram_img_2_ss.png)                                   | ![Image 4](app/libs/images/creating_regular_alaram_img_2_ss.png)  |
-| ![Image 5](app/libs/images/creating_one_time_alaram_img_3_ss.png)                                   | ![Image 6](app/libs/images/creating_regular_alaram_img_3_ss.png)  |
-| ![Image 7](app/libs/images/creating_one_time_alaram_img_4_ss.png)                                   | ![Image 8](app/libs/images/creating_regular_alaram_img_4_ss.png)  |
-| ![Image 9](app/libs/images/creating_one_time_alaram_img_5_ss.png)                                   | ![Image 10](app/libs/images/creating_regular_alaram_img_5_ss.png) |
-| ![Image 11](app/libs/images/creating_one_time_alaram_img_6_ss.png)                                  | ![Image 12](app/libs/images/creating_regular_alaram_img_6_ss.png) |
+| One time alarm                                                                                                              | Regular alarm                                                                                                              |
+|-----------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| open create task section</br></br> ![Image 1](app/libs/images/creating_one_time_alaram_img_1_ss.png)                        | open create task section</br></br> ![Image 2](app/libs/images/creating_regular_alaram_img_1_ss.png)                        |
+| select "Once" option in  "Type of alarm" </br></br> ![Image 3](app/libs/images/creating_one_time_alaram_img_2_ss.png)       | select "Rgular" option in  "Type of alarm"  </br></br>![Image 4](app/libs/images/creating_regular_alaram_img_2_ss.png)     |
+| select Date </br></br> ![Image 5](app/libs/images/creating_one_time_alaram_img_3_ss.png)                                    | select Day's </br></br> ![Image 6](app/libs/images/creating_regular_alaram_img_3_ss.png)                                   |
+| select Time </br></br> ![Image 7](app/libs/images/creating_one_time_alaram_img_4_ss.png) <br> Now save it                   | select Time </br></br> ![Image 8](app/libs/images/creating_regular_alaram_img_4_ss.png)  <br> Now save it                  |
+| Now you can see the one time task in dashboard </br></br> ![Image 9](app/libs/images/creating_one_time_alaram_img_5_ss.png) | Now you can see the regular task in dashboard </br></br> ![Image 10](app/libs/images/creating_regular_alaram_img_5_ss.png) |
+| This is a notification which you received </br></br> ![Image 11](app/libs/images/creating_one_time_alaram_img_6_ss.png)     | This is a notification which you received </br></br> ![Image 12](app/libs/images/creating_regular_alaram_img_6_ss.png)     |
 
 
 ## For selecting favourite ringtone for below step
