@@ -2,7 +2,12 @@
 AlertSoon App is alarm app. Inside this you can create 2 different types of alarm 1. one time and 2. regular 
 before that lets see the ui of application we have 2 modes dark and light.
 
-## For creating task
+## Feature's
+1. Create alarm (one time or regular) 
+2. Snooze alarm
+3. Dark and light theme
+
+## Create alarm (one time or regular)
 
 Open create task section by follow below steps 
 1. Dashboard -> Top Right "+" Icon -> you inside the create task section 
