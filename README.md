@@ -16,14 +16,14 @@ Open create task section by follow below steps
 
 Now follow below steps to create alarm for your requirement
 
-| One time alarm                                                     | Regular alarm                                                     |
-|--------------------------------------------------------------------|-------------------------------------------------------------------|
-| ![Image 1](app/libs/images/creating_one_time_alaram_img_1_ss.png)  | ![Image 2](app/libs/images/creating_regular_alaram_img_1_ss.png)  |
-| ![Image 3](app/libs/images/creating_one_time_alaram_img_2_ss.png)  | ![Image 4](app/libs/images/creating_regular_alaram_img_2_ss.png)  |
-| ![Image 5](app/libs/images/creating_one_time_alaram_img_3_ss.png)  | ![Image 6](app/libs/images/creating_regular_alaram_img_3_ss.png)  |
-| ![Image 7](app/libs/images/creating_one_time_alaram_img_4_ss.png)  | ![Image 8](app/libs/images/creating_regular_alaram_img_4_ss.png)  |
-| ![Image 9](app/libs/images/creating_one_time_alaram_img_5_ss.png)  | ![Image 10](app/libs/images/creating_regular_alaram_img_5_ss.png) |
-| ![Image 11](app/libs/images/creating_one_time_alaram_img_6_ss.png) | ![Image 12](app/libs/images/creating_regular_alaram_img_6_ss.png) |
+| One time alarm                                                                                      | Regular alarm                                                     |
+|-----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| <br>open create task section</br> ![Image 1](app/libs/images/creating_one_time_alaram_img_1_ss.png) | ![Image 2](app/libs/images/creating_regular_alaram_img_1_ss.png)  |
+| ![Image 3](app/libs/images/creating_one_time_alaram_img_2_ss.png)                                   | ![Image 4](app/libs/images/creating_regular_alaram_img_2_ss.png)  |
+| ![Image 5](app/libs/images/creating_one_time_alaram_img_3_ss.png)                                   | ![Image 6](app/libs/images/creating_regular_alaram_img_3_ss.png)  |
+| ![Image 7](app/libs/images/creating_one_time_alaram_img_4_ss.png)                                   | ![Image 8](app/libs/images/creating_regular_alaram_img_4_ss.png)  |
+| ![Image 9](app/libs/images/creating_one_time_alaram_img_5_ss.png)                                   | ![Image 10](app/libs/images/creating_regular_alaram_img_5_ss.png) |
+| ![Image 11](app/libs/images/creating_one_time_alaram_img_6_ss.png)                                  | ![Image 12](app/libs/images/creating_regular_alaram_img_6_ss.png) |
 
 
 ## For selecting favourite ringtone for below step
