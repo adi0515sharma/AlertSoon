@@ -87,6 +87,8 @@ fun HomeScreenNavHost(
                         is ApiResponse.Error -> {
                             Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                         }
+
+                        else -> {}
                     }
                 }
             }
@@ -139,6 +141,8 @@ fun HomeScreenNavHost(
 
                         is ApiResponse.Error -> {
                         }
+
+                        else -> {}
                     }
                 }
             }
@@ -165,6 +169,8 @@ fun HomeScreenNavHost(
                             Log.e("AlertSoon", "update error")
                             Toast.makeText(context, "update failed", Toast.LENGTH_LONG).show()
                         }
+
+                        else -> {}
                     }
                 }
             }
