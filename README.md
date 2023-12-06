@@ -27,7 +27,7 @@ Now follow below steps to create alarm for your requirement
 
 
 ## for selecting favourite ringtone for below step
-1. Create task section -> Sound -> Select your alarm sound -> Press back
+1. Create task section -> Sound -> Select your alarm sound -> Press bac
 <img src="app/libs/images/select_ringtone_screen.png" alt="Your image title" width="250"/>
 
 
