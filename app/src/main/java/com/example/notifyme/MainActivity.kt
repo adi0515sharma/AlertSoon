@@ -1,4 +1,4 @@
-package com.example.notifyme
+package com.example.AlertSoon
 
 import android.app.AlarmManager
 import  android.app.Application
@@ -11,10 +11,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.graphics.Color
 import androidx.core.app.NotificationManagerCompat
-import com.example.notifyme.ui.local_storage.Task.TableOfTask
-import com.example.notifyme.ui.utils.NotifyMeSharePref
-import com.example.notifyme.ui.utils.notification.NotificationReceiver
-import com.facebook.FacebookSdk
+import com.example.AlertSoon.ui.utils.AlertSoonSharePref
 import dagger.hilt.android.HiltAndroidApp
 import java.util.Calendar
 import javax.inject.Inject
@@ -23,18 +20,17 @@ import javax.inject.Inject
 @HiltAndroidApp
 class MainActivity : Application() {
 
-    @Inject lateinit var notifyMeSharePref: NotifyMeSharePref
+    @Inject lateinit var AlertSoonSharePref: AlertSoonSharePref
 
     override fun onCreate() {
         super.onCreate()
-        FacebookSdk.sdkInitialize(applicationContext);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
 
-        if(notifyMeSharePref.getLastOs() == null || notifyMeSharePref.getLastOs() != Build.VERSION.RELEASE){
-            notifyMeSharePref.saveLastOs()
-            notifyMeSharePref.saveOtherSettingValue(false)
+        if(AlertSoonSharePref.getLastOs() == null || AlertSoonSharePref.getLastOs() != Build.VERSION.RELEASE){
+            AlertSoonSharePref.saveLastOs()
+            AlertSoonSharePref.saveOtherSettingValue(false)
         }
 
 

@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.theme
+package com.example.AlertSoon.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -84,7 +84,7 @@ private val DarkColors = darkColorScheme(
 
 
 @Composable
-fun NotifyMeTheme(
+fun AlertSoonTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,

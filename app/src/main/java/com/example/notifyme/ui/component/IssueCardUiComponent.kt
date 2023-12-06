@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.component
+package com.example.AlertSoon.ui.component
 
 import android.os.Parcelable
 import androidx.compose.foundation.background
@@ -20,12 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.example.notifyme.R
-import com.example.notifyme.ui.navigation.FeatureNavScreen
-import com.example.notifyme.ui.utils.Constants
-import com.example.notifyme.ui.utils.Validator.isEmailValid
-import com.example.notifyme.ui.utils.Validator.isFieldCorrect
-import com.example.notifyme.ui.utils.ValidatorResponse
+import com.example.AlertSoon.R
+import com.example.AlertSoon.ui.navigation.FeatureNavScreen
+import com.example.AlertSoon.ui.utils.Constants
+import com.example.AlertSoon.ui.utils.Validator.isEmailValid
+import com.example.AlertSoon.ui.utils.Validator.isFieldCorrect
+import com.example.AlertSoon.ui.utils.ValidatorResponse
 import kotlinx.android.parcel.Parcelize
 
 @Composable

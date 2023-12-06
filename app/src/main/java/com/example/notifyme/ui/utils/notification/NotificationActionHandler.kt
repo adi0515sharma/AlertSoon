@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.utils.notification
+package com.example.AlertSoon.ui.utils.notification
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
@@ -6,11 +6,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
-import com.example.notifyme.ui.local_storage.Task.TableOfTask
-import com.example.notifyme.ui.screens.home_screen_activity.domain.repository.HomeScreenTaskRepository
-import com.example.notifyme.ui.utils.ApiResponse
-import com.example.notifyme.ui.utils.DateTime.getNextTimeForRegularTask
-import com.example.notifyme.ui.utils.notification.NotificationReceiver.Companion.getNotificationAlarmRingtoneInstance
+import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
+import com.example.AlertSoon.ui.screens.home_screen_activity.domain.repository.HomeScreenTaskRepository
+import com.example.AlertSoon.ui.utils.ApiResponse
+import com.example.AlertSoon.ui.utils.DateTime.getNextTimeForRegularTask
+import com.example.AlertSoon.ui.utils.notification.NotificationReceiver.Companion.getNotificationAlarmRingtoneInstance
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -29,7 +29,7 @@ class NotificationActionHandler : BroadcastReceiver() {
     lateinit var alarmMangerHandler: AlarmMangerHandler
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.e("NotifyMe", "NotificationActionHandler start")
+        Log.e("AlertSoon", "NotificationActionHandler start")
 
 
         val tableOfTask: TableOfTask? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

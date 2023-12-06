@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.NotifyMe" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.AlertSoon" parent="android:Theme.Material.Light.NoActionBar" />
     <style name="Theme.AppCompat.DayNight"
         parent="Theme.AppCompat.Light" >
 

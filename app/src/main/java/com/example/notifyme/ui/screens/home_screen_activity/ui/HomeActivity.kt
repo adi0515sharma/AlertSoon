@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.screens.home_screen_activity.ui
+package com.example.AlertSoon.ui.screens.home_screen_activity.ui
 
 import android.Manifest
 import android.content.Context
@@ -47,14 +47,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
-import com.example.notifyme.R
-import com.example.notifyme.ui.component.IssueExecution
-import com.example.notifyme.ui.local_storage.Task.TaskRespository
-import com.example.notifyme.ui.navigation.HomeScreenNavHost
-import com.example.notifyme.ui.screens.auth_screens_feature.data.api.BasicFirebaseAuth
-import com.example.notifyme.ui.theme.NotifyMeTheme
-import com.example.notifyme.ui.utils.NotifyMeSharePref
-import com.example.notifyme.ui.utils.notification.AlarmMangerHandler
+import com.example.AlertSoon.R
+import com.example.AlertSoon.ui.component.IssueExecution
+import com.example.AlertSoon.ui.local_storage.Task.TaskRespository
+import com.example.AlertSoon.ui.navigation.HomeScreenNavHost
+import com.example.AlertSoon.ui.theme.AlertSoonTheme
+import com.example.AlertSoon.ui.utils.AlertSoonSharePref
+import com.example.AlertSoon.ui.utils.notification.AlarmMangerHandler
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
@@ -66,16 +65,10 @@ import javax.inject.Inject
 class HomeActivity : ComponentActivity() {
 
     @Inject
-    lateinit var googleAuthUiClient: BasicFirebaseAuth
-
-    @Inject
-    lateinit var taskRespository: TaskRespository
-
-    @Inject
     lateinit var alarmMangerHandler: AlarmMangerHandler
 
     @Inject
-    lateinit var notifyMeSharePref: NotifyMeSharePref
+    lateinit var AlertSoonSharePref: AlertSoonSharePref
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +76,7 @@ class HomeActivity : ComponentActivity() {
 
 
         setContent {
-            NotifyMeTheme {
+            AlertSoonTheme {
                 var someSetting by rememberSaveable { mutableStateOf(false) }
 
                 Surface() {
@@ -157,7 +150,7 @@ class HomeActivity : ComponentActivity() {
         // Set a positive button with a click listener
         builder.setPositiveButton("Settings") { dialog, _ ->
 
-            val packageName = "com.example.notifyme"
+            val packageName = "com.example.AlertSoon"
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             val uri: Uri = Uri.fromParts("package", packageName, null)
             intent.data = uri
@@ -230,7 +223,7 @@ class HomeActivity : ComponentActivity() {
                      Toast.makeText(context, "you can close this issue.", Toast.LENGTH_LONG).show()
                  }
                  instruction = final
-                 Log.e("NotifyMe", "instruction = ${instruction!!}")
+                 Log.e("AlertSoon", "instruction = ${instruction!!}")
 
 
             }
@@ -295,8 +288,8 @@ class HomeActivity : ComponentActivity() {
         val androidVersion = Build.VERSION.RELEASE
         val manufacturer = Build.MANUFACTURER
 
-        Log.d("NotifyMe", "Android Version: $androidVersion")
-        Log.d("NotifyMe", "Manufacturer: $manufacturer")
+        Log.d("AlertSoon", "Android Version: $androidVersion")
+        Log.d("AlertSoon", "Manufacturer: $manufacturer")
 
             runBlocking {
                 val db = Firebase.firestore
@@ -309,10 +302,10 @@ class HomeActivity : ComponentActivity() {
                             setInstruction(instruction as String)
                         else
                             setInstruction("")
-                        Log.e("NotifyMe", "$instruction")
+                        Log.e("AlertSoon", "$instruction")
                     }
                     .addOnFailureListener { exception ->
-                        Log.e("NotifyMe", "Error getting documents.", exception)
+                        Log.e("AlertSoon", "Error getting documents.", exception)
                         setInstruction("")
                     }
             }

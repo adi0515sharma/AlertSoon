@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.utils.notification
+package com.example.AlertSoon.ui.utils.notification
 
 import android.Manifest
 import android.app.NotificationManager
@@ -19,12 +19,12 @@ import android.widget.RemoteViews
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.example.notifyme.R
-import com.example.notifyme.ui.local_storage.Task.TableOfTask
-import com.example.notifyme.ui.screens.home_screen_activity.domain.repository.HomeScreenTaskRepository
-import com.example.notifyme.ui.utils.ApiResponse
-import com.example.notifyme.ui.utils.DateTime
-import com.example.notifyme.ui.utils.WakeLocker
+import com.example.AlertSoon.R
+import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
+import com.example.AlertSoon.ui.screens.home_screen_activity.domain.repository.HomeScreenTaskRepository
+import com.example.AlertSoon.ui.utils.ApiResponse
+import com.example.AlertSoon.ui.utils.DateTime
+import com.example.AlertSoon.ui.utils.WakeLocker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -49,11 +49,11 @@ class NotificationReceiver : BroadcastReceiver() {
 
         if(tableOfTask == null)
         {
-            Log.e("NotifyMe", "is tableOfTask == null")
+            Log.e("AlertSoon", "is tableOfTask == null")
             return
         }
 
-        Log.e("NotifyMe", "notification id = ${tableOfTask.uid}")
+        Log.e("AlertSoon", "notification id = ${tableOfTask.uid}")
 
         val id = System.currentTimeMillis().toInt()
 
@@ -121,7 +121,7 @@ class NotificationReceiver : BroadcastReceiver() {
             snoozeNotificationPendingIntent
         )
 
-        Log.e("NotifyMe", "launching notification ")
+        Log.e("AlertSoon", "launching notification ")
 
 
         val notification = NotificationCompat.Builder(context, "notification_id_high")
@@ -137,7 +137,7 @@ class NotificationReceiver : BroadcastReceiver() {
                 .setDeleteIntent(onDismissPendingIntent)
                 .build()
 
-        Log.e("NotifyMe", "notification id create $id")
+        Log.e("AlertSoon", "notification id create $id")
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             return
@@ -157,7 +157,7 @@ class NotificationReceiver : BroadcastReceiver() {
         ringtone.play()
         setNotificationAlarmRingtone(tableOfTask.uid!!, ringtone)
 
-        Log.e("NotifyMe", "launching notification succesfully")
+        Log.e("AlertSoon", "launching notification succesfully")
 
 
     }

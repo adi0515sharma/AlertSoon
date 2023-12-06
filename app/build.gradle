@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.notifyme'
+    namespace 'com.example.AlertSoon'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.notifyme"
+        applicationId "com.example.AlertSoon"
         minSdk 23
         targetSdk 33
         versionCode 1
@@ -78,7 +78,6 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
 
-    implementation 'com.facebook.android:facebook-android-sdk:latest.release'
 
 
     def nav_version = "2.7.2"

@@ -1,4 +1,4 @@
-package com.example.notifyme
+package com.example.AlertSoon
 
 import org.junit.Test
 

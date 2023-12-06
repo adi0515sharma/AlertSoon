@@ -1,10 +1,10 @@
-package com.example.notifyme.ui.di
+package com.example.AlertSoon.ui.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.notifyme.ui.local_storage.NotifyMeDatabase
-import com.example.notifyme.ui.local_storage.Task.TaskDao
-import com.example.notifyme.ui.local_storage.Task.TaskRespository
+import com.example.AlertSoon.ui.local_storage.AlertSoonDatabase
+import com.example.AlertSoon.ui.local_storage.Task.TaskDao
+import com.example.AlertSoon.ui.local_storage.Task.TaskRespository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 class LocalDatabaseDI {
 
     @Provides
-    fun getTaskDaoInstance(notifyMeDatabase: NotifyMeDatabase) = notifyMeDatabase.taskDao()
+    fun getTaskDaoInstance(AlertSoonDatabase: AlertSoonDatabase) = AlertSoonDatabase.taskDao()
 
     @Provides
     fun getTaskTableRepositoryInstance(taskDao: TaskDao) = TaskRespository(taskDao)
@@ -33,7 +33,7 @@ object LocalDatabaseInstance {
     @Provides
     fun getDataBaseInstance(@ApplicationContext applicationContext : Context) = Room.databaseBuilder(
         applicationContext,
-        NotifyMeDatabase::class.java, "NotifyMeDB"
+        AlertSoonDatabase::class.java, "AlertSoonDB"
     ).build()
 }
 

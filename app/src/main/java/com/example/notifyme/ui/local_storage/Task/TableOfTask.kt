@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.local_storage.Task
+package com.example.AlertSoon.ui.local_storage.Task
 
 import android.os.Parcelable
 import androidx.compose.runtime.saveable.Saver

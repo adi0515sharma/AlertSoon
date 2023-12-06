@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.screens.home_screen_activity.ui.composable_screen.create_task_screen.ui
+package com.example.AlertSoon.ui.screens.home_screen_activity.ui.composable_screen.create_task_screen.ui
 
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -65,26 +65,26 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.emoji2.emojipicker.EmojiPickerView
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.example.notifyme.R
-import com.example.notifyme.ui.utils.ApiResponse
-import com.example.notifyme.ui.utils.Validator.isFieldCorrect
-import com.example.notifyme.ui.utils.ValidatorResponse
-import com.example.notifyme.ui.component.AppBar
-import com.example.notifyme.ui.component.EntryFieldWithDialog
-import com.example.notifyme.ui.component.EntryFieldWithDialogForSelectingDays
-import com.example.notifyme.ui.component.AppButton
-import com.example.notifyme.ui.component.HandleClick
-import com.example.notifyme.ui.component.SelectedDateListener
-import com.example.notifyme.ui.component.SelectedTimeListener
-import com.example.notifyme.ui.component.SetEntryFieldValue
-import com.example.notifyme.ui.component.SetEntryFieldValueForDay
-import com.example.notifyme.ui.local_storage.Task.TableOfTask
-import com.example.notifyme.ui.navigation.FeatureNavScreen
-import com.example.notifyme.ui.utils.Constants
-import com.example.notifyme.ui.utils.Constants.options
-import com.example.notifyme.ui.utils.DateTime
-import com.example.notifyme.ui.utils.DateTime.getNextTimeForRegularTask
-import com.example.notifyme.ui.utils.Validator.isDayFieldCorrect
+import com.example.AlertSoon.R
+import com.example.AlertSoon.ui.utils.ApiResponse
+import com.example.AlertSoon.ui.utils.Validator.isFieldCorrect
+import com.example.AlertSoon.ui.utils.ValidatorResponse
+import com.example.AlertSoon.ui.component.AppBar
+import com.example.AlertSoon.ui.component.EntryFieldWithDialog
+import com.example.AlertSoon.ui.component.EntryFieldWithDialogForSelectingDays
+import com.example.AlertSoon.ui.component.AppButton
+import com.example.AlertSoon.ui.component.HandleClick
+import com.example.AlertSoon.ui.component.SelectedDateListener
+import com.example.AlertSoon.ui.component.SelectedTimeListener
+import com.example.AlertSoon.ui.component.SetEntryFieldValue
+import com.example.AlertSoon.ui.component.SetEntryFieldValueForDay
+import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
+import com.example.AlertSoon.ui.navigation.FeatureNavScreen
+import com.example.AlertSoon.ui.utils.Constants
+import com.example.AlertSoon.ui.utils.Constants.options
+import com.example.AlertSoon.ui.utils.DateTime
+import com.example.AlertSoon.ui.utils.DateTime.getNextTimeForRegularTask
+import com.example.AlertSoon.ui.utils.Validator.isDayFieldCorrect
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import java.net.URLEncoder
@@ -133,7 +133,7 @@ fun Screen(
     var dateListener = object : SelectedDateListener {
         override fun setValue(day: Int, month: Int, year: Int) {
 
-            Log.e("NotifyMe", "date = ${day}/${month}/${year}")
+            Log.e("AlertSoon", "date = ${day}/${month}/${year}")
             val calendar : Calendar = Calendar.getInstance()
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, month)
@@ -152,7 +152,7 @@ fun Screen(
     var timeListener = object : SelectedTimeListener {
         override fun setValue(hour: Int, minute: Int) {
 
-            Log.e("NotifyMe", "time = ${hour}:${minute}")
+            Log.e("AlertSoon", "time = ${hour}:${minute}")
 
             val calendar : Calendar = Calendar.getInstance()
 
@@ -182,7 +182,7 @@ fun Screen(
     var dayOfTaskError by rememberSaveable { mutableStateOf<String?>(null) }
     var dayOfTaskListener = object : SetEntryFieldValueForDay {
         override fun setValue(value : String) {
-            Log.e("NotifyMe", "regular days = ${value.toString()}")
+            Log.e("AlertSoon", "regular days = ${value.toString()}")
             currentTaskState = currentTaskState.copy(days = value)
         }
     }
@@ -328,14 +328,14 @@ fun Screen(
                             AndroidView(
                                 modifier = Modifier
                                     .border(
-                                        color = MaterialTheme.colorScheme.onBackground,
+                                        color = MaterialTheme.colorScheme.surfaceVariant,
                                         width = 1.dp,
                                         shape = RoundedCornerShape(16.dp)
                                     )
                                     .fillMaxWidth()
                                     .height(400.dp)
                                     .background(
-                                        color = MaterialTheme.colorScheme.background,
+                                        color = MaterialTheme.colorScheme.surfaceVariant,
                                         shape = RoundedCornerShape(16.dp)
                                     )
                                     .padding(vertical = 10.dp, horizontal = 10.dp),
@@ -469,24 +469,7 @@ fun Screen(
                                 )
                             )
                         }
-                        // Convert each character to a string and create an array
-
-//                        if(charArray?.size > 0)
-//                        {
-//                            Log.e("NotifyMe", charArray.toString())
-//                            Log.e("NotifyMe",  charArray.joinToString { "," }.toString())
-//                            navController.navigate(
-//                                FeatureNavScreen.SELECT_RINGTONE.name.replace("{selectedUri}",
-//                                    charArray.joinToString { "," }.toString()
-//                                )
-//                            )
-//                        }
-//                        else{
-//                            navController.navigate(
-//                                FeatureNavScreen.SELECT_RINGTONE.name.replace("{selectedUri}", "")
-//                            )
-//                        }
-
+ 
 
 
                     },
@@ -585,8 +568,8 @@ fun Screen(
                                 calender_time.timeInMillis = currentTaskState.time_in_long!!
                                 val calender_date = Calendar.getInstance()
                                 calender_date.timeInMillis = currentTaskState.date_in_long!!
-                                Log.e("NotifyMe", "once task time = ${calender_time.timeInMillis} , ${currentTaskState.time_in_long!!}")
-                                Log.e("NotifyMe", "once task date = ${calender_date.timeInMillis} , ${currentTaskState.date_in_long!!}")
+                                Log.e("AlertSoon", "once task time = ${calender_time.timeInMillis} , ${currentTaskState.time_in_long!!}")
+                                Log.e("AlertSoon", "once task date = ${calender_date.timeInMillis} , ${currentTaskState.date_in_long!!}")
 
                                 val final_time_calendar = Calendar.getInstance()
                                 final_time_calendar.set(Calendar.YEAR,calender_date.get(Calendar.YEAR))
@@ -600,7 +583,7 @@ fun Screen(
                                 if(final_time_calendar.timeInMillis <= DateTime.getTime()) {
                                     anyToastMessage =
                                         "Selected date or time is not valid please check again"
-                                    Log.e("NotifyMe", "selected time = ${final_time_calendar.timeInMillis} , ${Calendar.getInstance().timeInMillis}")
+                                    Log.e("AlertSoon", "selected time = ${final_time_calendar.timeInMillis} , ${Calendar.getInstance().timeInMillis}")
                                     return
                                 }
 

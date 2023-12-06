@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.navigation
+package com.example.AlertSoon.ui.navigation
 
 import android.content.Context
 import android.util.Log
@@ -16,15 +16,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.notifyme.ui.component.IssueExecution
-import com.example.notifyme.ui.local_storage.Task.TableOfTask
-import com.example.notifyme.ui.screens.home_screen_activity.ui.HomeActivityViewModel
-import com.example.notifyme.ui.screens.home_screen_activity.ui.composable_screen.create_task_screen.ui.CreateTaskComposable
-import com.example.notifyme.ui.screens.home_screen_activity.ui.composable_screen.create_task_screen.ui.SystemRingtoneScreen
-import com.example.notifyme.ui.screens.home_screen_activity.ui.composable_screen.edit_task_screen.ui.ViewTaskScreenComposable
-import com.example.notifyme.ui.screens.home_screen_activity.ui.composable_screen.home_screen.ui.HomeScreenComposable
-import com.example.notifyme.ui.utils.ApiResponse
-import com.example.notifyme.ui.utils.notification.AlarmMangerHandler
+import com.example.AlertSoon.ui.component.IssueExecution
+import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
+import com.example.AlertSoon.ui.screens.home_screen_activity.ui.HomeActivityViewModel
+import com.example.AlertSoon.ui.screens.home_screen_activity.ui.composable_screen.create_task_screen.ui.CreateTaskComposable
+import com.example.AlertSoon.ui.screens.home_screen_activity.ui.composable_screen.create_task_screen.ui.SystemRingtoneScreen
+import com.example.AlertSoon.ui.screens.home_screen_activity.ui.composable_screen.edit_task_screen.ui.ViewTaskScreenComposable
+import com.example.AlertSoon.ui.screens.home_screen_activity.ui.composable_screen.home_screen.ui.HomeScreenComposable
+import com.example.AlertSoon.ui.utils.ApiResponse
+import com.example.AlertSoon.ui.utils.notification.AlarmMangerHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.withContext
@@ -75,7 +75,7 @@ fun HomeScreenNavHost(
                     when (it) {
                         is ApiResponse.Success -> {
                             shouldCreateAlarm = it.data
-                            Log.e("NotifyMe", "inserted successfully")
+                            Log.e("AlertSoon", "inserted successfully")
                             Toast.makeText(context, "successfully inserted", Toast.LENGTH_LONG)
                                 .show()
                             navController.navigateUp()
@@ -126,7 +126,7 @@ fun HomeScreenNavHost(
                 viewModel.single_task.collectLatest {
                     when (it) {
                         is ApiResponse.Success -> {
-                            Log.e("NotifyMe", "select item : ${it.data!!.toString()}")
+                            Log.e("AlertSoon", "select item : ${it.data!!.toString()}")
                             if (alreadyFetched) {
                                 return@collectLatest
                             }
@@ -158,11 +158,11 @@ fun HomeScreenNavHost(
                         }
 
                         is ApiResponse.Loading -> {
-                            Log.e("NotifyMe", "update loading")
+                            Log.e("AlertSoon", "update loading")
                         }
 
                         is ApiResponse.Error -> {
-                            Log.e("NotifyMe", "update error")
+                            Log.e("AlertSoon", "update error")
                             Toast.makeText(context, "update failed", Toast.LENGTH_LONG).show()
                         }
                     }
@@ -193,7 +193,7 @@ fun HomeScreenNavHost(
                 ""
             }
 
-            Log.e("NotifyMe", "selectedUri === ${selectedUri}")
+            Log.e("AlertSoon", "selectedUri === ${selectedUri}")
             SystemRingtoneScreen(navController, selectedUri)
 
         }

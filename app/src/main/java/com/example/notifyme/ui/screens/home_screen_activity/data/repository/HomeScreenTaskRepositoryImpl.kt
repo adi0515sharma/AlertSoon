@@ -1,11 +1,11 @@
-package com.example.notifyme.ui.screens.home_screen_activity.data.repository
+package com.example.AlertSoon.ui.screens.home_screen_activity.data.repository
 
 import android.util.Log
-import com.example.notifyme.ui.local_storage.Task.TableOfTask
-import com.example.notifyme.ui.local_storage.Task.TaskRespository
-import com.example.notifyme.ui.screens.home_screen_activity.domain.repository.HomeScreenTaskRepository
-import com.example.notifyme.ui.utils.notification.AlarmMangerHandler
-import com.example.notifyme.ui.utils.ApiResponse
+import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
+import com.example.AlertSoon.ui.local_storage.Task.TaskRespository
+import com.example.AlertSoon.ui.screens.home_screen_activity.domain.repository.HomeScreenTaskRepository
+import com.example.AlertSoon.ui.utils.notification.AlarmMangerHandler
+import com.example.AlertSoon.ui.utils.ApiResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
@@ -26,7 +26,7 @@ class HomeScreenTaskRepositoryImpl @Inject constructor(
             return ApiResponse.Success(tableOfTask)
 
         } catch (e: Exception) {
-            Log.e("NotifyMe", "we found error")
+            Log.e("AlertSoon", "we found error")
             e.printStackTrace()
         }
         return ApiResponse.Error("Something went wrong")
@@ -43,7 +43,7 @@ class HomeScreenTaskRepositoryImpl @Inject constructor(
             }
             return ApiResponse.Success(tableOfTask)
         } catch (e: Exception) {
-            Log.e("NotifyMe", "we found error")
+            Log.e("AlertSoon", "we found error")
             e.printStackTrace()
         }
 
@@ -52,12 +52,12 @@ class HomeScreenTaskRepositoryImpl @Inject constructor(
 
     override suspend fun deleteTaskById(id: Long) : ApiResponse<Nothing> {
         try {
-            Log.e("NotifyMe", "delete = $id")
+            Log.e("AlertSoon", "delete = $id")
             taskRespository.deleteTaskById(id = id)
             return ApiResponse.Success(null)
 
         } catch (e: Exception) {
-            Log.e("NotifyMe", "we found error")
+            Log.e("AlertSoon", "we found error")
             e.printStackTrace()
         }
         return ApiResponse.Error<Nothing>("Something went wrong")
@@ -76,7 +76,7 @@ class HomeScreenTaskRepositoryImpl @Inject constructor(
             return ApiResponse.Success(tableOfTask)
 
         } catch (e: Exception) {
-            Log.e("NotifyMe", "we found error")
+            Log.e("AlertSoon", "we found error")
             e.printStackTrace()
         }
         return ApiResponse.Error("Something went wrong")
@@ -90,7 +90,7 @@ class HomeScreenTaskRepositoryImpl @Inject constructor(
             return ApiResponse.Success(null)
 
         } catch (e: Exception) {
-            Log.e("NotifyMe", "we found error")
+            Log.e("AlertSoon", "we found error")
             e.printStackTrace()
         }
         return ApiResponse.Error("Something went wrong")

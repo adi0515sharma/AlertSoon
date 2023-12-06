@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.component
+package com.example.AlertSoon.ui.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope

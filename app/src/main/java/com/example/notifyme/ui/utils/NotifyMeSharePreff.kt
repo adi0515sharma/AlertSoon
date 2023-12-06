@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.utils
+package com.example.AlertSoon.ui.utils
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -6,9 +6,9 @@ import android.os.Build
 import javax.inject.Inject
 
 
-class NotifyMeSharePref @Inject constructor(context: Context){
+class AlertSoonSharePref @Inject constructor(context: Context){
 
-    private val sharedPreferences = context.getSharedPreferences("NotifyMeSharePref", Context.MODE_PRIVATE);
+    private val sharedPreferences = context.getSharedPreferences("AlertSoonSharePref", Context.MODE_PRIVATE);
 
     companion object{
         const val otherSetting = "otherSetting"

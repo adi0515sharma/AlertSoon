@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.component
+package com.example.AlertSoon.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -49,7 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.example.notifyme.R
+import com.example.AlertSoon.R
 import java.util.Calendar
 
 @Composable
@@ -257,7 +257,7 @@ fun DialogOfDays(
     Dialog(onDismissRequest = { setShowDialog(false) }) {
         Surface(
             shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.background
+            color = MaterialTheme.colorScheme.surfaceVariant
         ) {
             Box(
                 contentAlignment = Alignment.Center

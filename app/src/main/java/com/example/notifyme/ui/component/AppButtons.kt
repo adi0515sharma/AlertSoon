@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.component
+package com.example.AlertSoon.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.Typeface
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
-import com.example.notifyme.R
+import com.example.AlertSoon.R
 
 @Composable
 fun AppButton(

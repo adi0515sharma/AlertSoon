@@ -1,8 +1,8 @@
-package com.example.notifyme.ui.di
+package com.example.AlertSoon.ui.di
 
 import android.content.Context
-import com.example.notifyme.ui.local_storage.Task.TaskRespository
-import com.example.notifyme.ui.utils.notification.AlarmMangerHandler
+import com.example.AlertSoon.ui.local_storage.Task.TaskRespository
+import com.example.AlertSoon.ui.utils.notification.AlarmMangerHandler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

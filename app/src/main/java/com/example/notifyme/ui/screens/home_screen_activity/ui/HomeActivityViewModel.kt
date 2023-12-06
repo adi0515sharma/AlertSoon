@@ -1,14 +1,14 @@
-package com.example.notifyme.ui.screens.home_screen_activity.ui
+package com.example.AlertSoon.ui.screens.home_screen_activity.ui
 
 import android.os.Build
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.notifyme.ui.local_storage.Task.TableOfTask
-import com.example.notifyme.ui.screens.home_screen_activity.domain.repository.HomeScreenTaskRepository
-import com.example.notifyme.ui.utils.ApiResponse
-import com.example.notifyme.ui.utils.NotifyMeSharePref
-import com.example.notifyme.ui.utils.notification.AlarmMangerHandler
+import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
+import com.example.AlertSoon.ui.screens.home_screen_activity.domain.repository.HomeScreenTaskRepository
+import com.example.AlertSoon.ui.utils.ApiResponse
+import com.example.AlertSoon.ui.utils.AlertSoonSharePref
+import com.example.AlertSoon.ui.utils.notification.AlarmMangerHandler
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +27,7 @@ import javax.inject.Inject
 class HomeActivityViewModel @Inject constructor(
     val homeScreenTaskRepository: HomeScreenTaskRepository,
     val alarmMangerHandler: AlarmMangerHandler,
-    val sharePref: NotifyMeSharePref) :
+    val sharePref: AlertSoonSharePref) :
     ViewModel() {
 
 
@@ -66,7 +66,7 @@ class HomeActivityViewModel @Inject constructor(
 
     fun insertTask(task: TableOfTask) {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.e("NotifyMe", "----------------------- insert task function ----------------------")
+            Log.e("AlertSoon", "----------------------- insert task function ----------------------")
 
             val insertResult = homeScreenTaskRepository.insertTaskIntoTable(task)
             _insert_task.emit(insertResult)
@@ -98,7 +98,7 @@ class HomeActivityViewModel @Inject constructor(
 
     fun getTaskById(id: Int) {
 
-        Log.e("NotifyMe", "-------- fetching id = $id task ----------")
+        Log.e("AlertSoon", "-------- fetching id = $id task ----------")
         viewModelScope.launch(Dispatchers.IO) {
             _single_task.emit(ApiResponse.Loading(null))
             val responseOfTask = homeScreenTaskRepository.getTaskById(id.toLong())
@@ -112,11 +112,11 @@ class HomeActivityViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO){
             try {
                 homeScreenTaskRepository.getNextFiveTask().collectLatest { it ->
-                    Log.e("NotifyMe", "getOnceTasks...emitting: ${it.javaClass.simpleName}")
+                    Log.e("AlertSoon", "getOnceTasks...emitting: ${it.javaClass.simpleName}")
                     _next_five_tasks.emit(it)
                 }
             } catch (e: Exception) {
-                Log.e("NotifyMe", "Error in getOnceTasks: ${e.message}", e)
+                Log.e("AlertSoon", "Error in getOnceTasks: ${e.message}", e)
                 // Handle error here if needed
             }
         }
@@ -124,15 +124,15 @@ class HomeActivityViewModel @Inject constructor(
     }
 
     fun getOnceTasks(){
-        Log.e("NotifyMe", "getOnceTask")
+        Log.e("AlertSoon", "getOnceTask")
         viewModelScope.launch(Dispatchers.IO){
             try {
                 homeScreenTaskRepository.getOnceTask().collectLatest { it ->
-                    Log.e("NotifyMe", "getOnceTasks...emitting: ${it.javaClass.simpleName}")
+                    Log.e("AlertSoon", "getOnceTasks...emitting: ${it.javaClass.simpleName}")
                     _once_tasks.emit(it)
                 }
             } catch (e: Exception) {
-                Log.e("NotifyMe", "Error in getOnceTasks: ${e.message}", e)
+                Log.e("AlertSoon", "Error in getOnceTasks: ${e.message}", e)
                 // Handle error here if needed
             }
         }
@@ -143,11 +143,11 @@ class HomeActivityViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO){
             try {
                 homeScreenTaskRepository.getRegularTask().collectLatest { it ->
-                    Log.e("NotifyMe", "getOnceTasks...emitting: ${it.javaClass.simpleName}")
+                    Log.e("AlertSoon", "getOnceTasks...emitting: ${it.javaClass.simpleName}")
                     _regular_tasks.emit(it)
                 }
             } catch (e: Exception) {
-                Log.e("NotifyMe", "Error in getOnceTasks: ${e.message}", e)
+                Log.e("AlertSoon", "Error in getOnceTasks: ${e.message}", e)
                 // Handle error here if needed
             }
         }

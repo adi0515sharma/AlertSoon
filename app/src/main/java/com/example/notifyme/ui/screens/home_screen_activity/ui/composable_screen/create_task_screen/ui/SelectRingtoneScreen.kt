@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.screens.home_screen_activity.ui.composable_screen.create_task_screen.ui
+package com.example.AlertSoon.ui.screens.home_screen_activity.ui.composable_screen.create_task_screen.ui
 
 import android.content.ContentResolver
 import android.content.Context
@@ -55,10 +55,10 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
-import com.example.notifyme.R
-import com.example.notifyme.ui.component.AppBar
-import com.example.notifyme.ui.component.CollapsingLayout
-import com.example.notifyme.ui.screens.home_screen_activity.ui.HomeActivity
+import com.example.AlertSoon.R
+import com.example.AlertSoon.ui.component.AppBar
+import com.example.AlertSoon.ui.component.CollapsingLayout
+import com.example.AlertSoon.ui.screens.home_screen_activity.ui.HomeActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.Locale
@@ -81,7 +81,7 @@ fun SystemRingtoneScreen(navController : NavController, selected_uri: String? = 
             override fun handleOnBackPressed() {
                 // Handle back button press in Home composable
                 // For example, navigate to another destination or finish the activity
-                Log.e("NotifyMe", "selected_uri = ${selectedUri}")
+                Log.e("AlertSoon", "selected_uri = ${selectedUri}")
 
                 navController.previousBackStackEntry?.savedStateHandle?.set("selectedUri", selectedUri)
                 navController.popBackStack()
@@ -110,7 +110,7 @@ fun SystemRingtoneScreen(navController : NavController, selected_uri: String? = 
 
         withContext(Dispatchers.IO){
             music = listRingtones(context)
-            Log.e("NotifyMe", "${music.size}")
+            Log.e("AlertSoon", "${music.size}")
         }
 
     }
@@ -282,11 +282,11 @@ fun getMusicTitleFromUri(musicUri: String?, contentResolver: ContentResolver): S
             return cursor.getString(titleColumn).lowercase(Locale.ROOT)
         }
     } catch (e: Exception) {
-        Log.e("NotifyMe", "Error getting music title", e)
+        Log.e("AlertSoon", "Error getting music title", e)
     } finally {
         cursor?.close()
     }
-    Log.e("NotifyMe", "something went wrong")
+    Log.e("AlertSoon", "something went wrong")
 
     return null
 }

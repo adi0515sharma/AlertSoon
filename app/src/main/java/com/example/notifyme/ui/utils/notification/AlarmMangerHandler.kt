@@ -1,12 +1,12 @@
-package com.example.notifyme.ui.utils.notification
+package com.example.AlertSoon.ui.utils.notification
 
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.example.notifyme.ui.local_storage.Task.TableOfTask
-import com.example.notifyme.ui.local_storage.Task.TaskRespository
+import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
+import com.example.AlertSoon.ui.local_storage.Task.TaskRespository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -48,7 +48,7 @@ class AlarmMangerHandler @Inject constructor(
             ), pendingIntent
         );
 
-        Log.e("NotifyMe", "alaram created sucessfully")
+        Log.e("AlertSoon", "alaram created sucessfully")
     }
 
     fun cancelAlarm(tableOfTask: TableOfTask) {

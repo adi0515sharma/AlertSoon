@@ -1,10 +1,10 @@
-package com.example.notifyme.ui.local_storage.Task
+package com.example.AlertSoon.ui.local_storage.Task
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.notifyme.ui.utils.DateTime
+import com.example.AlertSoon.ui.utils.DateTime
 import kotlinx.coroutines.flow.Flow
 import java.util.Calendar
 

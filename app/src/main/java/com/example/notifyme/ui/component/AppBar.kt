@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.component
+package com.example.AlertSoon.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,8 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.notifyme.R
-import com.example.notifyme.ui.navigation.FeatureNavScreen
+import com.example.AlertSoon.R
+import com.example.AlertSoon.ui.navigation.FeatureNavScreen
 
 @Composable
 fun AppBar(navController: NavHostController? = null) {

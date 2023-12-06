@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.utils
+package com.example.AlertSoon.ui.utils
 
 object Constants{
 

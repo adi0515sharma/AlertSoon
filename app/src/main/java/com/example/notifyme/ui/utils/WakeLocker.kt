@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.utils
+package com.example.AlertSoon.ui.utils
 
 import android.content.Context
 import android.os.PowerManager
@@ -14,7 +14,7 @@ abstract class WakeLocker {
                 return
             }
             val powerManager : PowerManager = context!!.getSystemService(Context.POWER_SERVICE) as PowerManager
-            wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP or PowerManager.ON_AFTER_RELEASE, ":NotifyMe")
+            wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP or PowerManager.ON_AFTER_RELEASE, ":AlertSoon")
             wakeLock?.setReferenceCounted(false);
             wakeLock?.acquire(10 * 60 * 1000L)
         }

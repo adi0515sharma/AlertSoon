@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.theme
+package com.example.AlertSoon.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

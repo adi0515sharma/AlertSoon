@@ -1,4 +1,4 @@
-package com.example.notifyme.ui.component
+package com.example.AlertSoon.ui.component
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
@@ -50,13 +50,13 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
-import com.example.notifyme.R
-import com.example.notifyme.ui.local_storage.Task.TableOfTask
-import com.example.notifyme.ui.navigation.FeatureNavScreen
-import com.example.notifyme.ui.theme.darkTaskThemeColors
-import com.example.notifyme.ui.theme.lightTaskThemeColors
-import com.example.notifyme.ui.utils.Constants
-import com.example.notifyme.ui.utils.DateTime
+import com.example.AlertSoon.R
+import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
+import com.example.AlertSoon.ui.navigation.FeatureNavScreen
+import com.example.AlertSoon.ui.theme.darkTaskThemeColors
+import com.example.AlertSoon.ui.theme.lightTaskThemeColors
+import com.example.AlertSoon.ui.utils.Constants
+import com.example.AlertSoon.ui.utils.DateTime
 import java.util.Calendar
 
 

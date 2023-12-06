@@ -1,6 +1,6 @@
-package com.example.notifyme.ui.utils
+package com.example.AlertSoon.ui.utils
 
-import com.example.notifyme.ui.local_storage.Task.TableOfTask
+import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Calendar
