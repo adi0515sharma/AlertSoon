@@ -11,6 +11,7 @@ import com.example.AlertSoon.ui.screens.home_screen_activity.domain.repository.H
 import com.example.AlertSoon.ui.utils.ApiResponse
 import com.example.AlertSoon.ui.utils.DateTime.getNextTimeForRegularTask
 import com.example.AlertSoon.ui.utils.notification.NotificationReceiver.Companion.getNotificationAlarmRingtoneInstance
+import com.example.notifyme.ui.utils.notification.ForegroundService
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -47,7 +48,15 @@ class NotificationActionHandler : BroadcastReceiver() {
 
             val snoozeTimeMillis: Long = Calendar.getInstance().timeInMillis + 10 * 60 * 1000 // Add 10 minutes (10 * 60 seconds * 1000 milliseconds)
             tableOfTask.snozze_time = snoozeTimeMillis
-            alarmMangerHandler.createAlarm(tableOfTask)
+
+            val serviceIntent = Intent(context, ForegroundService::class.java)
+            serviceIntent.action = "create_notification"
+            serviceIntent.putExtra("tableOfTask", tableOfTask)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent)
+            } else {
+                context.startService(serviceIntent)
+            }
 
             runBlocking {
 
@@ -65,7 +74,15 @@ class NotificationActionHandler : BroadcastReceiver() {
 
                 tableOfTask.time_in_long = tableOfTask.getNextTimeForRegularTask()
                 tableOfTask.snozze_time = null
-                alarmMangerHandler.createAlarm(tableOfTask)
+
+                val serviceIntent = Intent(context, ForegroundService::class.java)
+                serviceIntent.action = "create_notification"
+                serviceIntent.putExtra("tableOfTask", tableOfTask)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(serviceIntent)
+                } else {
+                    context.startService(serviceIntent)
+                }
 
 
                 runBlocking {
