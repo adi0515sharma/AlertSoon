@@ -53,6 +53,14 @@ object DateTime{
         return calendarDate.timeInMillis
     }
 
+    fun getTimePlusMinutes() : Long {
+        val calendarDate: Calendar = Calendar.getInstance()
+        calendarDate.set(Calendar.SECOND,0)
+        calendarDate.set(Calendar.MILLISECOND,0)
+
+        calendarDate.add(Calendar.MINUTE,15)
+        return calendarDate.timeInMillis
+    }
     fun getDateInFormat(calendar : Calendar) = SimpleDateFormat("dd MMMM, yyyy", Locale.US).format(Date(calendar.timeInMillis))
     fun getDateInFormat(date : Long?) = if(date!=null) SimpleDateFormat("dd MMMM, yyyy", Locale.US).format(Date(date)) else null
 

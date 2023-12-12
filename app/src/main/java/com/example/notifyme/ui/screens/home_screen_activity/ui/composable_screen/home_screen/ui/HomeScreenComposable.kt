@@ -99,7 +99,7 @@ fun HomeScreenComposable(
                     .padding(padding),
                 collapsingTop = {
                     Column(modifier = Modifier.fillMaxWidth()) {
-                        IssueSection(issueExecution,viewModel)
+//                        IssueSection(issueExecution,viewModel)
                         NextFiveTaskSection(viewModel, navController, onDeleteTask)
                     }
                 },

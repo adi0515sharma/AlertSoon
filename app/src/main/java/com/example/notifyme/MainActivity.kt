@@ -2,6 +2,7 @@ package com.example.AlertSoon
 
 import android.app.AlarmManager
 import  android.app.Application
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -73,6 +74,7 @@ class MainActivity : Application() {
         channel.lightColor = Color.Red.hashCode()
         channel.setSound(null, null)
         channel.enableVibration(true)
+        channel.lockscreenVisibility =  Notification.VISIBILITY_PUBLIC
         channel.vibrationPattern = longArrayOf(
             1000,
             2000,

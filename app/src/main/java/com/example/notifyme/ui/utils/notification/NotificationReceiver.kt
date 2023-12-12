@@ -22,9 +22,11 @@ import androidx.core.app.NotificationManagerCompat
 import com.example.AlertSoon.R
 import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
 import com.example.AlertSoon.ui.screens.home_screen_activity.domain.repository.HomeScreenTaskRepository
+import com.example.AlertSoon.ui.screens.home_screen_activity.ui.HomeActivity
 import com.example.AlertSoon.ui.utils.ApiResponse
 import com.example.AlertSoon.ui.utils.DateTime
 import com.example.AlertSoon.ui.utils.WakeLocker
+import com.example.notifyme.ui.utils.LockscreenActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -56,6 +58,13 @@ class NotificationReceiver : BroadcastReceiver() {
         Log.e("AlertSoon", "notification id = ${tableOfTask.uid}")
 
         val id = System.currentTimeMillis().toInt()
+
+        val contentIntent = Intent(context, HomeActivity::class.java)
+        val contentPendingIntent = PendingIntent.getActivity(context, contentIntent.hashCode(), contentIntent, PendingIntent.FLAG_IMMUTABLE)
+
+        val fullScreenIntent = Intent(context, LockscreenActivity::class.java)
+        val fullScreenPendingIntent = PendingIntent.getActivity(context, fullScreenIntent.hashCode(), fullScreenIntent, PendingIntent.FLAG_IMMUTABLE)
+
 
         val closeNotificationIntent = Intent(context, NotificationActionHandler::class.java)
         closeNotificationIntent.action = Action.DISMISS.toString()
@@ -131,11 +140,22 @@ class NotificationReceiver : BroadcastReceiver() {
                 .setCustomBigContentView(smallNotificationLayout)
                 .setCustomContentView(smallNotificationLayout)
                 .setContent(smallNotificationLayout)
+                .setContentIntent(contentPendingIntent)
+                .setFullScreenIntent(fullScreenPendingIntent, true)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCustomHeadsUpContentView(smallNotificationLayout)
                 .setDeleteIntent(onDismissPendingIntent)
                 .build()
+
+//        val notification = NotificationCompat.Builder(context, "notification_id_high")
+//            .setSmallIcon(android.R.drawable.arrow_up_float)
+//            .setContentTitle("title")
+//            .setContentText("description")
+//            .setPriority(NotificationCompat.PRIORITY_HIGH)
+//            .setFullScreenIntent(fullScreenPendingIntent, true)
+//            .build()
+
 
         Log.e("AlertSoon", "notification id create $id")
 

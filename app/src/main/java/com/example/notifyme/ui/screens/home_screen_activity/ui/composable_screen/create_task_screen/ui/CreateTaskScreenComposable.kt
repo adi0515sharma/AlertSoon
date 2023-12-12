@@ -13,9 +13,11 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +28,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.DropdownMenuItem
@@ -45,9 +48,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -261,7 +267,7 @@ fun Screen(
                 day_of_month = tableOfTask.day_of_month,
                 is_regular = tableOfTask.is_regular,
                 days = if(tableOfTask.is_regular) tableOfTask.days else "0000000",
-                snozze_time = null
+                snozze_time = tableOfTask.snozze_time
             )
 
         }
@@ -451,6 +457,53 @@ fun Screen(
                     value = DateTime.getTimeInFormat(currentTaskState.time_in_long),
                     shouldOpenDialog = false
                 )
+
+                if(currentTaskState.snozze_time!=null){
+                    Spacer(modifier = Modifier.height(13.dp))
+                    ConstraintLayout(modifier = Modifier.fillMaxWidth()){
+
+                        val fields = createRef()
+                        val delete = createRef()
+
+                        EntryFieldWithDialog(
+                            modifier = Modifier.constrainAs(fields){
+                                top.linkTo(parent.top)
+                                start.linkTo(parent.start)
+                                bottom.linkTo(parent.bottom)
+                                end.linkTo(delete.start)
+                                width = Dimension.fillToConstraints
+                            },
+                            title = "Snoozed",
+                            icon = R.drawable.baseline_snooze_24,
+                            hint = null,
+                            error = null,
+                            value = DateTime.getTimeTextForSnooze(currentTaskState.snozze_time!!),
+                            shouldOpenDialog = false
+                        )
+
+                        Image(
+                            painter = painterResource(id = R.drawable.baseline_delete_24),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .constrainAs(delete){
+                                top.linkTo(parent.top)
+                                start.linkTo(fields.end)
+                                bottom.linkTo(parent.bottom)
+                                end.linkTo(parent.end)
+                            }
+                                .padding(end = 13.dp)
+                                .width(35.dp)
+                                .height(35.dp)
+                                .clickable {
+                                    currentTaskState = currentTaskState.copy(snozze_time = null)
+                                }
+                                .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
+                                .padding(5.dp),
+                            colorFilter = ColorFilter.tint(color = Color.White)
+                        )
+                    }
+                }
+
                 Spacer(modifier = Modifier.height(13.dp))
                 EntryFieldWithDialog(
                     modifier = Modifier.clickable {
@@ -580,6 +633,12 @@ fun Screen(
                                 final_time_calendar.set(Calendar.SECOND,0)
                                 final_time_calendar.set(Calendar.MILLISECOND,0)
 
+                                if(currentTaskState.snozze_time !=null && currentTaskState.snozze_time!! <= DateTime.getTime()){
+                                    anyToastMessage =
+                                        "Snoozed time is not valid please check again"
+                                    Log.e("AlertSoon", "selected time = ${final_time_calendar.timeInMillis} , ${Calendar.getInstance().timeInMillis}")
+                                    return
+                                }
                                 if(final_time_calendar.timeInMillis <= DateTime.getTime()) {
                                     anyToastMessage =
                                         "Selected date or time is not valid please check again"
