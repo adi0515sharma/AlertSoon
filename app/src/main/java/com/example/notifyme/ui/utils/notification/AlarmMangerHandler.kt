@@ -7,7 +7,6 @@ import android.content.Intent
 import android.util.Log
 import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
 import com.example.AlertSoon.ui.local_storage.Task.TaskRespository
-import com.example.AlertSoon.ui.utils.DateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -53,28 +52,7 @@ class AlarmMangerHandler @Inject constructor(
         Log.e("AlertSoon", "alaram created sucessfully")
     }
 
-    fun createSampleNotification(){
-        val alarmManager =
-            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        val intent = Intent(context, SampleNotificationReceiver::class.java)
-        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            intent.hashCode(),
-            intent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-
-
-        alarmManager.setAlarmClock(
-            AlarmManager.AlarmClockInfo(
-                DateTime.getTimePlusMinutes(),
-                pendingIntent
-            ), pendingIntent
-        );
-    }
     fun cancelAlarm(tableOfTask: TableOfTask) {
 
         val alarmManager =

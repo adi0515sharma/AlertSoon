@@ -9,10 +9,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.graphics.Color
 import androidx.core.app.NotificationManagerCompat
 import com.example.AlertSoon.ui.utils.AlertSoonSharePref
+import com.example.notifyme.ui.utils.notification.ForegroundService
 import dagger.hilt.android.HiltAndroidApp
 import java.util.Calendar
 import javax.inject.Inject
@@ -36,6 +38,12 @@ class MainActivity : Application() {
 
 
 
+        val serviceIntent = Intent(this, ForegroundService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent)
+        } else {
+            startService(serviceIntent)
+        }
 //        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 //
 //        var calendarTime = Calendar.getInstance()
