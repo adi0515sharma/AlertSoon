@@ -59,21 +59,22 @@ import com.example.AlertSoon.R
 import com.example.AlertSoon.ui.component.AppBar
 import com.example.AlertSoon.ui.component.CollapsingLayout
 import com.example.AlertSoon.ui.screens.home_screen_activity.ui.HomeActivity
+import com.example.notifyme.ui.component.LoaderSection
+import com.example.notifyme.ui.component.NoTaskAvailableUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SystemRingtoneScreen(navController : NavController, selected_uri: String? = null) {
+fun SystemRingtoneScreen(navController: NavController, selected_uri: String? = null) {
 
-    var music by remember { mutableStateOf(mutableListOf<String>()) }
-    var personalMusic by rememberSaveable { mutableStateOf(mutableListOf<String>()) }
+    var music by rememberSaveable { mutableStateOf(mutableListOf<MusicClass>()) }
     var context = LocalContext.current
-
     var selectedUri by rememberSaveable { mutableStateOf(selected_uri) }
-
-
+    var isLoaderVisible by rememberSaveable {
+        mutableStateOf(true)
+    }
 
 
     DisposableEffect(navController) {
@@ -83,7 +84,10 @@ fun SystemRingtoneScreen(navController : NavController, selected_uri: String? = 
                 // For example, navigate to another destination or finish the activity
                 Log.e("AlertSoon", "selected_uri = ${selectedUri}")
 
-                navController.previousBackStackEntry?.savedStateHandle?.set("selectedUri", selectedUri)
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    "selectedUri",
+                    selectedUri
+                )
                 navController.popBackStack()
             }
         }
@@ -94,23 +98,12 @@ fun SystemRingtoneScreen(navController : NavController, selected_uri: String? = 
     }
 
 
-    val audioPicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri ->
-            if(uri == null){
-                return@rememberLauncherForActivityResult
-            }
-            selectedUri = uri.toString()
-            if(!personalMusic.contains(selectedUri))
-                personalMusic.add(0, selectedUri!!)
-        }
-    )
 
     LaunchedEffect(key1 = null) {
 
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             music = listRingtones(context)
-            Log.e("AlertSoon", "${music.size}")
+            isLoaderVisible = false
         }
 
     }
@@ -127,31 +120,39 @@ fun SystemRingtoneScreen(navController : NavController, selected_uri: String? = 
                     .padding(padding)
             ) {
 
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
 
-
-                    itemsIndexed(music) { index, item ->
-
-                        var musicName = getMusicTitleFromUri(item, context.contentResolver)
-
-
-
-                        MusicViewComposble((musicName?:item), selectedUri == item) {
-                            if (selectedUri == item) {
-                                selectedUri = ""
-                                return@MusicViewComposble
-                            }
-                            selectedUri = item
-                        }
-
+                if (isLoaderVisible) {
+                    LoaderSection()
+                } else {
+                    if(music.isEmpty()){
+                        NoTaskAvailableUi()
                     }
+                    else{
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+
+
+                            itemsIndexed(music) { index, item ->
+
+
+                                MusicViewComposble((item.name ?: item.uri), selectedUri == item.uri) {
+                                    if (selectedUri == item.uri) {
+                                        selectedUri = ""
+                                        return@MusicViewComposble
+                                    }
+                                    selectedUri = item.uri
+                                }
+
+                            }
+                        }
+                    }
+
                 }
+
             }
         },
-
-        )
+    )
 
 }
 
@@ -220,16 +221,23 @@ fun getMusicTitleFromUri(musicUri: String?, contentResolver: ContentResolver): S
     return null
 }
 
-fun listRingtones(context: Context?) : MutableList<String> {
-    var musicList = mutableListOf<String>()
+fun listRingtones(context: Context?): MutableList<MusicClass> {
+    var musicList = mutableListOf<MusicClass>()
     val ringtoneManager = RingtoneManager(context)
     ringtoneManager.setType(RingtoneManager.TYPE_RINGTONE)
     val cursor = ringtoneManager.cursor
     val count = cursor.count
     for (i in 0 until count) {
-        val ringtoneUri = ringtoneManager.getRingtoneUri(i)
-        musicList.add(ringtoneUri.toString())
+        val ringtoneUri = ringtoneManager.getRingtoneUri(i).toString()
+        musicList.add(
+            MusicClass(
+                getMusicTitleFromUri(ringtoneUri, context?.contentResolver!!) ?: ringtoneUri,
+                ringtoneUri
+            )
+        )
     }
 
     return musicList
 }
+
+data class MusicClass(val name: String?, val uri: String)

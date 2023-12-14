@@ -15,7 +15,7 @@ import dagger.hilt.components.SingletonComponent
 class UtilsDI {
 
     @Provides
-    fun getAlarmMangerHandlerInstance(@ApplicationContext context: Context) = AlarmMangerHandler(context)
+    fun getAlarmMangerHandlerInstance(@ApplicationContext context: Context, taskRespository: TaskRespository) = AlarmMangerHandler(context, taskRespository)
 
     @Provides
     fun getContextInstance(@ApplicationContext context: Context) = context

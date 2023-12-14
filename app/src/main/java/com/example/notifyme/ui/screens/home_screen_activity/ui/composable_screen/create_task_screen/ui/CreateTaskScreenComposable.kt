@@ -485,19 +485,22 @@ fun Screen(
                             painter = painterResource(id = R.drawable.baseline_delete_24),
                             contentDescription = null,
                             modifier = Modifier
-                                .constrainAs(delete){
-                                top.linkTo(parent.top)
-                                start.linkTo(fields.end)
-                                bottom.linkTo(parent.bottom)
-                                end.linkTo(parent.end)
-                            }
+                                .constrainAs(delete) {
+                                    top.linkTo(parent.top)
+                                    start.linkTo(fields.end)
+                                    bottom.linkTo(parent.bottom)
+                                    end.linkTo(parent.end)
+                                }
                                 .padding(end = 13.dp)
                                 .width(35.dp)
                                 .height(35.dp)
                                 .clickable {
                                     currentTaskState = currentTaskState.copy(snozze_time = null)
                                 }
-                                .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
+                                .background(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    shape = CircleShape
+                                )
                                 .padding(5.dp),
                             colorFilter = ColorFilter.tint(color = Color.White)
                         )
@@ -612,6 +615,13 @@ fun Screen(
 
                             if (currentTaskState.is_regular)
                             {
+                                if(currentTaskState.snozze_time !=null){
+
+                                    if(currentTaskState.snozze_time!! <= DateTime.getTime()) {
+                                        anyToastMessage = "Snoozed time is not valid please check again"
+                                        return
+                                    }
+                                }
                                 currentTaskState = currentTaskState.copy(time_in_long = currentTaskState.getNextTimeForRegularTask())
                             }
                             else
@@ -633,16 +643,15 @@ fun Screen(
                                 final_time_calendar.set(Calendar.SECOND,0)
                                 final_time_calendar.set(Calendar.MILLISECOND,0)
 
-                                if(currentTaskState.snozze_time !=null && currentTaskState.snozze_time!! <= DateTime.getTime()){
-                                    anyToastMessage =
-                                        "Snoozed time is not valid please check again"
-                                    Log.e("AlertSoon", "selected time = ${final_time_calendar.timeInMillis} , ${Calendar.getInstance().timeInMillis}")
-                                    return
+                                if(currentTaskState.snozze_time !=null){
+
+                                    if(currentTaskState.snozze_time!! <= DateTime.getTime()) {
+                                        anyToastMessage = "Snoozed time is not valid please check again"
+                                        return
+                                    }
                                 }
-                                if(final_time_calendar.timeInMillis <= DateTime.getTime()) {
-                                    anyToastMessage =
-                                        "Selected date or time is not valid please check again"
-                                    Log.e("AlertSoon", "selected time = ${final_time_calendar.timeInMillis} , ${Calendar.getInstance().timeInMillis}")
+                                else if(final_time_calendar.timeInMillis <= DateTime.getTime()) {
+                                    anyToastMessage = "Selected date or time is not valid please check again"
                                     return
                                 }
 

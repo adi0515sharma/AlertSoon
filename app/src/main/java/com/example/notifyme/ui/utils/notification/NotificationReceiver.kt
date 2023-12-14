@@ -1,6 +1,8 @@
 package com.example.AlertSoon.ui.utils.notification
 
 import android.Manifest
+import android.app.KeyguardManager
+import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -14,6 +16,7 @@ import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
+import android.os.PowerManager
 import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.ActivityCompat
@@ -60,10 +63,12 @@ class NotificationReceiver : BroadcastReceiver() {
         val id = System.currentTimeMillis().toInt()
 
         val contentIntent = Intent(context, HomeActivity::class.java)
-        val contentPendingIntent = PendingIntent.getActivity(context, contentIntent.hashCode(), contentIntent, PendingIntent.FLAG_IMMUTABLE)
+        val contentPendingIntent = PendingIntent.getActivity(context, id, contentIntent, PendingIntent.FLAG_IMMUTABLE)
 
         val fullScreenIntent = Intent(context, LockscreenActivity::class.java)
-        val fullScreenPendingIntent = PendingIntent.getActivity(context, fullScreenIntent.hashCode(), fullScreenIntent, PendingIntent.FLAG_IMMUTABLE)
+        fullScreenIntent.putExtra("tableOfTask", tableOfTask)
+        fullScreenIntent.putExtra("notificationId", id)
+        val fullScreenPendingIntent = PendingIntent.getActivity(context, id, fullScreenIntent, PendingIntent.FLAG_IMMUTABLE)
 
 
         val closeNotificationIntent = Intent(context, NotificationActionHandler::class.java)
@@ -77,8 +82,7 @@ class NotificationReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_IMMUTABLE
         )
 
-        val snoozeNotificationIntent =
-            Intent(context, NotificationActionHandler::class.java)
+        val snoozeNotificationIntent = Intent(context, NotificationActionHandler::class.java)
         snoozeNotificationIntent.action = Action.SNOOZE.toString()
         snoozeNotificationIntent.putExtra("notificationId", id)
         snoozeNotificationIntent.putExtra("tableOfTask", tableOfTask)
@@ -132,29 +136,37 @@ class NotificationReceiver : BroadcastReceiver() {
 
         Log.e("AlertSoon", "launching notification ")
 
+        var notification = NotificationCompat.Builder(context, "notification_id_high")
+            .setAutoCancel(true)
+            .setSmallIcon(R.drawable.ic_high_priority_flag)
+            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+            .setCustomBigContentView(smallNotificationLayout)
+            .setCustomContentView(smallNotificationLayout)
+            .setContent(smallNotificationLayout)
+            .setContentIntent(contentPendingIntent)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setCustomHeadsUpContentView(smallNotificationLayout)
+            .setDeleteIntent(onDismissPendingIntent)
+            .build()
 
-        val notification = NotificationCompat.Builder(context, "notification_id_high")
-                .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ic_high_priority_flag)
-                .setStyle(NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomBigContentView(smallNotificationLayout)
-                .setCustomContentView(smallNotificationLayout)
-                .setContent(smallNotificationLayout)
-                .setContentIntent(contentPendingIntent)
-                .setFullScreenIntent(fullScreenPendingIntent, true)
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setCustomHeadsUpContentView(smallNotificationLayout)
-                .setDeleteIntent(onDismissPendingIntent)
-                .build()
 
-//        val notification = NotificationCompat.Builder(context, "notification_id_high")
-//            .setSmallIcon(android.R.drawable.arrow_up_float)
-//            .setContentTitle("title")
-//            .setContentText("description")
-//            .setPriority(NotificationCompat.PRIORITY_HIGH)
-//            .setFullScreenIntent(fullScreenPendingIntent, true)
-//            .build()
+        if(isDeviceLocked(context) || !isDevicePoweredOn(context)){
+
+
+//            val launchIntent = context.packageManager?.getLaunchIntentForPackage(context.packageName)
+//            context.startActivity(launchIntent)
+
+            notification = NotificationCompat.Builder(context, "notification_id_high")
+            .setSmallIcon(android.R.drawable.arrow_up_float)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setVisibility(NotificationCompat.VISIBILITY_SECRET)
+            .setFullScreenIntent(fullScreenPendingIntent, true)
+            .setDeleteIntent(onDismissPendingIntent)
+            .build()
+        }
+
+
 
 
         Log.e("AlertSoon", "notification id create $id")
@@ -182,6 +194,29 @@ class NotificationReceiver : BroadcastReceiver() {
 
     }
 
+    private fun isDeviceLocked(context: Context?): Boolean {
+        val keyguardManager = context?.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+
+        // For devices running Android P (API 28) and above, use isDeviceLocked() method
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            return keyguardManager.isDeviceLocked
+        } else {
+            // For devices running below Android P, use inKeyguardRestrictedInputMode() method
+            return keyguardManager.inKeyguardRestrictedInputMode()
+        }
+    }
+
+    private fun isDevicePoweredOn(context: Context?): Boolean {
+        val powerManager = context?.getSystemService(Context.POWER_SERVICE) as PowerManager
+
+        // Check if the device is in an interactive state (screen is on)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            return powerManager.isInteractive
+        } else {
+            @Suppress("DEPRECATION")
+            return powerManager.isScreenOn
+        }
+    }
 
     companion object {
 

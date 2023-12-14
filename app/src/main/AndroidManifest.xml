@@ -64,12 +64,11 @@
             android:showForAllUsers="true"
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
-            android:theme="@style/Theme.AppCompat.Light"
-            android:turnScreenOn="true" />
-        <!--           android:launchMode="singleTop"-->
-        <!--           android:showOnLockScreen="true"-->
-        <!--           android:showWhenLocked="true"-->
+            android:theme="@style/Theme.AppCompat"
+            android:turnScreenOn="true">
 
+
+        </activity>
 
     </application>
 

@@ -69,6 +69,8 @@ import com.example.AlertSoon.ui.navigation.FeatureNavScreen
 import com.example.AlertSoon.ui.screens.home_screen_activity.ui.HomeActivityViewModel
 import com.example.AlertSoon.ui.utils.Constants.options
 import com.example.AlertSoon.ui.utils.DateTime.getDateByIterate
+import com.example.notifyme.ui.component.LoaderSection
+import com.example.notifyme.ui.component.NoTaskAvailableUi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -132,8 +134,8 @@ fun HomeScreenComposable(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun IssueSection(issueExecution: IssueExecution, viewModel : HomeActivityViewModel) {
-    var issues by rememberSaveable { mutableStateOf( listOf<IssueDataClass>())}
+fun IssueSection(issueExecution: IssueExecution, viewModel: HomeActivityViewModel) {
+    var issues by rememberSaveable { mutableStateOf(listOf<IssueDataClass>()) }
 
     var pagerState = rememberPagerState(pageCount = issues.size)
 
@@ -142,7 +144,7 @@ fun IssueSection(issueExecution: IssueExecution, viewModel : HomeActivityViewMod
 
     LaunchedEffect(key1 = null) {
 
-        if(issues.isEmpty()){
+        if (issues.isEmpty()) {
             if (ContextCompat.checkSelfPermission(
                     context,
                     Manifest.permission.POST_NOTIFICATIONS
@@ -169,7 +171,7 @@ fun IssueSection(issueExecution: IssueExecution, viewModel : HomeActivityViewMod
             if (!(context.getSystemService(ComponentActivity.POWER_SERVICE) as PowerManager).isIgnoringBatteryOptimizations(
                     context.packageName
                 )
-            ){
+            ) {
                 issues += mutableListOf(
                     IssueDataClass(
                         "please allow battery consumption in background",
@@ -178,7 +180,6 @@ fun IssueSection(issueExecution: IssueExecution, viewModel : HomeActivityViewMod
                 )
             }
         }
-
 
 
     }
@@ -195,13 +196,13 @@ fun IssueSection(issueExecution: IssueExecution, viewModel : HomeActivityViewMod
             Spacer(modifier = Modifier.height(8.dp))
             Column(modifier = Modifier.fillMaxWidth()) {
                 HorizontalPager(state = pagerState) {
-                    IssueCardUiComponent(issueDataClass = issues[it], object : IssueHandler{
+                    IssueCardUiComponent(issueDataClass = issues[it], object : IssueHandler {
                         override fun closeIssue() {
-                            if(issues[it].type == ISSUES.SOME_SETTING){
+                            if (issues[it].type == ISSUES.SOME_SETTING) {
                                 viewModel.setOtherSettingGiven(true)
                             }
-                            issues = issues.toMutableList().also {
-                                i-> i.remove(issues[it])
+                            issues = issues.toMutableList().also { i ->
+                                i.remove(issues[it])
                             } // remove
 
                         }
@@ -212,10 +213,12 @@ fun IssueSection(issueExecution: IssueExecution, viewModel : HomeActivityViewMod
                                 ISSUES.BATTERY_CONSUMPTION_REQUIRED -> {
                                     issueExecution.performBatteryConsumption()
                                 }
+
                                 ISSUES.NO_NOTIFICATION_ALLOWED -> {
                                     issueExecution.performNotificationAllowence()
 
                                 }
+
                                 else -> {
                                     issueExecution.performSomeSettingTask()
                                 }
@@ -343,14 +346,16 @@ fun OnceTaskSection(
 ) {
 
 
-    var once_task by rememberSaveable { mutableStateOf<MutableList<TableOfTask>?>(null) }
-
+    var once_task by rememberSaveable { mutableStateOf<MutableList<TableOfTask>>(mutableListOf()) }
+    var isLoaderVisible by rememberSaveable {
+        mutableStateOf(true)
+    }
 
     LaunchedEffect(key1 = null) {
 
         viewmodel.once_tasks.collectLatest {
             once_task = it
-
+            isLoaderVisible = false
         }
     }
 
@@ -358,13 +363,17 @@ fun OnceTaskSection(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            if (once_task != null) {
 
-                if (once_task!!.isEmpty()) {
+        if (isLoaderVisible) {
+            LoaderSection()
+        } else {
+            if(once_task.isEmpty()){
+                NoTaskAvailableUi()
+            }
+            else{
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
 
-                } else {
-                    val groupedItems = once_task!!.groupBy { it.date_in_long }
+                    val groupedItems = once_task.groupBy { it.date_in_long }
                     groupedItems.forEach {
 
                         item {
@@ -398,17 +407,20 @@ fun OnceTaskSection(
                                 false,
                                 {
                                     t.uid ?: return@TaskUIComponent
-                                    onDeleteTask(t.uid!!, options[0])
+                                    onDeleteTask(t.uid, options[0])
                                 },
                                 navController
                             )
 
                         }
                     }
-                }
 
+
+                }
             }
+
         }
+
     }
 }
 
@@ -421,9 +433,12 @@ fun NextFiveTaskSection(
 ) {
 
 
-    var nextFiveTasks by rememberSaveable { mutableStateOf<MutableList<TableOfTask>?>(null) }
+    var nextFiveTasks by rememberSaveable { mutableStateOf<MutableList<TableOfTask>>(mutableListOf()) }
     var pageCount by rememberSaveable { mutableStateOf(0) }
     var pagerState = rememberPagerState(pageCount = pageCount)
+    var isLoaderVisible by rememberSaveable {
+        mutableStateOf(true)
+    }
     val createYourTaskColor = MaterialTheme.colorScheme.primary
 
 
@@ -431,6 +446,7 @@ fun NextFiveTaskSection(
         viewmodel.next_five_tasks.collectLatest {
             nextFiveTasks = it
             pageCount = it.size
+            isLoaderVisible = false
         }
     }
     Column(
@@ -439,72 +455,78 @@ fun NextFiveTaskSection(
             .padding(horizontal = 10.dp, vertical = 10.dp)
     ) {
 
-        if (nextFiveTasks != null && nextFiveTasks!!.isNotEmpty()) {
-            Text(text = "Your Next ${nextFiveTasks?.size} Task")
-            Spacer(modifier = Modifier.height(8.dp))
-            Column(modifier = Modifier.fillMaxWidth()) {
-                HorizontalPager(state = pagerState) {
-
-
-                    if (nextFiveTasks!![it].is_regular) {
-
-                        val allDayTask = nextFiveTasks!![it].days
-                        RegularTaskUiComponent(Modifier, nextFiveTasks!![it], allDayTask, {
-                            nextFiveTasks!![it].uid ?: return@RegularTaskUiComponent
-                            onDeleteTask(nextFiveTasks!![it].uid!!, options[1])
-                        }, navController)
-
-                    } else {
-
-                        TaskUIComponent(
-                            nextFiveTasks!![it], true, {
-                                nextFiveTasks!![it].uid ?: return@TaskUIComponent
-                                onDeleteTask(nextFiveTasks!![it].uid!!, options[0])
-                            },
-                            navController
-                        )
-
-                    }
-                }
-            }
-
+        if (isLoaderVisible) {
+            LoaderSection()
         } else {
+            if (nextFiveTasks.isNotEmpty()) {
+                Text(text = "Your Next ${nextFiveTasks.size} Task")
+                Spacer(modifier = Modifier.height(8.dp))
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    HorizontalPager(state = pagerState) {
 
 
-            Column(
-                modifier = Modifier
-                    .clickable {
-                        navController.navigate(FeatureNavScreen.CREATING_TASK.name)
-                    }
-                    .fillMaxWidth()
-                    .drawBehind {
-                        drawRoundRect(
-                            color = createYourTaskColor, style = Stroke(
-                                width = 5f,
-                                pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
+                        if (nextFiveTasks!![it].is_regular) {
+
+                            val allDayTask = nextFiveTasks!![it].days
+                            RegularTaskUiComponent(Modifier, nextFiveTasks!![it], allDayTask, {
+                                nextFiveTasks!![it].uid ?: return@RegularTaskUiComponent
+                                onDeleteTask(nextFiveTasks!![it].uid!!, options[1])
+                            }, navController)
+
+                        } else {
+
+                            TaskUIComponent(
+                                nextFiveTasks!![it], true, {
+                                    nextFiveTasks!![it].uid ?: return@TaskUIComponent
+                                    onDeleteTask(nextFiveTasks!![it].uid!!, options[0])
+                                },
+                                navController
                             )
+
+                        }
+                    }
+                }
+
+            } else {
+                Column(
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate(FeatureNavScreen.CREATING_TASK.name)
+                        }
+                        .fillMaxWidth()
+                        .drawBehind {
+                            drawRoundRect(
+                                color = createYourTaskColor, style = Stroke(
+                                    width = 5f,
+                                    pathEffect = PathEffect.dashPathEffect(
+                                        floatArrayOf(10f, 10f),
+                                        0f
+                                    )
+                                )
+                            )
+                        }
+                        .padding(horizontal = 10.dp, vertical = 35.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+
+                    Row {
+                        Image(
+                            painter = painterResource(id = R.drawable.baseline_add_task_24),
+                            contentDescription = "add task",
+                            colorFilter = ColorFilter.tint(color = createYourTaskColor)
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Text(
+                            text = "Create Your Task's",
+                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                            fontWeight = FontWeight.W600,
+                            color = createYourTaskColor
                         )
                     }
-                    .padding(horizontal = 10.dp, vertical = 35.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-
-                Row {
-                    Image(
-                        painter = painterResource(id = R.drawable.baseline_add_task_24),
-                        contentDescription = "add task",
-                        colorFilter = ColorFilter.tint(color = createYourTaskColor)
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Text(
-                        text = "Create Your Task's",
-                        fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                        fontWeight = FontWeight.W600,
-                        color = createYourTaskColor
-                    )
                 }
             }
+
         }
 
     }
@@ -518,11 +540,14 @@ fun RegularTaskSection(
     onDeleteTask: (parameter: Long, type: String) -> Unit
 ) {
 
-    var regular_tasks by rememberSaveable { mutableStateOf<MutableList<TableOfTask>?>(null) }
-
+    var regular_tasks by rememberSaveable { mutableStateOf<MutableList<TableOfTask>>(mutableListOf()) }
+    var isLoaderVisible by rememberSaveable {
+        mutableStateOf(true)
+    }
     LaunchedEffect(key1 = null) {
         viewmodel.regular_tasks.collectLatest {
             regular_tasks = it
+            isLoaderVisible = false
         }
     }
 
@@ -532,11 +557,13 @@ fun RegularTaskSection(
     ) {
 
 
-        if (regular_tasks != null) {
-
-            if (regular_tasks!!.isEmpty()) {
-                NoTaskAvailable()
-            } else {
+        if (isLoaderVisible) {
+            LoaderSection()
+        } else {
+            if(regular_tasks.isEmpty()){
+                NoTaskAvailableUi()
+            }
+            else{
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -551,38 +578,17 @@ fun RegularTaskSection(
                     }
                 }
             }
-        } else {
-            ShowLoader()
+
         }
+
+
     }
 }
 
-@Composable
-fun NoTaskAvailable() {
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-
-    }
-
-}
 
 
-@Composable
-fun ShowLoader() {
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
 
-    }
-
-}
 
 
 
