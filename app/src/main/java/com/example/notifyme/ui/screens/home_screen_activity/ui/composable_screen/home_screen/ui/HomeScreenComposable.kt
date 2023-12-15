@@ -159,14 +159,7 @@ fun IssueSection(issueExecution: IssueExecution, viewModel: HomeActivityViewMode
                 )
             }
 
-            if (!viewModel.isOtherSettingGiven()) {
-                issues += mutableListOf(
-                    IssueDataClass(
-                        "Some other background service settings required",
-                        ISSUES.SOME_SETTING
-                    )
-                )
-            }
+
 
             if (!(context.getSystemService(ComponentActivity.POWER_SERVICE) as PowerManager).isIgnoringBatteryOptimizations(
                     context.packageName
@@ -198,9 +191,7 @@ fun IssueSection(issueExecution: IssueExecution, viewModel: HomeActivityViewMode
                 HorizontalPager(state = pagerState) {
                     IssueCardUiComponent(issueDataClass = issues[it], object : IssueHandler {
                         override fun closeIssue() {
-                            if (issues[it].type == ISSUES.SOME_SETTING) {
-                                viewModel.setOtherSettingGiven(true)
-                            }
+
                             issues = issues.toMutableList().also { i ->
                                 i.remove(issues[it])
                             } // remove

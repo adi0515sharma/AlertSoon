@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun ViewTaskScreenComposable(
     navController: NavHostController,
-    tableOfTask : TableOfTask?,
+    tableOfTask : TableOfTask,
     updateStateListener : (TableOfTask) -> Unit,
     updateTaskListener : (TableOfTask) -> Unit
 ) {

@@ -1,16 +1,12 @@
 package com.example.AlertSoon.ui.screens.home_screen_activity.ui
 
-import android.os.Build
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
 import com.example.AlertSoon.ui.screens.home_screen_activity.domain.repository.HomeScreenTaskRepository
 import com.example.AlertSoon.ui.utils.ApiResponse
-import com.example.AlertSoon.ui.utils.AlertSoonSharePref
 import com.example.AlertSoon.ui.utils.notification.AlarmMangerHandler
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,10 +20,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class HomeActivityViewModel @Inject constructor(
-    val homeScreenTaskRepository: HomeScreenTaskRepository,
-    val alarmMangerHandler: AlarmMangerHandler,
-    val sharePref: AlertSoonSharePref) :
+class HomeActivityViewModel @Inject constructor(val homeScreenTaskRepository: HomeScreenTaskRepository, val alarmMangerHandler: AlarmMangerHandler) :
     ViewModel() {
 
 
@@ -151,11 +144,6 @@ class HomeActivityViewModel @Inject constructor(
                 // Handle error here if needed
             }
         }
-    }
-
-    fun isOtherSettingGiven() = sharePref.getOtherSettingValue()
-    fun setOtherSettingGiven(value : Boolean){
-        sharePref.saveOtherSettingValue(value)
     }
 
 

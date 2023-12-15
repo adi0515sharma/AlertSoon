@@ -52,7 +52,6 @@ import com.example.AlertSoon.ui.component.IssueExecution
 import com.example.AlertSoon.ui.local_storage.Task.TaskRespository
 import com.example.AlertSoon.ui.navigation.HomeScreenNavHost
 import com.example.AlertSoon.ui.theme.AlertSoonTheme
-import com.example.AlertSoon.ui.utils.AlertSoonSharePref
 import com.example.AlertSoon.ui.utils.notification.AlarmMangerHandler
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -66,9 +65,6 @@ class HomeActivity : ComponentActivity() {
 
     @Inject
     lateinit var alarmMangerHandler: AlarmMangerHandler
-
-    @Inject
-    lateinit var AlertSoonSharePref: AlertSoonSharePref
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {

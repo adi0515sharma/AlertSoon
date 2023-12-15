@@ -84,15 +84,10 @@ class AlarmMangerHandler @Inject constructor(
             createAlarm(tableOfTask)
 
             runBlocking {
-                Log.e("AlertSoon", "going for update")
 
                 try {
                     taskRespository.updateTask(tableOfTask)
 
-                    Log.e("AlertSoon", "update successfully")
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(context, "Snoozed Successfully", Toast.LENGTH_LONG).show()
-                    }
 
                 } catch (e: Exception) {
                     cancelAlarm(tableOfTask)

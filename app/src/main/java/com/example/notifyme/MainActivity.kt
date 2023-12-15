@@ -9,7 +9,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.graphics.Color
 import androidx.core.app.NotificationManagerCompat
-import com.example.AlertSoon.ui.utils.AlertSoonSharePref
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -17,7 +16,6 @@ import javax.inject.Inject
 @HiltAndroidApp
 class MainActivity : Application() {
 
-    @Inject lateinit var AlertSoonSharePref: AlertSoonSharePref
 
     override fun onCreate() {
         super.onCreate()
@@ -25,34 +23,9 @@ class MainActivity : Application() {
             createNotificationChannel()
         }
 
-        if(AlertSoonSharePref.getLastOs() == null || AlertSoonSharePref.getLastOs() != Build.VERSION.RELEASE){
-            AlertSoonSharePref.saveLastOs()
-            AlertSoonSharePref.saveOtherSettingValue(false)
-        }
 
 
 
-
-//        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-//
-//        var calendarTime = Calendar.getInstance()
-//        calendarTime.set(Calendar.SECOND, 0)
-//        calendarTime.add(Calendar.MINUTE, 10)
-//
-//        val tableOfTask = TableOfTask(
-//            uid = 1,
-//            task_title = "hello world",
-//            task_description = "hello world",
-//            time_in_long = calendarTime.timeInMillis,
-//        )
-//        val intent = Intent(this, NotificationReceiver::class.java)
-//        intent.putExtra("tableOfTask", tableOfTask)
-//        val pendingIntent =
-//            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-//
-//        val alarmClockInfo: AlarmManager.AlarmClockInfo =
-//            AlarmManager.AlarmClockInfo(calendarTime.timeInMillis, pendingIntent)
-//        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent)
 
     }
 

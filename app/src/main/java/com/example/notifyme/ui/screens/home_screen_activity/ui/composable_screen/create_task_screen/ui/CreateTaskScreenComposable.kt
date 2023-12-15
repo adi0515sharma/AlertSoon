@@ -101,10 +101,12 @@ import java.util.Date
 @Composable
 fun CreateTaskComposable(
     navController: NavHostController,
+    tableOfTask: TableOfTask,
+    updateStateListener: ((TableOfTask) -> Unit),
     onInsertTask: (parameter: TableOfTask) -> Unit
 ) {
 
-    Screen(navController,null, null , onInsertTask)
+    Screen(navController, tableOfTask, updateStateListener , onInsertTask)
 
 }
 
@@ -113,8 +115,8 @@ fun CreateTaskComposable(
 @Composable
 fun Screen(
     navController: NavHostController,
-    tableOfTask: TableOfTask? = TableOfTask(),
-    updateStateListener: ((TableOfTask) -> Unit)?,
+    tableOfTask: TableOfTask,
+    updateStateListener: ((TableOfTask) -> Unit),
     onInsertTask: (parameter: TableOfTask) -> Unit,
 
     ) {
@@ -124,7 +126,7 @@ fun Screen(
 
     val context = LocalContext.current
 
-    var currentTaskState by rememberSaveable{mutableStateOf(tableOfTask?:TableOfTask())}
+    var currentTaskState by rememberSaveable{mutableStateOf(tableOfTask)}
 
 
 
@@ -195,42 +197,9 @@ fun Screen(
 
     var mTextFieldSize by remember { mutableStateOf(Size.Zero)}
 
-//    val ringtonePickerLauncher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.StartActivityForResult()
-//    ) { result ->
-//        if (result.resultCode == Activity.RESULT_OK) {
-//            val data = result.data
-//            val ringtoneUri =
-//                data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-//
-//        }
-//    }
 
 
-    DisposableEffect(navController) {
 
-        val callback = NavController.OnDestinationChangedListener { _, _, _ ->
-            // Access the result from destination B
-
-            val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
-
-            if(savedStateHandle?.contains("selectedUri") == true){
-                val sound = savedStateHandle.get<String>("selectedUri")
-                currentTaskState = currentTaskState.copy(sound = sound)
-
-            }
-
-
-        }
-
-        // Add the listener
-        navController.addOnDestinationChangedListener(callback)
-
-        // Remove the listener when the composable is disposed
-        onDispose {
-            navController.removeOnDestinationChangedListener(callback)
-        }
-    }
 
 
     DisposableEffect(Unit) {

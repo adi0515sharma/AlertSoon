@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,6 +12,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -54,6 +56,7 @@ fun HomeScreenNavHost(
             )
         }
         composable(route = FeatureNavScreen.CREATING_TASK.name) {
+            var tableOfTask by rememberSaveable { mutableStateOf(TableOfTask()) }
 
 
             val context: Context = LocalContext.current
@@ -69,6 +72,33 @@ fun HomeScreenNavHost(
                     alarmMangerHandler.createAlarm(shouldCreateAlarm)
                 }
             }
+
+            DisposableEffect(navController) {
+
+                val callback = NavController.OnDestinationChangedListener { _, _, _ ->
+                    // Access the result from destination B
+
+                    val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
+
+                    if(savedStateHandle?.contains("selectedUri") == true){
+                        val sound = savedStateHandle.get<String>("selectedUri")
+                        Log.e("AlertSoon", "selected sound is $sound")
+                        tableOfTask = tableOfTask.copy(sound = sound)
+
+                    }
+
+
+                }
+
+                // Add the listener
+                navController.addOnDestinationChangedListener(callback)
+
+                // Remove the listener when the composable is disposed
+                onDispose {
+                    navController.removeOnDestinationChangedListener(callback)
+                }
+            }
+
 
             LaunchedEffect(key1 = null) {
                 viewModel.insert_task.collectLatest {
@@ -95,6 +125,10 @@ fun HomeScreenNavHost(
 
             CreateTaskComposable(
                 navController,
+                tableOfTask,
+                {
+                    tableOfTask = it
+                }
             ) {
 
                 if (askForPermission())
@@ -110,7 +144,7 @@ fun HomeScreenNavHost(
 
             val id = backStackEntry.arguments?.getInt("id") ?: return@composable
 
-            var tableOfTask by rememberSaveable { mutableStateOf<TableOfTask?>(null) }
+            var tableOfTask by rememberSaveable { mutableStateOf(TableOfTask()) }
 
             var shouldCreateAlarm by rememberSaveable { mutableStateOf<TableOfTask?>(null) }
 
@@ -128,10 +162,10 @@ fun HomeScreenNavHost(
                 viewModel.single_task.collectLatest {
                     when (it) {
                         is ApiResponse.Success -> {
-                            Log.e("AlertSoon", "select item : ${it.data!!.toString()}")
                             if (alreadyFetched) {
                                 return@collectLatest
                             }
+                            Log.e("AlertSoon", "select item : ${it.data!!.toString()}")
                             alreadyFetched = true
                             tableOfTask = it.data
                         }
@@ -175,6 +209,32 @@ fun HomeScreenNavHost(
                 }
             }
 
+            DisposableEffect(navController) {
+
+                val callback = NavController.OnDestinationChangedListener { _, _, _ ->
+                    // Access the result from destination B
+
+                    val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
+
+                    if(savedStateHandle?.contains("selectedUri") == true){
+                        val sound = savedStateHandle.get<String>("selectedUri")
+                        Log.e("AlertSoon", "selected sound is $sound")
+                        tableOfTask = tableOfTask.copy(sound = sound)
+
+                    }
+
+
+                }
+
+                // Add the listener
+                navController.addOnDestinationChangedListener(callback)
+
+                // Remove the listener when the composable is disposed
+                onDispose {
+                    navController.removeOnDestinationChangedListener(callback)
+                }
+            }
+
             ViewTaskScreenComposable(
                 navController,
                 tableOfTask,
@@ -199,7 +259,7 @@ fun HomeScreenNavHost(
                 ""
             }
 
-            Log.e("AlertSoon", "selectedUri === ${selectedUri}")
+//            Log.e("AlertSoon", "selectedUri === ${selectedUri}")
             SystemRingtoneScreen(navController, selectedUri)
 
         }

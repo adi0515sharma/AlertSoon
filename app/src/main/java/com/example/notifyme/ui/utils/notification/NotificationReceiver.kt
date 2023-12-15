@@ -154,8 +154,6 @@ class NotificationReceiver : BroadcastReceiver() {
         if(isDeviceLocked(context) || !isDevicePoweredOn(context)){
 
 
-//            val launchIntent = context.packageManager?.getLaunchIntentForPackage(context.packageName)
-//            context.startActivity(launchIntent)
 
             notification = NotificationCompat.Builder(context, "notification_id_high")
             .setSmallIcon(android.R.drawable.arrow_up_float)
@@ -198,11 +196,11 @@ class NotificationReceiver : BroadcastReceiver() {
         val keyguardManager = context?.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
 
         // For devices running Android P (API 28) and above, use isDeviceLocked() method
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            return keyguardManager.isDeviceLocked
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            keyguardManager.isDeviceLocked
         } else {
             // For devices running below Android P, use inKeyguardRestrictedInputMode() method
-            return keyguardManager.inKeyguardRestrictedInputMode()
+            keyguardManager.inKeyguardRestrictedInputMode()
         }
     }
 
@@ -210,11 +208,11 @@ class NotificationReceiver : BroadcastReceiver() {
         val powerManager = context?.getSystemService(Context.POWER_SERVICE) as PowerManager
 
         // Check if the device is in an interactive state (screen is on)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-            return powerManager.isInteractive
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            powerManager.isInteractive
         } else {
             @Suppress("DEPRECATION")
-            return powerManager.isScreenOn
+            powerManager.isScreenOn
         }
     }
 
