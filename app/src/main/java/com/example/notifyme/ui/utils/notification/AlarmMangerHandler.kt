@@ -106,28 +106,16 @@ class AlarmMangerHandler @Inject constructor(
         if (tableOfTask == null) {
             return
         }
-        Log.e("AlertSoon", "before = ${tableOfTask.toString()}")
-        val snoozeTimeMillis: Long =
-            Calendar.getInstance().timeInMillis + 10 * 60 * 1000 // Add 10 minutes (10 * 60 seconds * 1000 milliseconds)
+
+        val snoozeTimeMillis: Long = Calendar.getInstance().timeInMillis + 10 * 60 * 1000 // Add 10 minutes (10 * 60 seconds * 1000 milliseconds)
         tableOfTask.snozze_time = snoozeTimeMillis
-        Log.e("AlertSoon", "after = ${tableOfTask.toString()}")
 
         createAlarm(tableOfTask)
 
         runBlocking {
-            Log.e("AlertSoon", "going for update")
-
             try {
                 taskRespository.updateTask(tableOfTask)
-
-                Log.e("AlertSoon", "update successfully")
-
-//                withContext(Dispatchers.Main) {
-//                    Toast.makeText(context, "Snoozed Successfully", Toast.LENGTH_LONG).show()
-//                }
-
-                if (itIsDone!=null)
-                    itIsDone()
+                itIsDone?.invoke()
             } catch (e: Exception) {
                 cancelAlarm(tableOfTask)
             }

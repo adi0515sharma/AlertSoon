@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
 import android.provider.Settings
@@ -186,6 +187,9 @@ fun Screen(
     var anyToastMessage by rememberSaveable { mutableStateOf<String?>(null) }
 
     var expanded by rememberSaveable { mutableStateOf(false) }
+    var shouldPlay by rememberSaveable { mutableStateOf(false) }
+
+    var ringtoneState: Ringtone? by remember { mutableStateOf(null) }
 
     var dayOfTaskError by rememberSaveable { mutableStateOf<String?>(null) }
     var dayOfTaskListener = object : SetEntryFieldValueForDay {
@@ -205,11 +209,32 @@ fun Screen(
     DisposableEffect(Unit) {
 
         onDispose {
+            ringtoneState?.stop()
+            ringtoneState = null
+
             if (updateStateListener != null) {
                 updateStateListener(currentTaskState)
             }
+
         }
     }
+
+    LaunchedEffect(shouldPlay) {
+
+        if(currentTaskState.sound != null){
+            if(shouldPlay){
+                ringtoneState = RingtoneManager.getRingtone(context, Uri.parse(currentTaskState.sound))
+                ringtoneState?.play()
+            }
+            else{
+                if(ringtoneState?.isPlaying == true){
+                    ringtoneState?.stop()
+                    ringtoneState = null
+                }
+            }
+        }
+    }
+
     LaunchedEffect(key1 = anyToastMessage) {
         if (anyToastMessage != null) {
             Toast.makeText(context, anyToastMessage, Toast.LENGTH_LONG).show()
@@ -477,35 +502,77 @@ fun Screen(
                 }
 
                 Spacer(modifier = Modifier.height(13.dp))
-                EntryFieldWithDialog(
-                    modifier = Modifier.clickable {
 
-// Convert the string to a character array
+                ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
 
-                        if(currentTaskState.sound.isNullOrEmpty()){
-                            navController.navigate(
-                                FeatureNavScreen.SELECT_RINGTONE.name.replace("{selectedUri}", "")
-                            )
-                        }
-                        else{
-                            navController.navigate(
-                                FeatureNavScreen.SELECT_RINGTONE.name.replace("{selectedUri}",
-                                    URLEncoder.encode(currentTaskState.sound, "UTF-8")
+                    val fields = createRef()
+                    val play_pause = createRef()
+                    EntryFieldWithDialog(
+                        modifier = Modifier
+                            .constrainAs(fields) {
+                                top.linkTo(parent.top)
+                                start.linkTo(parent.start)
+                                bottom.linkTo(parent.bottom)
+                                end.linkTo(play_pause.start)
+                                width = Dimension.fillToConstraints
+                            }
+                            .clickable {
+
+                                shouldPlay = false
+                                if (currentTaskState.sound.isNullOrEmpty()) {
+                                    navController.navigate(
+                                        FeatureNavScreen.SELECT_RINGTONE.name.replace(
+                                            "{selectedUri}",
+                                            ""
+                                        )
+                                    )
+                                } else {
+                                    navController.navigate(
+                                        FeatureNavScreen.SELECT_RINGTONE.name.replace(
+                                            "{selectedUri}",
+                                            URLEncoder.encode(currentTaskState.sound, "UTF-8")
+                                        )
+                                    )
+                                }
+
+
+                            },
+                        title = "Sound",
+                        icon = R.drawable.baseline_music_note_24,
+                        hint = "Select your sound",
+                        error = null,
+                        value = getMusicTitleFromUri(currentTaskState.sound, context.contentResolver)?:currentTaskState.sound,
+                        shouldOpenDialog = false
+                    )
+
+                    if(currentTaskState.sound!=null && currentTaskState.sound?.isNotEmpty() == true){
+                        Image(
+                            painter = painterResource(id = if(shouldPlay) R.drawable.baseline_pause_24 else R.drawable.baseline_play_arrow_24),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .constrainAs(play_pause) {
+                                    top.linkTo(parent.top)
+                                    start.linkTo(fields.end)
+                                    bottom.linkTo(parent.bottom)
+                                    end.linkTo(parent.end)
+                                }
+                                .padding(end = 13.dp)
+                                .width(35.dp)
+                                .height(35.dp)
+                                .clickable {
+                                    shouldPlay = !shouldPlay
+                                }
+                                .background(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    shape = CircleShape
                                 )
-                            )
-                        }
- 
+                                .padding(5.dp),
+                            colorFilter = ColorFilter.tint(color = Color.White)
+                        )
+                    }
 
+                }
 
-                    },
-                    title = "Sound",
-                    icon = R.drawable.baseline_music_note_24,
-                    hint = "Select your sound",
-                    error = null,
-                    value = currentTaskState.sound,
-                    shouldOpenDialog = false
-
-                )
 
             }
 
@@ -551,19 +618,17 @@ fun Screen(
                             }
 
 
-                            val dateVarify = "${currentTaskState.date_in_long}".isFieldCorrect("date")
+                            val dateVarify = currentTaskState.date_in_long.isFieldCorrect("date")
                             if (dateVarify != ValidatorResponse.Success) {
-                                dateError =
-                                    (dateVarify as ValidatorResponse.Error).message
+                                dateError = (dateVarify as ValidatorResponse.Error).message
                                 return
                             } else {
                                 dateError = null
                             }
 
-                            val timeVarify = "${currentTaskState.time_in_long}".isFieldCorrect("time")
+                            val timeVarify = currentTaskState.time_in_long.isFieldCorrect("time")
                             if (timeVarify != ValidatorResponse.Success) {
-                                timeError =
-                                    (timeVarify as ValidatorResponse.Error).message
+                                timeError = (timeVarify as ValidatorResponse.Error).message
                                 return
                             } else {
                                 timeError = null

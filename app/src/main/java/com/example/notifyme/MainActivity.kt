@@ -21,6 +21,7 @@ class MainActivity : Application() {
         super.onCreate()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
+            createNotificationChannelForRescedulingNotification()
         }
 
 
@@ -32,13 +33,10 @@ class MainActivity : Application() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
         val channelId = "notification_id_high"
-        val channelName =
-            "For showing notification"
-        val channelDescription =
-            "For showing notification"
+        val channelName = "For showing notification"
+        val channelDescription = "For showing notification"
 
-        val channel =
-            NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+        val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
         channel.description = channelDescription
 
         channel.lightColor = Color.Red.hashCode()
@@ -72,6 +70,23 @@ class MainActivity : Application() {
             2000
         )
         channel.enableLights(true)
+
+
+        val notificationManager = NotificationManagerCompat.from(this)
+        if (notificationManager.getNotificationChannel(channelId) == null) {
+            notificationManager.createNotificationChannel(channel)
+        }
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannelForRescedulingNotification() {
+        val channelId = "notification_again"
+        val channelName = "For showing notification"
+        val channelDescription = "For showing notification"
+
+        val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+        channel.description = channelDescription
 
 
         val notificationManager = NotificationManagerCompat.from(this)

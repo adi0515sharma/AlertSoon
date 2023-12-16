@@ -23,6 +23,13 @@ object Validator {
         return ValidatorResponse.Success
     }
 
+    fun Long?.isFieldCorrect(about : String) : ValidatorResponse{
+        if(this == null) {
+            return ValidatorResponse.Error("Please provide ${about}")
+        }
+        return ValidatorResponse.Success
+    }
+
     fun String.isDayFieldCorrect() : ValidatorResponse{
         if(!this.contains("1")){
             return ValidatorResponse.Error("Please provide days for alarm")

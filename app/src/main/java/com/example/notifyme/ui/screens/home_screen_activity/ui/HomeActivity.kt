@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.AlertSoon.R
 import com.example.AlertSoon.ui.component.IssueExecution
@@ -130,9 +131,38 @@ class HomeActivity : ComponentActivity() {
             }
         }
 
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECEIVE_BOOT_COMPLETED
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Request the permission
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.RECEIVE_BOOT_COMPLETED),
+                12
+            )
+        }
+
+
 //        alarmMangerHandler.createSampleNotification()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 12) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Boot permission granted", Toast.LENGTH_LONG).show()
+            } else {
+                // Permission is denied, handle accordingly
+            }
+        }
+    }
 
     private fun showAlertForNotificationPermission() {
         val builder = AlertDialog.Builder(this)

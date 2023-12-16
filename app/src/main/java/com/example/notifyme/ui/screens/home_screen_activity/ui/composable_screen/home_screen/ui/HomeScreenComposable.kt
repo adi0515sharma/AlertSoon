@@ -52,6 +52,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.example.AlertSoon.R
@@ -95,39 +96,37 @@ fun HomeScreenComposable(
         },
         containerColor = MaterialTheme.colorScheme.background,
         content = { padding ->
-            CollapsingLayout(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(padding),
-                collapsingTop = {
-                    Column(modifier = Modifier.fillMaxWidth()) {
-//                        IssueSection(issueExecution,viewModel)
-                        NextFiveTaskSection(viewModel, navController, onDeleteTask)
-                    }
-                },
-                bodyContent = {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
 
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(1.dp)
-                                .background(MaterialTheme.colorScheme.outline)
-                        )
-                        TaskTabs(pagerState = pagerState)
-                        // on below line we are calling tabs content
-                        // for displaying our page for each tab layout
-                        TaskTabsContent(
-                            navController = navController,
-                            pagerState = pagerState,
-                            viewmodel = viewModel,
-                            onDeleteTask = onDeleteTask
-                        )
-                    }
+            Column(modifier = Modifier.padding(padding)) {
+
+                Column(modifier = Modifier.fillMaxWidth()) {
+//                        IssueSection(issueExecution,viewModel)
+                    NextFiveTaskSection(viewModel, navController, onDeleteTask)
                 }
-            )
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(1.dp)
+                            .background(MaterialTheme.colorScheme.outline)
+                    )
+                    TaskTabs(pagerState = pagerState)
+                    // on below line we are calling tabs content
+                    // for displaying our page for each tab layout
+                    TaskTabsContent(
+                        navController = navController,
+                        pagerState = pagerState,
+                        viewmodel = viewModel,
+                        onDeleteTask = onDeleteTask
+                    )
+                }
+
+            }
+
+
         },
     )
 }
@@ -304,22 +303,14 @@ fun TaskTabsContent(
     onDeleteTask: (parameter: Long, type: String) -> Unit,
 
     ) {
-    // on below line we are creating
-    // horizontal pager for our tab layout.
-    HorizontalPager(state = pagerState) {
-        // on below line we are specifying
-        // the different pages.
-            page ->
+    HorizontalPager(state = pagerState) { page ->
         when (page) {
-            // on below line we are calling tab content screen
-            // and specifying data as Home Screen.
             0 -> OnceTaskSection(
                 viewmodel,
                 navController,
                 onDeleteTask
             )
-            // on below line we are calling tab content screen
-            // and specifying data as Shopping Screen.
+
             1 -> RegularTaskSection(
                 viewmodel,
                 navController,
@@ -358,10 +349,9 @@ fun OnceTaskSection(
         if (isLoaderVisible) {
             LoaderSection()
         } else {
-            if(once_task.isEmpty()){
+            if (once_task.isEmpty()) {
                 NoTaskAvailableUi()
-            }
-            else{
+            } else {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
 
                     val groupedItems = once_task.groupBy { it.date_in_long }
@@ -551,10 +541,9 @@ fun RegularTaskSection(
         if (isLoaderVisible) {
             LoaderSection()
         } else {
-            if(regular_tasks.isEmpty()){
+            if (regular_tasks.isEmpty()) {
                 NoTaskAvailableUi()
-            }
-            else{
+            } else {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()

@@ -252,7 +252,7 @@ fun getAllDayOfRegularTaskAsText(allDayTask: String) {
                 color = MaterialTheme.colorScheme.surfaceVariant,
                 shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
             )
-            .padding(start = 5.dp, end = 5.dp, top = 5.dp)
+            .padding(start = 5.dp, end = 5.dp, top = 2.dp)
     ) {
 
 

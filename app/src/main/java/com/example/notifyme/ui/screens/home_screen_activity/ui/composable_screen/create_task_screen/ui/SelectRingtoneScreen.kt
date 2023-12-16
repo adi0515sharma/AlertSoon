@@ -203,10 +203,11 @@ fun MusicViewComposble(
 }
 
 fun getMusicTitleFromUri(musicUri: String?, contentResolver: ContentResolver): String? {
+
     val projection = arrayOf(MediaStore.Audio.Media.DISPLAY_NAME)
     var cursor: Cursor? = null
     try {
-        cursor = contentResolver.query(Uri.parse(musicUri!!), projection, null, null, null)
+        cursor = contentResolver.query(Uri.parse(musicUri), projection, null, null, null)
         if (cursor != null && cursor.moveToFirst()) {
             val titleColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)
             return cursor.getString(titleColumn).lowercase(Locale.ROOT)

@@ -38,8 +38,7 @@ fun NoTaskAvailableUi(){
             contentDescription = null,
             modifier = Modifier
                 .width(100.dp)
-                .height(100.dp)
-                .padding(7.dp),
+                .height(100.dp),
             colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
         )
 

@@ -15,10 +15,9 @@ class TaskRespository @Inject constructor(val taskDao: TaskDao) {
     suspend fun getTaskById(id : Long) = taskDao.getTaskById(id)
 
     suspend fun updateTask(task: TableOfTask) = taskDao.updateTask(task)
+    suspend fun getAllTasks() = taskDao.getAllTasks()
 
     suspend fun snoozeTask(id : Long, snooze_time : Long?) = taskDao.snoozeTask(id, snooze_time)
-
-    suspend fun getNextTask() = taskDao.getNextTask()
 
     fun getNextFiveTasks() = taskDao.getNextFiveTask()
 

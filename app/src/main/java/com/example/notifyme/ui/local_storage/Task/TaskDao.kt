@@ -14,6 +14,9 @@ interface TaskDao {
     @Insert
     suspend fun insertTask(tasks : TableOfTask) : Long
 
+    @Query("SELECT * FROM Task")
+    suspend fun getAllTasks() : List<TableOfTask>
+
     @Query("DELETE FROM Task WHERE uid = :id")
     suspend fun deleteTaskById(id : Long)
 
@@ -22,9 +25,6 @@ interface TaskDao {
 
     @Update
     suspend fun updateTask(tableOfTask : TableOfTask)
-
-    @Query("SELECT * FROM Task WHERE (snozze_time IS NOT NULL AND snozze_time >= :currentTime) OR (snozze_time IS NULL AND time_in_long >= :currentTime) ORDER BY COALESCE(snozze_time, time_in_long) ASC LIMIT 1")
-    suspend fun getNextTask(currentTime : Long = DateTime.getTime()) : TableOfTask?
 
     @Query("UPDATE Task SET snozze_time = :snooze_time WHERE uid = :id")
     suspend fun snoozeTask(id : Long, snooze_time : Long?)
