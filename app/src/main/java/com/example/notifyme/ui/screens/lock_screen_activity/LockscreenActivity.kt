@@ -172,8 +172,9 @@ class LockscreenActivity : ComponentActivity() {
             }, verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.CenterHorizontally ) {
 //
                 RippleLoadingAnimation(tableOfTask?.leadIcon?:"🎯")
+
                 Text(
-                    text =  tableOfTask?.task_title?:"",
+                    text =  tableOfTask?.task_title?:"jj",
                     fontFamily = FontFamily(Font(R.font.poppins_regular)),
                     fontSize = 25.sp,
                     fontWeight = FontWeight.W700,
@@ -234,7 +235,7 @@ class LockscreenActivity : ComponentActivity() {
         val dys = waves.map { it.value }
 
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.size(200.dp),
             contentAlignment = Center
         ) {
             // Waves
