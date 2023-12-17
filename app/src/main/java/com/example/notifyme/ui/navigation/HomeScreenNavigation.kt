@@ -36,8 +36,7 @@ import java.net.URLDecoder
 @Composable
 fun HomeScreenNavHost(
     alarmMangerHandler: AlarmMangerHandler,
-    askForPermission: () -> Boolean,
-    issueExecution: IssueExecution
+    askForPermission: () -> Boolean
 ) {
     val navController = rememberNavController()
 
@@ -49,11 +48,10 @@ fun HomeScreenNavHost(
 
             HomeScreenComposable(
                 navController,
-                viewModel, { it, type ->
-                    viewModel.deleteTask(it)
-                },
-                issueExecution
-            )
+                viewModel
+            ) { it, type ->
+                viewModel.deleteTask(it)
+            }
         }
         composable(route = FeatureNavScreen.CREATING_TASK.name) {
             var tableOfTask by rememberSaveable { mutableStateOf(TableOfTask()) }

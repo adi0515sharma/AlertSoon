@@ -1,63 +1,29 @@
 package com.example.AlertSoon.ui.screens.home_screen_activity.ui
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.PowerManager
 import android.provider.Settings
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.AlertSoon.R
-import com.example.AlertSoon.ui.component.IssueExecution
-import com.example.AlertSoon.ui.local_storage.Task.TaskRespository
 import com.example.AlertSoon.ui.navigation.HomeScreenNavHost
 import com.example.AlertSoon.ui.theme.AlertSoonTheme
 import com.example.AlertSoon.ui.utils.notification.AlarmMangerHandler
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 
@@ -81,52 +47,11 @@ class HomeActivity : ComponentActivity() {
 
                     HomeScreenNavHost(
                         alarmMangerHandler,
-                        {
-                            checkNotification()
-                        },
-                        object : IssueExecution {
-                            override fun performSomeSettingTask() {
-                                someSetting = true
-                            }
-
-                            override fun performNotificationAllowence() {
-                                if(checkNotification()){
-                                    Toast.makeText(this@HomeActivity , "permission is given , you can close this issue.", Toast.LENGTH_LONG).show()
-                                }
-                            }
-
-                            override fun performBatteryConsumption() {
-                                if (!(getSystemService(POWER_SERVICE) as PowerManager).isIgnoringBatteryOptimizations(
-                                        packageName
-                                    )
-                                ) {
-                                    val packageName = packageName
-                                    val intent = Intent()
-                                    intent.action =
-                                        Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
-                                    intent.data = Uri.parse("package:$packageName")
-                                    startActivity(intent)
-                                } else {
-                                    Toast.makeText(
-                                        this@HomeActivity,
-                                        "permission is given , you can close this issue.",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            }
-
-                        })
-
-                    if (someSetting)
-                    {
-                        if(!isNetworkConnected(this)){
-                            Toast.makeText(this, "No internet available", Toast.LENGTH_LONG).show()
-                        }
-                        else{
-                            ShowOtherSettingPopup { someSetting = it }
-                        }
-
+                    ) {
+                        checkNotification()
                     }
+
+
                 }
             }
         }
@@ -146,23 +71,9 @@ class HomeActivity : ComponentActivity() {
         }
 
 
-//        alarmMangerHandler.createSampleNotification()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 12) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Boot permission granted", Toast.LENGTH_LONG).show()
-            } else {
-                // Permission is denied, handle accordingly
-            }
-        }
-    }
+
 
     private fun showAlertForNotificationPermission() {
         val builder = AlertDialog.Builder(this)
@@ -211,8 +122,8 @@ class HomeActivity : ComponentActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun checkNotification(): Boolean {
+
+    private fun checkNotification(): Boolean {
         when {
             ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
                     PackageManager.PERMISSION_GRANTED -> {
@@ -232,131 +143,7 @@ class HomeActivity : ComponentActivity() {
         return false
     }
 
-    @Composable
-    fun ShowOtherSettingPopup(setShowDialog: (Boolean) -> Unit) {
 
-        var instruction by rememberSaveable {
-            mutableStateOf<String?>(null)
-        }
-
-        val context = LocalContext.current
-        LaunchedEffect(key1 = null) {
-             fetchOtherSetting {
-
-
-                 val final = it!!.trimIndent().replace("\\n", "\r\n\n")
-                 if(final==""){
-                     Toast.makeText(context, "you can close this issue.", Toast.LENGTH_LONG).show()
-                 }
-                 instruction = final
-                 Log.e("AlertSoon", "instruction = ${instruction!!}")
-
-
-            }
-        }
-
-        Dialog(
-            onDismissRequest = { setShowDialog(false) },
-            properties = DialogProperties(
-                dismissOnBackPress = true,
-                dismissOnClickOutside = true
-            ),
-        ) {
-            Surface(
-                shape = RoundedCornerShape(16.dp),
-                color = MaterialTheme.colorScheme.background
-            ) {
-                when (instruction) {
-                    null -> {
-                        Column(modifier = Modifier.padding(20.dp)) {
-                            Text(
-                                text = "Loading...",
-                                color = MaterialTheme.colorScheme.onBackground,
-                                fontFamily = FontFamily(Font(R.font.poppins_regular))
-                            )
-                        }
-
-                    }
-                    "" -> {
-                        setShowDialog(false)
-                    }
-                    else -> {
-
-                        Column(modifier = Modifier.padding(20.dp).verticalScroll(rememberScrollState())) {
-                            Text(text = instruction!!, color = MaterialTheme.colorScheme.onBackground, fontFamily = FontFamily(Font(R.font.poppins_regular)))
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.End
-                            ) {
-                                Text(
-                                    text = "Cancel",
-                                    color = MaterialTheme.colorScheme.primary,
-                                    fontWeight = FontWeight.Bold,
-                                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                                    fontSize = 15.sp,
-                                    modifier = Modifier.clickable {
-                                        setShowDialog(false)
-                                    }
-                                )
-                            }
-                        }
-
-
-                    }
-                }
-            }
-        }
-    }
-
-    fun fetchOtherSetting(setInstruction: (String?) -> Unit){
-
-        val androidVersion = Build.VERSION.RELEASE
-        val manufacturer = Build.MANUFACTURER
-
-        Log.d("AlertSoon", "Android Version: $androidVersion")
-        Log.d("AlertSoon", "Manufacturer: $manufacturer")
-
-            runBlocking {
-                val db = Firebase.firestore
-                db.collection("all_devices")
-                    .document(manufacturer.lowercase())
-                    .get()
-                    .addOnSuccessListener { result ->
-                        val instruction = result.data?.get(androidVersion)
-                        if (instruction != null)
-                            setInstruction(instruction as String)
-                        else
-                            setInstruction("")
-                        Log.e("AlertSoon", "$instruction")
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.e("AlertSoon", "Error getting documents.", exception)
-                        setInstruction("")
-                    }
-            }
-
-
-    }
-
-    fun isNetworkConnected(context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (connectivityManager != null) {
-            // Check for Wi-Fi
-            val wifiNetwork = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-            if (wifiNetwork != null && wifiNetwork.isConnected) {
-                return true
-            }
-
-            // Check for mobile data
-            val mobileNetwork = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
-            return mobileNetwork != null && mobileNetwork.isConnected
-        }
-
-
-        return false
-    }
 }
 
 

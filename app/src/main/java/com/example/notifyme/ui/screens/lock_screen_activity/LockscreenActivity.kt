@@ -170,17 +170,8 @@ class LockscreenActivity : ComponentActivity() {
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             }, verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.CenterHorizontally ) {
-                Text(
-                    text = tableOfTask?.leadIcon?:"",
-                    style = TextStyle(
-                        platformStyle = PlatformTextStyle(
-                            includeFontPadding = false
-                        ),
-                    ),
-                    fontSize = 120.sp
-
-                )
-
+//
+                RippleLoadingAnimation(tableOfTask?.leadIcon?:"🎯")
                 Text(
                     text =  tableOfTask?.task_title?:"",
                     fontFamily = FontFamily(Font(R.font.poppins_regular)),
@@ -215,7 +206,80 @@ class LockscreenActivity : ComponentActivity() {
 
         }
     }
+    @Composable
+    fun RippleLoadingAnimation(icon : String) {
 
+
+        val waves = listOf(
+            remember { Animatable(0f) },
+            remember { Animatable(0f) },
+            remember { Animatable(0f) },
+            remember { Animatable(0f) },
+        )
+
+        val animationSpec = infiniteRepeatable<Float>(
+            animation = tween(4000, easing = FastOutLinearInEasing),
+            repeatMode = RepeatMode.Restart,
+        )
+
+        waves.forEachIndexed { index, animatable ->
+            LaunchedEffect(animatable) {
+                delay(index * 1000L)
+                animatable.animateTo(
+                    targetValue = 1f, animationSpec = animationSpec
+                )
+            }
+        }
+
+        val dys = waves.map { it.value }
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Center
+        ) {
+            // Waves
+            dys.forEach { dy ->
+                Box(
+                    Modifier
+                        .size(50.dp)
+                        .align(Alignment.Center)
+                        .graphicsLayer {
+                            scaleX = dy * 7 + 1
+                            scaleY = dy * 7 + 1
+                            alpha = 1 - dy
+                        },
+                ) {
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
+                    )
+                }
+            }
+
+            // Mic icon
+            Box(
+                Modifier
+                    .size(120.dp)
+                    .align(Alignment.Center)
+                    .background(color = Color.White, shape = CircleShape)
+            ) {
+
+                Text(
+                    text = icon,
+                    style = TextStyle(
+                        platformStyle = PlatformTextStyle(
+                            includeFontPadding = false
+                        ),
+                    ),
+                    fontSize = 100.sp,
+                            modifier = Modifier
+                        .align(Alignment.Center)
+                )
+            }
+
+        }
+    }
     private fun removeNotification(){
         val notificationId = intent.getIntExtra("notificationId", -1)
         Log.e("AlertSoon", "removeNotification $notificationId")
@@ -273,66 +337,6 @@ class LockscreenActivity : ComponentActivity() {
             )
         }
     }
-    @Composable
-    fun RippleLoadingAnimation(
-        circleColor: Color = Color.Magenta,
-        animationDelay: Int = 1500
-    ) {
-
-// 3 circles
-        val circles = listOf(
-            remember {
-                Animatable(initialValue = 0f)
-            },
-            remember {
-                Animatable(initialValue = 0f)
-            },
-            remember {
-                Animatable(initialValue = 0f)
-            }
-        )
-
-        circles.forEachIndexed { index, animatable ->
-            LaunchedEffect(Unit) {
-                // Use coroutine delay to sync animations
-                // divide the animation delay by number of circles
-                delay(timeMillis = (animationDelay / 3L) * (index + 1))
-
-                animatable.animateTo(
-                    targetValue = 1f,
-                    animationSpec = infiniteRepeatable(
-                        animation = tween(
-                            durationMillis = animationDelay,
-                            easing = LinearEasing
-                        ),
-                        repeatMode = RepeatMode.Restart
-                    )
-                )
-            }
-        }
-
-// outer circle
-        Box(
-            modifier = Modifier
-                .size(size = 200.dp)
-                .background(color = Color.Transparent)
-        ) {
-            // animating circles
-            circles.forEachIndexed { index, animatable ->
-                Box(
-                    modifier = Modifier
-                        .scale(scale = animatable.value)
-                        .size(size = 200.dp)
-                        .clip(shape = CircleShape)
-                        .background(
-                            color = circleColor
-                                .copy(alpha = (1 - animatable.value))
-                        )
-                ) {
-                }
-            }
-        }
-    }
 
     @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showSystemUi = true)
     @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showSystemUi = true)
@@ -343,6 +347,7 @@ class LockscreenActivity : ComponentActivity() {
 //        RippleLoadingAnimation()
         Screen(tableOfTask = TableOfTask(leadIcon = "😍", task_title = "How the josh", task_description = "hhj  ssknks knkns m sk k ks k s k s   skmkm"))
     }
+
 
 
 }

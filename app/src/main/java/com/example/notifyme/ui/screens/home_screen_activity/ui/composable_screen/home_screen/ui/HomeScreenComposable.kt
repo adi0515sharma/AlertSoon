@@ -86,7 +86,6 @@ fun HomeScreenComposable(
     navController: NavHostController,
     viewModel: HomeActivityViewModel,
     onDeleteTask: (parameter: Long, type: String) -> Unit,
-    issueExecution: IssueExecution,
 ) {
     val pagerState = rememberPagerState(pageCount = 2)
 

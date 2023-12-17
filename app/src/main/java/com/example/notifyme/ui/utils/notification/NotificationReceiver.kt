@@ -2,15 +2,12 @@ package com.example.AlertSoon.ui.utils.notification
 
 import android.Manifest
 import android.app.KeyguardManager
-import android.app.Notification
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Context.AUDIO_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.media.AudioManager
 import android.media.Ringtone
 import android.media.RingtoneManager
@@ -24,18 +21,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.AlertSoon.R
 import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
-import com.example.AlertSoon.ui.screens.home_screen_activity.domain.repository.HomeScreenTaskRepository
 import com.example.AlertSoon.ui.screens.home_screen_activity.ui.HomeActivity
-import com.example.AlertSoon.ui.utils.ApiResponse
-import com.example.AlertSoon.ui.utils.DateTime
-import com.example.AlertSoon.ui.utils.WakeLocker
-import com.example.notifyme.ui.utils.LockscreenActivity
+import com.example.notifyme.ui.screens.lock_screen_activity.LockscreenActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 
 @AndroidEntryPoint

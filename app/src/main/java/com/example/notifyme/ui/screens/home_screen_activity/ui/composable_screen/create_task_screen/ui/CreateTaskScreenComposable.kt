@@ -617,14 +617,17 @@ fun Screen(
                                 descError = null
                             }
 
-
-                            val dateVarify = currentTaskState.date_in_long.isFieldCorrect("date")
-                            if (dateVarify != ValidatorResponse.Success) {
-                                dateError = (dateVarify as ValidatorResponse.Error).message
-                                return
-                            } else {
-                                dateError = null
+                            if(!currentTaskState.is_regular){
+                                val dateVarify = currentTaskState.date_in_long.isFieldCorrect("date")
+                                if (dateVarify != ValidatorResponse.Success) {
+                                    dateError = (dateVarify as ValidatorResponse.Error).message
+                                    return
+                                } else {
+                                    dateError = null
+                                }
                             }
+
+
 
                             val timeVarify = currentTaskState.time_in_long.isFieldCorrect("time")
                             if (timeVarify != ValidatorResponse.Success) {

@@ -2,13 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
@@ -50,14 +49,10 @@
             android:enabled="true"
             android:exported="true" />
 
-        <receiver
-            android:name=".ui.utils.notification.SampleNotificationReceiver"
-            android:enabled="true"
-            android:exported="true" />
 
 
         <activity
-            android:name="com.example.notifyme.ui.utils.LockscreenActivity"
+            android:name="com.example.notifyme.ui.screens.lock_screen_activity.LockscreenActivity"
 
             android:exported="true"
             android:launchMode="singleTop"
@@ -65,20 +60,18 @@
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
             android:theme="@style/Theme.AppCompat"
-            android:turnScreenOn="true">
+            android:turnScreenOn="true"
+            android:excludeFromRecents="true">
+
 
 
         </activity>
 
         <receiver
             android:name="com.example.AlertSoon.ui.utils.notification.OnBootReceived"
-            android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
 
