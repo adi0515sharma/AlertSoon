@@ -263,7 +263,7 @@ class LockscreenActivity : ComponentActivity() {
                 Modifier
                     .size(120.dp)
                     .align(Alignment.Center)
-                    .background(color = Color.White, shape = CircleShape)
+                    .background(color = Color.Transparent, shape = CircleShape)
             ) {
 
                 Text(

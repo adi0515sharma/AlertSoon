@@ -30,6 +30,7 @@ import androidx.compose.material.TabRowDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -52,18 +53,21 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.example.AlertSoon.R
 import com.example.AlertSoon.ui.component.AppBar
 import com.example.AlertSoon.ui.component.CollapsingLayout
+import com.example.AlertSoon.ui.component.EntryField
 import com.example.AlertSoon.ui.component.ISSUES
 import com.example.AlertSoon.ui.component.IssueCardUiComponent
 import com.example.AlertSoon.ui.component.IssueDataClass
 import com.example.AlertSoon.ui.component.IssueExecution
 import com.example.AlertSoon.ui.component.IssueHandler
 import com.example.AlertSoon.ui.component.RegularTaskUiComponent
+import com.example.AlertSoon.ui.component.SetEntryFieldValue
 import com.example.AlertSoon.ui.component.TaskUIComponent
 import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
 import com.example.AlertSoon.ui.navigation.FeatureNavScreen
@@ -85,10 +89,13 @@ import kotlinx.coroutines.launch
 fun HomeScreenComposable(
     navController: NavHostController,
     viewModel: HomeActivityViewModel,
-    onDeleteTask: (parameter: Long, type: String) -> Unit,
 ) {
     val pagerState = rememberPagerState(pageCount = 2)
 
+    var deleteCoroutineScope = rememberCoroutineScope()
+    var taskIdToDelete by rememberSaveable {
+        mutableStateOf<Long?>(null)
+    }
     Scaffold(
         topBar = {
             AppBar(navController)
@@ -99,8 +106,10 @@ fun HomeScreenComposable(
             Column(modifier = Modifier.padding(padding)) {
 
                 Column(modifier = Modifier.fillMaxWidth()) {
-//                        IssueSection(issueExecution,viewModel)
-                    NextFiveTaskSection(viewModel, navController, onDeleteTask)
+                    NextFiveTaskSection(viewModel, navController)
+                    { parameter ->
+                        taskIdToDelete = parameter
+                    }
                 }
                 Column(
                     modifier = Modifier.fillMaxWidth(),
@@ -113,21 +122,95 @@ fun HomeScreenComposable(
                             .background(MaterialTheme.colorScheme.outline)
                     )
                     TaskTabs(pagerState = pagerState)
-                    // on below line we are calling tabs content
-                    // for displaying our page for each tab layout
                     TaskTabsContent(
                         navController = navController,
                         pagerState = pagerState,
                         viewmodel = viewModel,
-                        onDeleteTask = onDeleteTask
-                    )
+                    ){ parameter ->
+                        taskIdToDelete = parameter
+                    }
                 }
 
             }
 
+            if(taskIdToDelete!=null){
+                DeleteDialog{
+                    if(it){
+                        deleteCoroutineScope.launch {
+                            viewModel.deleteTask(taskIdToDelete!!)
+                            taskIdToDelete = null
+                        }
+                    }
+                    else{
+                        taskIdToDelete = null
+                    }
+                }
+            }
 
         },
     )
+}
+@Composable
+fun DeleteDialog(
+    setShowDialog: (Boolean) -> Unit,
+) {
+
+
+
+    Dialog(onDismissRequest = { setShowDialog(false) }) {
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Box(
+                contentAlignment = Alignment.Center
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text(
+                        text = "Delete Task",
+                        fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+
+
+                    Text(
+                        text = "Do you want to delete this task ?",
+                        fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Text(
+                            text = "No",
+                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
+
+                            modifier = Modifier.clickable {
+                                setShowDialog(false)
+                            },
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Text(
+                            text = "Yes",
+                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
+
+                            modifier = Modifier.clickable {
+                                setShowDialog(true)
+                            },
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalPagerApi::class)
@@ -299,7 +382,7 @@ fun TaskTabsContent(
     navController: NavHostController,
     pagerState: PagerState,
     viewmodel: HomeActivityViewModel,
-    onDeleteTask: (parameter: Long, type: String) -> Unit,
+    onDeleteTask: (parameter: Long) -> Unit,
 
     ) {
     HorizontalPager(state = pagerState) { page ->
@@ -323,7 +406,7 @@ fun TaskTabsContent(
 fun OnceTaskSection(
     viewmodel: HomeActivityViewModel,
     navController: NavHostController,
-    onDeleteTask: (parameter: Long, type: String) -> Unit
+    onDeleteTask: (parameter: Long) -> Unit
 ) {
 
 
@@ -387,7 +470,7 @@ fun OnceTaskSection(
                                 false,
                                 {
                                     t.uid ?: return@TaskUIComponent
-                                    onDeleteTask(t.uid, options[0])
+                                    onDeleteTask(t.uid)
                                 },
                                 navController
                             )
@@ -409,7 +492,7 @@ fun OnceTaskSection(
 fun NextFiveTaskSection(
     viewmodel: HomeActivityViewModel,
     navController: NavHostController,
-    onDeleteTask: (parameter: Long, type: String) -> Unit
+    onDeleteTask: (parameter: Long) -> Unit
 ) {
 
 
@@ -445,20 +528,20 @@ fun NextFiveTaskSection(
                     HorizontalPager(state = pagerState) {
 
 
-                        if (nextFiveTasks!![it].is_regular) {
+                        if (nextFiveTasks[it].is_regular) {
 
-                            val allDayTask = nextFiveTasks!![it].days
-                            RegularTaskUiComponent(Modifier, nextFiveTasks!![it], allDayTask, {
-                                nextFiveTasks!![it].uid ?: return@RegularTaskUiComponent
-                                onDeleteTask(nextFiveTasks!![it].uid!!, options[1])
+                            val allDayTask = nextFiveTasks[it].days
+                            RegularTaskUiComponent(Modifier, nextFiveTasks[it], allDayTask, {
+                                nextFiveTasks[it].uid ?: return@RegularTaskUiComponent
+                                onDeleteTask(nextFiveTasks[it].uid!!)
                             }, navController)
 
                         } else {
 
                             TaskUIComponent(
-                                nextFiveTasks!![it], true, {
-                                    nextFiveTasks!![it].uid ?: return@TaskUIComponent
-                                    onDeleteTask(nextFiveTasks!![it].uid!!, options[0])
+                                nextFiveTasks[it], true, {
+                                    nextFiveTasks[it].uid ?: return@TaskUIComponent
+                                    onDeleteTask(nextFiveTasks[it].uid!!)
                                 },
                                 navController
                             )
@@ -517,7 +600,7 @@ fun NextFiveTaskSection(
 fun RegularTaskSection(
     viewmodel: HomeActivityViewModel,
     navController: NavHostController,
-    onDeleteTask: (parameter: Long, type: String) -> Unit
+    onDeleteTask: (parameter: Long) -> Unit
 ) {
 
     var regular_tasks by rememberSaveable { mutableStateOf<MutableList<TableOfTask>>(mutableListOf()) }
@@ -548,11 +631,11 @@ fun RegularTaskSection(
                         .fillMaxSize()
                         .padding(top = 20.dp)
                 ) {
-                    itemsIndexed(regular_tasks!!) { value, it ->
+                    itemsIndexed(regular_tasks) { value, it ->
                         val allDayTask = it.days
                         RegularTaskUiComponent(Modifier, it, allDayTask, {
                             it.uid ?: return@RegularTaskUiComponent
-                            onDeleteTask(it.uid!!, options[1])
+                            onDeleteTask(it.uid)
                         }, navController)
                     }
                 }

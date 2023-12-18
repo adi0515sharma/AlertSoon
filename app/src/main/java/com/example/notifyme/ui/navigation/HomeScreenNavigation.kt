@@ -49,9 +49,7 @@ fun HomeScreenNavHost(
             HomeScreenComposable(
                 navController,
                 viewModel
-            ) { it, type ->
-                viewModel.deleteTask(it)
-            }
+            )
         }
         composable(route = FeatureNavScreen.CREATING_TASK.name) {
             var tableOfTask by rememberSaveable { mutableStateOf(TableOfTask()) }

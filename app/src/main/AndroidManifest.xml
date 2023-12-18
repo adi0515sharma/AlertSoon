@@ -28,6 +28,7 @@
         <activity
             android:name=".ui.screens.home_screen_activity.ui.HomeActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat">
 
             <intent-filter>
@@ -53,7 +54,7 @@
 
         <activity
             android:name="com.example.notifyme.ui.screens.lock_screen_activity.LockscreenActivity"
-
+            android:screenOrientation="portrait"
             android:exported="true"
             android:launchMode="singleTop"
             android:showForAllUsers="true"
