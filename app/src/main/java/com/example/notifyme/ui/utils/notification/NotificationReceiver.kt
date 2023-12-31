@@ -122,11 +122,10 @@ class NotificationReceiver : BroadcastReceiver() {
             snoozeNotificationPendingIntent
         )
 
-        Log.e("AlertSoon", "launching notification ")
 
         var notification = NotificationCompat.Builder(context, "notification_id_high")
             .setAutoCancel(true)
-            .setSmallIcon(R.drawable.ic_high_priority_flag)
+            .setSmallIcon(R.drawable.ic_app_logo)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setCustomBigContentView(smallNotificationLayout)
             .setCustomContentView(smallNotificationLayout)
