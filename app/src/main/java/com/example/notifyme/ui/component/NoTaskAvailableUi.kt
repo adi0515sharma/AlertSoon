@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.CircularProgressIndicator
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.AlertSoon.R
+import com.example.AlertSoon.ui.theme.dimens
 
 @Composable
 fun NoTaskAvailableUi(){
@@ -37,17 +39,16 @@ fun NoTaskAvailableUi(){
             painter = painterResource(id = R.drawable.ic_no_task_available),
             contentDescription = null,
             modifier = Modifier
-                .width(100.dp)
-                .height(100.dp),
+                .size(MaterialTheme.dimens.no_screen_task_icon_size),
             colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
         )
 
-        Spacer(modifier = Modifier.height(5.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.dimens.no_screen_task_spacer))
         Text(
             text = "No Task Available",
-            fontWeight = FontWeight.W600,
-            fontFamily = FontFamily(Font(R.font.poppins_regular)),
-            fontSize = 15.sp,
+            fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+            fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+            fontSize = MaterialTheme.typography.titleMedium.fontSize,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.wrapContentSize(),
             style = TextStyle(

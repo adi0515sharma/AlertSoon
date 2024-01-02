@@ -65,6 +65,7 @@ import com.example.AlertSoon.ui.component.HandleClick
 import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
 import com.example.AlertSoon.ui.screens.home_screen_activity.domain.repository.HomeScreenTaskRepository
 import com.example.AlertSoon.ui.theme.AlertSoonTheme
+import com.example.AlertSoon.ui.theme.dimens
 import com.example.AlertSoon.ui.utils.ApiResponse
 import com.example.AlertSoon.ui.utils.notification.AlarmMangerHandler
 import com.example.AlertSoon.ui.utils.notification.NotificationReceiver
@@ -136,7 +137,7 @@ class LockscreenActivity : ComponentActivity() {
         ConstraintLayout(modifier = Modifier
             .background(color = MaterialTheme.colorScheme.background)
             .fillMaxSize()
-            .padding(horizontal = 10.dp, vertical = 6.dp)) {
+            .padding(horizontal = MaterialTheme.dimens.lock_screen_horizontal_padding, vertical = MaterialTheme.dimens.lock_screen_vertical_padding)) {
 
             val (title, data, button) = createRefs()
 
@@ -147,16 +148,16 @@ class LockscreenActivity : ComponentActivity() {
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                     }
-                    .height(130.dp),
+                    .height(MaterialTheme.dimens.lock_screen_times_up_height),
 
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = "Time's Up",
                     textAlign = TextAlign.Center,
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.W700,
+                    fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+                    fontSize = MaterialTheme.typography.displayMedium.fontSize,
+                    fontWeight = MaterialTheme.typography.displayMedium.fontWeight,
                     color = MaterialTheme.colorScheme.onBackground
 
                 )
@@ -175,9 +176,9 @@ class LockscreenActivity : ComponentActivity() {
 
                 Text(
                     text =  tableOfTask?.task_title?:"jj",
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.W700,
+                    fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                    fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onBackground
                 )
@@ -196,13 +197,13 @@ class LockscreenActivity : ComponentActivity() {
                     }
                 })
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.lock_screen_spacer))
                 AppButton(Modifier.fillMaxWidth(),"Dismiss", object : HandleClick {
                     override fun onClick() {
                         finish()
                     }
                 })
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.lock_screen_spacer))
             }
 
         }
@@ -235,14 +236,14 @@ class LockscreenActivity : ComponentActivity() {
         val dys = waves.map { it.value }
 
         Box(
-            modifier = Modifier.size(200.dp),
+            modifier = Modifier.size(MaterialTheme.dimens.lock_height),
             contentAlignment = Center
         ) {
             // Waves
             dys.forEach { dy ->
                 Box(
                     Modifier
-                        .size(50.dp)
+                        .size(MaterialTheme.dimens.lock_wave_height)
                         .align(Alignment.Center)
                         .graphicsLayer {
                             scaleX = dy * 7 + 1
@@ -258,10 +259,9 @@ class LockscreenActivity : ComponentActivity() {
                 }
             }
 
-            // Mic icon
             Box(
                 Modifier
-                    .size(120.dp)
+                    .size(MaterialTheme.dimens.lock_icon_size)
                     .align(Alignment.Center)
                     .background(color = Color.Transparent, shape = CircleShape)
             ) {
@@ -273,7 +273,8 @@ class LockscreenActivity : ComponentActivity() {
                             includeFontPadding = false
                         ),
                     ),
-                    fontSize = 100.sp,
+
+                    fontSize = MaterialTheme.typography.displayLarge.fontSize,
                             modifier = Modifier
                         .align(Alignment.Center)
                 )

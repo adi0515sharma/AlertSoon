@@ -59,6 +59,7 @@ import com.example.AlertSoon.R
 import com.example.AlertSoon.ui.component.AppBar
 import com.example.AlertSoon.ui.component.CollapsingLayout
 import com.example.AlertSoon.ui.screens.home_screen_activity.ui.HomeActivity
+import com.example.AlertSoon.ui.theme.dimens
 import com.example.notifyme.ui.component.LoaderSection
 import com.example.notifyme.ui.component.NoTaskAvailableUi
 import kotlinx.coroutines.Dispatchers
@@ -169,7 +170,7 @@ fun MusicViewComposble(
             .clickable {
                 changeSelectedUri()
             }
-            .padding(horizontal = 10.dp)
+            .padding(horizontal = MaterialTheme.dimens.select_ringtone_horizontal_padding, vertical = MaterialTheme.dimens.select_ringtone_vertical_padding)
             .wrapContentHeight()
             .fillMaxWidth(),
     ) {
@@ -188,7 +189,10 @@ fun MusicViewComposble(
                 bottom.linkTo(parent.bottom)
                 end.linkTo(checkBox.start)
                 width = Dimension.fillToConstraints
-            }
+            },
+            fontFamily = MaterialTheme.typography.labelSmall.fontFamily,
+            fontSize = MaterialTheme.typography.labelSmall.fontSize,
+            fontWeight = MaterialTheme.typography.labelSmall.fontWeight,
         )
         Checkbox(
             checked = isSelected,

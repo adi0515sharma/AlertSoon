@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -72,6 +73,7 @@ import com.example.AlertSoon.ui.component.TaskUIComponent
 import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
 import com.example.AlertSoon.ui.navigation.FeatureNavScreen
 import com.example.AlertSoon.ui.screens.home_screen_activity.ui.HomeActivityViewModel
+import com.example.AlertSoon.ui.theme.dimens
 import com.example.AlertSoon.ui.utils.Constants.options
 import com.example.AlertSoon.ui.utils.DateTime.getDateByIterate
 import com.example.notifyme.ui.component.LoaderSection
@@ -118,7 +120,7 @@ fun HomeScreenComposable(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(1.dp)
+                            .height(MaterialTheme.dimens.home_screen_composable_outline_height)
                             .background(MaterialTheme.colorScheme.outline)
                     )
                     TaskTabs(pagerState = pagerState)
@@ -159,29 +161,32 @@ fun DeleteDialog(
 
     Dialog(onDismissRequest = { setShowDialog(false) }) {
         Surface(
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(MaterialTheme.dimens.delete_dialog_rounded_corner_shape),
             color = MaterialTheme.colorScheme.background
         ) {
             Box(
                 contentAlignment = Alignment.Center
             ) {
-                Column(modifier = Modifier.padding(20.dp)) {
+                Column(modifier = Modifier.padding(MaterialTheme.dimens.delete_dialog_padding)) {
                     Text(
                         text = "Delete Task",
-                        fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = MaterialTheme.typography.labelLarge.fontFamily,
+                        fontWeight = MaterialTheme.typography.labelLarge.fontWeight,
+                        fontSize = MaterialTheme.typography.labelLarge.fontSize,
+
                         color = MaterialTheme.colorScheme.onBackground
                     )
 
 
                     Text(
                         text = "Do you want to delete this task ?",
-                        fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                        fontWeight = FontWeight.Normal,
+                        fontFamily = MaterialTheme.typography.labelSmall.fontFamily,
+                        fontWeight = MaterialTheme.typography.labelSmall.fontWeight,
+                        fontSize = MaterialTheme.typography.labelSmall.fontSize,
                         color = MaterialTheme.colorScheme.onBackground
                     )
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(MaterialTheme.dimens.delete_dialog_spacer))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -189,18 +194,18 @@ fun DeleteDialog(
                     ) {
                         Text(
                             text = "No",
-                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
-
+                            fontFamily = MaterialTheme.typography.titleSmall.fontFamily,
+                            fontSize = MaterialTheme.typography.titleSmall.fontSize,
                             modifier = Modifier.clickable {
                                 setShowDialog(false)
                             },
                             color = MaterialTheme.colorScheme.primary
                         )
-                        Spacer(modifier = Modifier.width(20.dp))
+                        Spacer(modifier = Modifier.width(MaterialTheme.dimens.delete_dialog_action_spacer))
                         Text(
                             text = "Yes",
-                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
-
+                            fontFamily = MaterialTheme.typography.titleSmall.fontFamily,
+                            fontSize = MaterialTheme.typography.titleSmall.fontSize,
                             modifier = Modifier.clickable {
                                 setShowDialog(true)
                             },
@@ -212,101 +217,101 @@ fun DeleteDialog(
         }
     }
 }
-
-@OptIn(ExperimentalPagerApi::class)
-@Composable
-fun IssueSection(issueExecution: IssueExecution, viewModel: HomeActivityViewModel) {
-    var issues by rememberSaveable { mutableStateOf(listOf<IssueDataClass>()) }
-
-    var pagerState = rememberPagerState(pageCount = issues.size)
-
-
-    val context = LocalContext.current
-
-    LaunchedEffect(key1 = null) {
-
-        if (issues.isEmpty()) {
-            if (ContextCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-
-                issues += mutableListOf(
-                    IssueDataClass(
-                        "Notification permission is not granted",
-                        ISSUES.NO_NOTIFICATION_ALLOWED
-                    )
-                )
-            }
-
-
-
-            if (!(context.getSystemService(ComponentActivity.POWER_SERVICE) as PowerManager).isIgnoringBatteryOptimizations(
-                    context.packageName
-                )
-            ) {
-                issues += mutableListOf(
-                    IssueDataClass(
-                        "please allow battery consumption in background",
-                        ISSUES.BATTERY_CONSUMPTION_REQUIRED
-                    )
-                )
-            }
-        }
-
-
-    }
-
-    if (issues.isNotEmpty()) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp, vertical = 10.dp)
-        ) {
-
-
-            Text(text = "There is ${issues.size} Issue, Which affect in notification")
-            Spacer(modifier = Modifier.height(8.dp))
-            Column(modifier = Modifier.fillMaxWidth()) {
-                HorizontalPager(state = pagerState) {
-                    IssueCardUiComponent(issueDataClass = issues[it], object : IssueHandler {
-                        override fun closeIssue() {
-
-                            issues = issues.toMutableList().also { i ->
-                                i.remove(issues[it])
-                            } // remove
-
-                        }
-
-                        override fun performIssue() {
-
-                            when (issues[it].type) {
-                                ISSUES.BATTERY_CONSUMPTION_REQUIRED -> {
-                                    issueExecution.performBatteryConsumption()
-                                }
-
-                                ISSUES.NO_NOTIFICATION_ALLOWED -> {
-                                    issueExecution.performNotificationAllowence()
-
-                                }
-
-                                else -> {
-                                    issueExecution.performSomeSettingTask()
-                                }
-                            }
-                        }
-
-                    })
-                }
-            }
-
-
-        }
-    }
-
-
-}
+//
+//@OptIn(ExperimentalPagerApi::class)
+//@Composable
+//fun IssueSection(issueExecution: IssueExecution, viewModel: HomeActivityViewModel) {
+//    var issues by rememberSaveable { mutableStateOf(listOf<IssueDataClass>()) }
+//
+//    var pagerState = rememberPagerState(pageCount = issues.size)
+//
+//
+//    val context = LocalContext.current
+//
+//    LaunchedEffect(key1 = null) {
+//
+//        if (issues.isEmpty()) {
+//            if (ContextCompat.checkSelfPermission(
+//                    context,
+//                    Manifest.permission.POST_NOTIFICATIONS
+//                ) != PackageManager.PERMISSION_GRANTED
+//            ) {
+//
+//                issues += mutableListOf(
+//                    IssueDataClass(
+//                        "Notification permission is not granted",
+//                        ISSUES.NO_NOTIFICATION_ALLOWED
+//                    )
+//                )
+//            }
+//
+//
+//
+//            if (!(context.getSystemService(ComponentActivity.POWER_SERVICE) as PowerManager).isIgnoringBatteryOptimizations(
+//                    context.packageName
+//                )
+//            ) {
+//                issues += mutableListOf(
+//                    IssueDataClass(
+//                        "please allow battery consumption in background",
+//                        ISSUES.BATTERY_CONSUMPTION_REQUIRED
+//                    )
+//                )
+//            }
+//        }
+//
+//
+//    }
+//
+//    if (issues.isNotEmpty()) {
+//        Column(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(10.dp)
+//        ) {
+//
+//
+//            Text(text = "There is ${issues.size} Issue, Which affect in notification")
+//            Spacer(modifier = Modifier.height(8.dp))
+//            Column(modifier = Modifier.fillMaxWidth()) {
+//                HorizontalPager(state = pagerState) {
+//                    IssueCardUiComponent(issueDataClass = issues[it], object : IssueHandler {
+//                        override fun closeIssue() {
+//
+//                            issues = issues.toMutableList().also { i ->
+//                                i.remove(issues[it])
+//                            } // remove
+//
+//                        }
+//
+//                        override fun performIssue() {
+//
+//                            when (issues[it].type) {
+//                                ISSUES.BATTERY_CONSUMPTION_REQUIRED -> {
+//                                    issueExecution.performBatteryConsumption()
+//                                }
+//
+//                                ISSUES.NO_NOTIFICATION_ALLOWED -> {
+//                                    issueExecution.performNotificationAllowence()
+//
+//                                }
+//
+//                                else -> {
+//                                    issueExecution.performSomeSettingTask()
+//                                }
+//                            }
+//                        }
+//
+//                    })
+//                }
+//            }
+//
+//
+//        }
+//    }
+//
+//
+//}
 
 
 @OptIn(ExperimentalPagerApi::class)
@@ -322,23 +327,28 @@ fun TaskTabs(pagerState: PagerState) {
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
-                height = 2.dp,
+                height = MaterialTheme.dimens.tab_indicator_height,
                 color = MaterialTheme.colorScheme.primary
             )
-        }
+        },
+        modifier = Modifier.padding(vertical = MaterialTheme.dimens.tabbar_vertical_padding)
     ) {
         Tab(
             icon = {
                 Image(
                     painter = painterResource(id = R.drawable.baseline_date_range_24),
                     contentDescription = "once icon",
+                    modifier = Modifier
+                        .size(MaterialTheme.dimens.home_screen_regular_and_once_icon_size),
                     colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
                 )
             },
             text = {
                 Text(
                     list[0],
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                    fontFamily = MaterialTheme.typography.labelSmall.fontFamily,
+                    fontSize = MaterialTheme.typography.labelSmall.fontSize,
+                    fontWeight = MaterialTheme.typography.labelSmall.fontWeight,
                     color = MaterialTheme.colorScheme.onBackground
                 )
             },
@@ -355,6 +365,9 @@ fun TaskTabs(pagerState: PagerState) {
                 Image(
                     painter = painterResource(id = R.drawable.baseline_repeat_24),
                     contentDescription = "regular icon",
+                    modifier = Modifier
+                        .size(MaterialTheme.dimens.home_screen_regular_and_once_icon_size),
+
                     colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
                 )
             },
@@ -362,7 +375,9 @@ fun TaskTabs(pagerState: PagerState) {
 
                 Text(
                     list[1],
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                    fontFamily = MaterialTheme.typography.labelSmall.fontFamily,
+                    fontSize = MaterialTheme.typography.labelSmall.fontSize,
+                    fontWeight = MaterialTheme.typography.labelSmall.fontWeight,
                     color = MaterialTheme.colorScheme.onBackground
                 )
             },
@@ -446,16 +461,19 @@ fun OnceTaskSection(
                             ) {
                                 Text(
                                     text = getDateByIterate(it.key!!),
+                                    fontFamily = MaterialTheme.typography.labelSmall.fontFamily,
+                                    fontSize = MaterialTheme.typography.labelSmall.fontSize,
+                                    fontWeight = MaterialTheme.typography.labelSmall.fontWeight,
                                     modifier = Modifier
                                         .padding(
-                                            top = if (groupedItems.entries.indexOf(it) != 0) 20.dp else 8.dp,
-                                            bottom = 5.dp
+                                            top = if (groupedItems.entries.indexOf(it) != 0) MaterialTheme.dimens.once_task_date_item_top_padding_other_item else MaterialTheme.dimens.once_task_date_item_top_padding_first_item,
+                                            bottom = MaterialTheme.dimens.once_task_date_item_bottom_padding
                                         )
                                         .background(
                                             color = MaterialTheme.colorScheme.surfaceVariant,
-                                            shape = RoundedCornerShape(10.dp)
+                                            shape = RoundedCornerShape(MaterialTheme.dimens.once_task_date_item_rounded_corner_shape)
                                         )
-                                        .padding(horizontal = 10.dp, vertical = 5.dp)
+                                        .padding(horizontal = MaterialTheme.dimens.once_task_date_item_inside_horizontal_padding, vertical = MaterialTheme.dimens.once_task_date_item_inside_vertical_padding)
                                 )
                             }
                         }
@@ -515,15 +533,20 @@ fun NextFiveTaskSection(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 10.dp)
+            .padding(MaterialTheme.dimens.next_five_task_section_padding)
     ) {
 
         if (isLoaderVisible) {
             LoaderSection()
         } else {
             if (nextFiveTasks.isNotEmpty()) {
-                Text(text = "Your Next ${nextFiveTasks.size} Task")
-                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Your Next ${nextFiveTasks.size} Task",
+                    fontFamily = MaterialTheme.typography.labelSmall.fontFamily,
+                    fontSize = MaterialTheme.typography.labelSmall.fontSize,
+                    fontWeight = MaterialTheme.typography.labelSmall.fontWeight,
+                )
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.next_five_task_section_spacer))
                 Column(modifier = Modifier.fillMaxWidth()) {
                     HorizontalPager(state = pagerState) {
 
@@ -568,7 +591,7 @@ fun NextFiveTaskSection(
                                 )
                             )
                         }
-                        .padding(horizontal = 10.dp, vertical = 35.dp),
+                        .padding(horizontal = MaterialTheme.dimens.next_five_task_section_create_task_horizontal_padding, vertical = MaterialTheme.dimens.next_five_task_section_create_task_vertical_padding),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
@@ -577,13 +600,16 @@ fun NextFiveTaskSection(
                         Image(
                             painter = painterResource(id = R.drawable.baseline_add_task_24),
                             contentDescription = "add task",
+                            modifier = Modifier
+                                .size(MaterialTheme.dimens.home_screen_create_your_task_icon_size),
                             colorFilter = ColorFilter.tint(color = createYourTaskColor)
                         )
-                        Spacer(modifier = Modifier.width(5.dp))
+                        Spacer(modifier = Modifier.width(MaterialTheme.dimens.next_five_task_section_create_task_between_padding))
                         Text(
                             text = "Create Your Task's",
-                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                            fontWeight = FontWeight.W600,
+                            fontFamily = MaterialTheme.typography.labelMedium.fontFamily,
+                            fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                            fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
                             color = createYourTaskColor
                         )
                     }
@@ -629,7 +655,7 @@ fun RegularTaskSection(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(top = 20.dp)
+                        .padding(top = MaterialTheme.dimens.regular_task_section_padding)
                 ) {
                     itemsIndexed(regular_tasks) { value, it ->
                         val allDayTask = it.days

@@ -12,6 +12,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,6 +50,8 @@ class HomeActivity : ComponentActivity() {
                         alarmMangerHandler,
                     ) {
                         checkNotification()
+
+
                     }
 
 

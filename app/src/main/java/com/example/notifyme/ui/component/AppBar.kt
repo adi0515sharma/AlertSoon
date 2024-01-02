@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -16,11 +17,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.AlertSoon.R
 import com.example.AlertSoon.ui.navigation.FeatureNavScreen
+import com.example.AlertSoon.ui.theme.dimens
 
 @Composable
 fun AppBar(navController: NavHostController? = null) {
@@ -37,39 +42,33 @@ fun AppBar(navController: NavHostController? = null) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .background(color = MaterialTheme.colorScheme.primary)
-        .padding(vertical = 15.dp, horizontal = 10.dp),
-
-        horizontalArrangement = Arrangement.SpaceBetween
+        .padding(vertical = MaterialTheme.dimens.app_bar_vertical_padding, horizontal = MaterialTheme.dimens.app_bar_horizontal_padding),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ){
         Text(
             text = context.resources.getString(R.string.app_name),
-            fontFamily = FontFamily(
-                Font(R.font.poppins_regular)
-            ),
-            fontWeight = FontWeight.W600,
+            fontFamily = MaterialTheme.typography.headlineMedium.fontFamily,
+            fontWeight = MaterialTheme.typography.headlineMedium.fontWeight,
+            fontSize = MaterialTheme.typography.headlineMedium.fontSize,
             color = Color.White,
+            style = TextStyle(
+                platformStyle = PlatformTextStyle(
+                    includeFontPadding = false
+                )
+            )
         )
 
         if(navController!=null){
 
-            Icon(imageVector = Icons.Default.Add,modifier = Modifier.clickable {
+            Icon(imageVector = Icons.Default.Add,modifier =
+            Modifier.clickable {
                 navController.navigate(FeatureNavScreen.CREATING_TASK.name)
-            }.padding(3.dp), contentDescription = null, tint = Color.White)
+            }
+                .size(MaterialTheme.dimens.home_screen_create_new_task_icon_size)
+                .padding(MaterialTheme.dimens.app_bar_action_button_all_padding), contentDescription = null, tint = Color.White)
         }
 
     }
-//    TopAppBar(
-//        title = {
-//            Text(
-//                text = context.resources.getString(R.string.app_name),
-//                fontFamily = FontFamily(
-//                    Font(R.font.poppins_regular)),
-//                fontWeight = FontWeight.W600,
-//                color = Color.White,
-//                )
-//        },
-//        backgroundColor = MaterialTheme.colorScheme.primary,
-//        elevation = 0.dp,
-//        modifier = Modifier.fillMaxWidth(),
-//    )
+
 }

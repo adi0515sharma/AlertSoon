@@ -53,8 +53,8 @@ import androidx.navigation.NavHostController
 import com.example.AlertSoon.R
 import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
 import com.example.AlertSoon.ui.navigation.FeatureNavScreen
-import com.example.AlertSoon.ui.theme.darkTaskThemeColors
-import com.example.AlertSoon.ui.theme.lightTaskThemeColors
+import com.example.AlertSoon.ui.theme.dimens
+
 import com.example.AlertSoon.ui.utils.Constants
 import com.example.AlertSoon.ui.utils.DateTime
 import java.util.Calendar
@@ -72,7 +72,7 @@ fun RegularTaskUiComponent(
 
     Column(
         modifier = Modifier
-            .padding(horizontal = 6.dp, vertical = 4.dp)
+            .padding(horizontal = MaterialTheme.dimens.card_task_ui_component_horizontal_padding, vertical = MaterialTheme.dimens.card_task_ui_component_vertical_padding)
             .wrapContentSize(),
         horizontalAlignment = Alignment.End
 
@@ -89,25 +89,26 @@ fun RegularTaskUiComponent(
                         tableOfTask.time_in_long!!
                     )
                 }",
-                fontSize = 14.sp,
+
                 textAlign = TextAlign.Center,
-                fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                fontWeight = FontWeight.W600,
+                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+                fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
 //                color = taskUI.textColor,
                 modifier = Modifier
                     .background(
                         color = MaterialTheme.colorScheme.surfaceVariant,
-                        shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+                        shape = RoundedCornerShape(topStart = MaterialTheme.dimens.card_task_ui_component_time_top_start_corner, topEnd = MaterialTheme.dimens.card_task_ui_component_time_top_end_corner)
                     )
-                    .padding(start = 5.dp, end = 5.dp, top = 5.dp)
+                    .padding(start = MaterialTheme.dimens.card_task_ui_component_time_all_padding, end = MaterialTheme.dimens.card_task_ui_component_time_all_padding, top = MaterialTheme.dimens.card_task_ui_component_time_all_padding)
             )
 
         }
 
 
-        Box(modifier = Modifier.fillMaxWidth().height(0.2.dp).background(MaterialTheme.colorScheme.outline))
+        Box(modifier = Modifier.fillMaxWidth().height(MaterialTheme.dimens.card_task_ui_component_divider_height).background(MaterialTheme.colorScheme.outline))
         ConstraintLayout(
             modifier = Modifier
                 .wrapContentHeight()
@@ -121,10 +122,10 @@ fun RegularTaskUiComponent(
                 }
                 .background(
                     color = MaterialTheme.colorScheme.surfaceVariant,
-                    RoundedCornerShape(topStart = 0.dp,bottomStart = 10.dp, bottomEnd = 10.dp)
+                    RoundedCornerShape(topStart = 0.dp,bottomStart = MaterialTheme.dimens.card_task_ui_component_bottom_start_corner, bottomEnd = MaterialTheme.dimens.card_task_ui_component_bottom_end_corner)
                 )
 
-                .padding(vertical = 10.dp, horizontal = 6.dp)
+                .padding(vertical = MaterialTheme.dimens.card_task_ui_component_internal_vertical_padding, horizontal = MaterialTheme.dimens.card_task_ui_component_internal_horizontal_padding)
         ) {
 
             val leadIcon = createRef()
@@ -134,20 +135,20 @@ fun RegularTaskUiComponent(
 
             Text(
                 text = tableOfTask.leadIcon,
-                fontSize = 35.sp,
+                fontSize = MaterialTheme.typography.displayMedium.fontSize,
                 modifier = Modifier
                     .constrainAs(leadIcon) {
                         start.linkTo(parent.start)
                         top.linkTo(data.top)
                         bottom.linkTo(data.bottom)
                     }
-                    .padding(bottom = 3.dp)
+                    .padding(bottom = MaterialTheme.dimens.card_task_lead_icon_padding)
             )
 
 
             Column(
                 modifier = Modifier
-                    .padding(horizontal = 8.dp)
+                    .padding(horizontal = MaterialTheme.dimens.card_task_data_padding)
                     .constrainAs(data) {
                         start.linkTo(leadIcon.end)
                         top.linkTo(parent.top)
@@ -159,23 +160,24 @@ fun RegularTaskUiComponent(
 
                 Text(
                     text = tableOfTask.task_title ?: "",
-                    fontSize = 20.sp,
+
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                    fontWeight = FontWeight.W600,
-                    modifier = Modifier.padding(start = 2.dp)
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                    fontFamily =  MaterialTheme.typography.titleLarge.fontFamily,
+                    fontWeight =  MaterialTheme.typography.titleLarge.fontWeight,
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.card_task_text_padding)
                 )
 
 
                 Text(
                     text = tableOfTask.task_description ?: "",
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                    fontWeight = FontWeight.W600,
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(start = 2.dp)
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.card_task_text_padding)
                 )
             }
 
@@ -192,10 +194,9 @@ fun RegularTaskUiComponent(
                     .clickable {
                         onDeleteTask()
                     }
-                    .width(35.dp)
-                    .height(35.dp)
+                    .size(MaterialTheme.dimens.card_task_ui_delete_size)
                     .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
-                    .padding(5.dp),
+                    .padding(MaterialTheme.dimens.card_task_ui_delete_padding),
                 colorFilter = ColorFilter.tint(color = Color.White)
             )
 
@@ -203,7 +204,7 @@ fun RegularTaskUiComponent(
             if (tableOfTask.snozze_time != null) {
                 Row(
                     modifier = Modifier
-                        .padding(top = 4.dp)
+                        .padding(top = MaterialTheme.dimens.card_task_ui_snozze_time_padding)
                         .constrainAs(snooze_time) {
                             end.linkTo(parent.end)
                             top.linkTo(data.bottom)
@@ -213,20 +214,20 @@ fun RegularTaskUiComponent(
 
                     Text(
                         text = DateTime.getTimeTextForSnooze(tableOfTask.snozze_time!!),
-                        fontSize = 13.sp,
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
                         style = TextStyle(
                             platformStyle = PlatformTextStyle(
                                 includeFontPadding = false
                             )
                         ),
-                        fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                        fontFamily =  MaterialTheme.typography.titleMedium.fontFamily,
                         color = MaterialTheme.colorScheme.onBackground
                     )
 
-                    Spacer(modifier = Modifier.width(5.dp))
+                    Spacer(modifier = Modifier.width(MaterialTheme.dimens.card_task_ui_snozze_time_spacer))
 
                     Image(
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(MaterialTheme.dimens.card_task_ui_snozze_time_icon),
                         painter = painterResource(id = R.drawable.baseline_snooze_24),
                         contentDescription = "snooze icon",
                         colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
@@ -250,9 +251,9 @@ fun getAllDayOfRegularTaskAsText(allDayTask: String) {
         modifier = Modifier
             .background(
                 color = MaterialTheme.colorScheme.surfaceVariant,
-                shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+                shape = RoundedCornerShape(topStart = MaterialTheme.dimens.card_task_ui_component_time_top_start_corner, topEnd = MaterialTheme.dimens.card_task_ui_component_time_top_end_corner)
             )
-            .padding(start = 5.dp, end = 5.dp, top = 2.dp)
+            .padding(start = MaterialTheme.dimens.get_all_day_of_regular_task_as_text_start_padding, end = MaterialTheme.dimens.get_all_day_of_regular_task_as_text_end_padding, top =  MaterialTheme.dimens.get_all_day_of_regular_task_as_text_top_padding)
     ) {
 
 
@@ -280,9 +281,9 @@ fun dayInText(txt: String, active: Boolean) {
     Text(
         text = txt,
         color = if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.inversePrimary,
-        fontFamily = FontFamily(Font(R.font.poppins_regular)),
-        modifier = Modifier.padding(horizontal = 2.dp),
-        fontWeight = if (active) FontWeight.Bold else FontWeight.Normal
+        fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+        modifier = Modifier.padding(horizontal = MaterialTheme.dimens.day_in_text),
+        fontWeight = if (active) MaterialTheme.typography.titleMedium.fontWeight else FontWeight.Normal
     )
 }
 

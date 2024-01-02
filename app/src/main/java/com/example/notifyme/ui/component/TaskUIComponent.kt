@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,10 +16,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,14 +42,11 @@ import androidx.navigation.NavHostController
 import com.example.AlertSoon.R
 import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
 import com.example.AlertSoon.ui.navigation.FeatureNavScreen
-import com.example.AlertSoon.ui.theme.darkTaskThemeColors
-import com.example.AlertSoon.ui.theme.lightTaskThemeColors
+import com.example.AlertSoon.ui.theme.dimens
 import com.example.AlertSoon.ui.utils.Constants
-import com.example.AlertSoon.ui.utils.Constants.options
 import com.example.AlertSoon.ui.utils.DateTime
 import com.example.AlertSoon.ui.utils.DateTime.getAmPm
 import com.example.AlertSoon.ui.utils.DateTime.getTime
-
 
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
@@ -92,7 +86,7 @@ fun TaskUIComponent(
 
     Column(
         modifier = Modifier
-            .padding(horizontal = 6.dp, vertical = 4.dp)
+            .padding(horizontal = MaterialTheme.dimens.card_task_ui_component_horizontal_padding, vertical = MaterialTheme.dimens.card_task_ui_component_vertical_padding)
             .wrapContentSize(),
         horizontalAlignment = Alignment.End
     ) {
@@ -104,43 +98,42 @@ fun TaskUIComponent(
             if (fromHomeScreen) {
                 Text(
                     text = DateTime.getDateByIterate(tableOfTask.date_in_long!!),
-                    fontSize = 14.sp,
+                    fontSize =MaterialTheme.typography.titleMedium.fontSize,
                     textAlign = TextAlign.Center,
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                    fontWeight = FontWeight.W600,
+                    fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                     overflow = TextOverflow.Ellipsis,
 //                    color = taskUI.textColor,
                     modifier = Modifier
                         .background(
                             color = MaterialTheme.colorScheme.surfaceVariant,
-                            shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+                            shape = RoundedCornerShape(topStart = MaterialTheme.dimens.card_task_ui_component_time_top_start_corner, topEnd = MaterialTheme.dimens.card_task_ui_component_time_top_end_corner)
                         )
-                        .padding(start = 5.dp, end = 5.dp, top = 5.dp)
+                        .padding(start = MaterialTheme.dimens.card_task_ui_component_time_all_padding, end = MaterialTheme.dimens.card_task_ui_component_time_all_padding, top = MaterialTheme.dimens.card_task_ui_component_time_all_padding)
                 )
 
             }
 
             Text(
                 text = "⏰ ${getTime(tableOfTask.time_in_long!!)} ${getAmPm(tableOfTask.time_in_long!!)}",
-                fontSize = 14.sp,
+                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+                fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                 textAlign = TextAlign.Center,
-                fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                fontWeight = FontWeight.W600,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-//                color = taskUI.textColor,
                 modifier = Modifier
                     .background(
                         color = MaterialTheme.colorScheme.surfaceVariant,
-                        shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+                        shape = RoundedCornerShape(topStart = MaterialTheme.dimens.card_task_ui_component_time_top_start_corner, topEnd = MaterialTheme.dimens.card_task_ui_component_time_top_end_corner)
                     )
-                    .padding(start = 5.dp, end = 5.dp, top = 5.dp)
+                    .padding(start = MaterialTheme.dimens.card_task_ui_component_time_all_padding, end = MaterialTheme.dimens.card_task_ui_component_time_all_padding, top = MaterialTheme.dimens.card_task_ui_component_time_all_padding)
             )
         }
 
         Box(modifier = Modifier
             .fillMaxWidth()
-            .height(0.2.dp)
+            .height(MaterialTheme.dimens.card_task_ui_component_divider_height)
             .background(color = MaterialTheme.colorScheme.outline))
 
 
@@ -160,11 +153,11 @@ fun TaskUIComponent(
                     color =  MaterialTheme.colorScheme.surfaceVariant,
                     RoundedCornerShape(
                         topStart = 0.dp,
-                        bottomStart = 10.dp,
-                        bottomEnd = 10.dp
+                        bottomStart = MaterialTheme.dimens.card_once_task_ui_component_bottom_start_corner,
+                        bottomEnd = MaterialTheme.dimens.card_once_task_ui_component_bottom_end_corner
                     )
                 )
-                .padding(vertical = 10.dp, horizontal = 6.dp)
+                .padding(vertical = MaterialTheme.dimens.card_once_task_ui_component_vertical_padding, horizontal = MaterialTheme.dimens.card_once_task_ui_component_horizontal_padding)
         ) {
 
             val leadIcon = createRef()
@@ -174,20 +167,20 @@ fun TaskUIComponent(
 
             Text(
                 text = tableOfTask.leadIcon,
-                fontSize = 35.sp,
+                fontSize = MaterialTheme.typography.displayMedium.fontSize,
                 modifier = Modifier
                     .constrainAs(leadIcon) {
                         start.linkTo(parent.start)
                         top.linkTo(data.top)
                         bottom.linkTo(data.bottom)
                     }
-                    .padding(bottom = 3.dp)
+                    .padding(bottom = MaterialTheme.dimens.card_task_lead_icon_padding)
             )
 
 
             Column(
                 modifier = Modifier
-                    .padding(horizontal = 8.dp)
+                    .padding(horizontal = MaterialTheme.dimens.card_task_data_padding)
                     .constrainAs(data) {
                         start.linkTo(leadIcon.end)
                         top.linkTo(parent.top)
@@ -199,19 +192,20 @@ fun TaskUIComponent(
 
                 Text(
                     text = tableOfTask.task_title ?: "",
-                    fontSize = 20.sp,
+
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                    fontWeight = FontWeight.W600
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                    fontFamily =  MaterialTheme.typography.titleLarge.fontFamily,
+                    fontWeight =  MaterialTheme.typography.titleLarge.fontWeight,
                 )
 
 
                 Text(
                     text = tableOfTask.task_description ?: "",
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                    fontWeight = FontWeight.W600,
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -233,10 +227,9 @@ fun TaskUIComponent(
                     .clickable {
                         onDeleteTask()
                     }
-                    .width(35.dp)
-                    .height(35.dp)
+                    .size(MaterialTheme.dimens.card_task_ui_delete_size)
                     .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
-                    .padding(5.dp),
+                    .padding(MaterialTheme.dimens.card_task_ui_delete_padding),
                 colorFilter = ColorFilter.tint(color = Color.White)
 
             )
@@ -245,7 +238,7 @@ fun TaskUIComponent(
             if (tableOfTask.snozze_time != null) {
                 Row(
                     modifier = Modifier
-                        .padding(top = 4.dp)
+                        .padding(top = MaterialTheme.dimens.card_task_ui_snozze_time_padding)
                         .constrainAs(snooze_time) {
                             end.linkTo(parent.end)
                             top.linkTo(data.bottom)
@@ -255,7 +248,7 @@ fun TaskUIComponent(
 
                     Text(
                         text = DateTime.getTimeTextForSnooze(tableOfTask.snozze_time!!),
-                        fontSize = 13.sp,
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
                         style = TextStyle(
                             platformStyle = PlatformTextStyle(
                                 includeFontPadding = false
@@ -266,10 +259,10 @@ fun TaskUIComponent(
                         color = MaterialTheme.colorScheme.onBackground
                     )
 
-                    Spacer(modifier = Modifier.width(5.dp))
+                    Spacer(modifier = Modifier.width(MaterialTheme.dimens.card_task_ui_snozze_time_spacer))
 
                     Image(
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(MaterialTheme.dimens.card_task_ui_snozze_time_icon),
                         painter = painterResource(id = R.drawable.baseline_snooze_24),
                         contentDescription = "snooze icon",
                         colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)

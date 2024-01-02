@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
@@ -50,6 +51,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.example.AlertSoon.R
+import com.example.AlertSoon.ui.theme.dimens
 import java.util.Calendar
 
 @Composable
@@ -75,8 +77,8 @@ fun EntryField(
             Text(
                 text = hint,
                 fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                fontSize = 15.sp,
-                fontWeight = FontWeight.W500,
+                fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
                 color = MaterialTheme.colorScheme.onBackground
             )
 
@@ -86,11 +88,11 @@ fun EntryField(
         ConstraintLayout(
             modifier = Modifier
                 .border(
-                    1.dp,
+                    MaterialTheme.dimens.input_field_border_width,
                     if (error != null) Color.Red else Color.Gray,
-                    RoundedCornerShape(4.dp)
+                    RoundedCornerShape(MaterialTheme.dimens.input_field_rounded_corner_shape)
                 )
-                .padding(vertical = 10.dp, horizontal = 10.dp)
+                .padding(MaterialTheme.dimens.input_field_all_padding)
                 .fillMaxWidth()
         ) {
 
@@ -123,7 +125,7 @@ fun EntryField(
                 onValueChange = { setEntryFieldValue?.setValue(it) },
                 textStyle = TextStyle(
 
-                    fontSize = 18.sp,
+                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
                     color = MaterialTheme.colorScheme.onBackground,// Center text horizontally
 
                 ),
@@ -140,8 +142,7 @@ fun EntryField(
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
                         }
-                        .width(20.dp)
-                        .height(20.dp),
+                        .size(MaterialTheme.dimens.password_protect_icon_size),
                     painter = painterResource(id = if (isPasswordVisible) R.drawable.ic_svg_open_eye else R.drawable.ic_svg_close_eye),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
@@ -157,9 +158,9 @@ fun EntryField(
         if (error != null) {
             Text(
                 text = "* $error",
-                fontSize = 10.sp,
-                fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                fontWeight = FontWeight.W400,
+                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                fontFamily = MaterialTheme.typography.bodySmall.fontFamily,
+                fontWeight = MaterialTheme.typography.bodySmall.fontWeight,
                 color = MaterialTheme.colorScheme.error
             )
         }
@@ -183,17 +184,19 @@ fun CustomDialog(
 
     Dialog(onDismissRequest = { setShowDialog(false) }) {
         Surface(
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(MaterialTheme.dimens.dialog_rounded_corner_shape),
             color = MaterialTheme.colorScheme.background
         ) {
             Box(
                 contentAlignment = Alignment.Center
             ) {
-                Column(modifier = Modifier.padding(20.dp)) {
+                Column(modifier = Modifier.padding(MaterialTheme.dimens.dialog_all_padding)) {
                     Text(
                         text = title,
-                        fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = MaterialTheme.typography.labelLarge.fontFamily,
+                        fontWeight = MaterialTheme.typography.labelLarge.fontWeight,
+                        fontSize = MaterialTheme.typography.labelLarge.fontSize,
+
                         color = MaterialTheme.colorScheme.onBackground
                     )
 
@@ -211,7 +214,7 @@ fun CustomDialog(
                         true
                     )
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(MaterialTheme.dimens.dialog_spacing))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -219,18 +222,18 @@ fun CustomDialog(
                     ) {
                         Text(
                             text = "CANCEL",
-                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
-
+                            fontFamily = MaterialTheme.typography.titleSmall.fontFamily,
+                            fontSize = MaterialTheme.typography.titleSmall.fontSize,
                             modifier = Modifier.clickable {
                                 setShowDialog(false)
                             },
                             color = MaterialTheme.colorScheme.primary
                         )
-                        Spacer(modifier = Modifier.width(20.dp))
+                        Spacer(modifier = Modifier.width(MaterialTheme.dimens.dialog_action_button_spacing))
                         Text(
                             text = "SAVE",
-                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
-
+                            fontFamily = MaterialTheme.typography.titleSmall.fontFamily,
+                            fontSize = MaterialTheme.typography.titleSmall.fontSize,
                             modifier = Modifier.clickable {
                                 setValue(txtField)
                                 setShowDialog(false)
@@ -256,18 +259,19 @@ fun DialogOfDays(
 
     Dialog(onDismissRequest = { setShowDialog(false) }) {
         Surface(
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(MaterialTheme.dimens.dialog_rounded_corner_shape),
             color = MaterialTheme.colorScheme.surfaceVariant
         ) {
             Box(
                 contentAlignment = Alignment.Center
             ) {
-                Column(modifier = Modifier.padding(20.dp)) {
+                Column(modifier = Modifier.padding(MaterialTheme.dimens.dialog_all_padding)) {
 
                     LazyColumn{
                         itemsIndexed(options){ index, item ->
                             Row(modifier = Modifier
                                 .fillMaxWidth()
+                                .padding(vertical = MaterialTheme.dimens.checkbox_vertical_padding)
                                 .clickable {
 
                                     val modifiedString = StringBuilder(daysValue)
@@ -278,15 +282,23 @@ fun DialogOfDays(
                                     daysValue = modifiedString.toString()
 
 
-                                }, verticalAlignment = Alignment.CenterVertically){
-                                Checkbox(checked =  daysValue[index] == '1' , onCheckedChange = {
+                                },
+                                verticalAlignment = Alignment.CenterVertically
+                            ){
+                                Checkbox(
+                                    checked =  daysValue[index] == '1' ,
+                                    onCheckedChange = {
 
                                     val modifiedString = StringBuilder(daysValue)
                                     modifiedString.setCharAt(index, if(daysValue[index] == '1') '0' else '1')
                                     daysValue = modifiedString.toString()
 
-                                 })
-                                Text(text = options[index])
+                                 }
+                                )
+                                Text(text = options[index],
+                                    fontFamily = MaterialTheme.typography.labelSmall.fontFamily,
+                                    fontSize = MaterialTheme.typography.labelSmall.fontSize,
+                                    fontWeight = MaterialTheme.typography.labelSmall.fontWeight,)
                             }
                         }
                     }
@@ -297,16 +309,18 @@ fun DialogOfDays(
                     ) {
                         Text(
                             text = "CANCEL",
-                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                            fontFamily = MaterialTheme.typography.titleSmall.fontFamily,
+                            fontSize = MaterialTheme.typography.titleSmall.fontSize,
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.clickable {
                                 setShowDialog(false)
                             }
                         )
-                        Spacer(modifier = Modifier.width(20.dp))
+                        Spacer(modifier = Modifier.width(MaterialTheme.dimens.dialog_action_button_spacing))
                         Text(
                             text = "SAVE",
-                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                            fontFamily = MaterialTheme.typography.titleSmall.fontFamily,
+                            fontSize = MaterialTheme.typography.titleSmall.fontSize,
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.clickable {
                                 setValue(daysValue)
@@ -330,32 +344,31 @@ fun EntryFieldWithDialogForSelectingDays(
     var isDialog by rememberSaveable { mutableStateOf(false) }
 
     Row(modifier = modifier
-        .padding(vertical = 5.dp, horizontal = 5.dp)
+        .padding(MaterialTheme.dimens.entry_field_with_dialog_for_selecting_days_all_padding)
         .clickable { isDialog = !isDialog }
     ) {
         Image(
             painter = painterResource(id = R.drawable.baseline_repeat_24),
             contentDescription = null,
             modifier = Modifier
-                .width(40.dp)
-                .height(40.dp)
-                .padding(7.dp),
+                .size(MaterialTheme.dimens.entry_field_with_dialog_for_selecting_days_icon_size)
+                .padding(MaterialTheme.dimens.entry_field_with_dialog_for_selecting_days_icon_all_padding),
             colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
         )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 4.dp)
+                .padding(horizontal = MaterialTheme.dimens.entry_field_with_dialog_for_selecting_days_horizontal_padding)
         ) {
             Column(
-                modifier = Modifier.widthIn(min = 32.dp),
+                modifier = Modifier.widthIn(min = MaterialTheme.dimens.entry_field_with_dialog_for_selecting_days_minimum_width),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
                     text = "Days",
-                    fontWeight = FontWeight.W600,
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                    fontSize = 15.sp,
+                    fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
+                    fontFamily = MaterialTheme.typography.labelMedium.fontFamily,
+                    fontSize = MaterialTheme.typography.labelMedium.fontSize,
                     modifier = Modifier.wrapContentSize(),
                     style = TextStyle(
                         platformStyle = PlatformTextStyle(
@@ -366,19 +379,19 @@ fun EntryFieldWithDialogForSelectingDays(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.3f)
-                        .height(1.dp)
+                        .height(MaterialTheme.dimens.entry_field_with_dialog_for_selecting_days_divider)
                         .background(MaterialTheme.colorScheme.outline) // Customize the color of the underline
                 )
             }
 
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.entry_field_with_dialog_for_selecting_days_spacer))
 
 
             if (!value.contains("1")) {
                 Text(
                     text = "Select day's here",
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                    fontSize = 15.sp,
+                    fontFamily = MaterialTheme.typography.bodySmall.fontFamily,
+                    fontSize =  MaterialTheme.typography.bodySmall.fontSize,
                     style = TextStyle(
                         platformStyle = PlatformTextStyle(
                             includeFontPadding = false
@@ -389,14 +402,14 @@ fun EntryFieldWithDialogForSelectingDays(
                 getAllDayOfRegularTask(value)
             }
 
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.entry_field_with_dialog_for_selecting_days_spacer))
             if (error != null) {
                 Text(
                     text = "* $error",
                     color = MaterialTheme.colorScheme.error,
-                    fontSize = 10.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                    fontWeight = FontWeight.W400,
+                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                    fontFamily = MaterialTheme.typography.bodySmall.fontFamily,
+                    fontWeight = MaterialTheme.typography.bodySmall.fontWeight,
                 )
             }
         }
@@ -444,12 +457,12 @@ fun getAllDayOfRegularTask(allDayTask : String) {
 fun dayInChip(txt: String) {
     Text(
         text = txt,
-        fontFamily = FontFamily(Font(R.font.poppins_regular)),
+        fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
 
         modifier = Modifier
-            .padding(2.dp)
-            .background(color = MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(10.dp))
-            .padding(5.dp),
+            .padding(MaterialTheme.dimens.day_in_chip_external_padding)
+            .background(color = MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(MaterialTheme.dimens.day_in_chip_corner_curve))
+            .padding(MaterialTheme.dimens.day_in_chip_internal_padding),
     )
 }
 
@@ -468,7 +481,7 @@ fun EntryFieldWithDialog(
     var isDialog by rememberSaveable { mutableStateOf(false) }
 
     Row(modifier = modifier
-        .padding(vertical = 5.dp, horizontal = 5.dp)
+        .padding(MaterialTheme.dimens.entry_field_with_dialog_padding)
         .then(
             if (shouldOpenDialog) Modifier.clickable { isDialog = !isDialog }
             else Modifier
@@ -479,25 +492,24 @@ fun EntryFieldWithDialog(
             painter = painterResource(id = icon),
             contentDescription = null,
             modifier = Modifier
-                .width(40.dp)
-                .height(40.dp)
-                .padding(7.dp),
+                .size(MaterialTheme.dimens.entry_field_with_dialog_icon_size)
+                .padding(MaterialTheme.dimens.entry_field_with_dialog_icon_padding),
             colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
         )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 4.dp)
+                .padding(horizontal = MaterialTheme.dimens.entry_field_with_dialog_data_padding)
         ) {
             Column(
-                modifier = Modifier.widthIn(min = 32.dp),
+                modifier = Modifier.widthIn(min = MaterialTheme.dimens.entry_field_with_dialog_data_width),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
                     text = title,
-                    fontWeight = FontWeight.W600,
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                    fontSize = 15.sp,
+                    fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
+                    fontFamily =  MaterialTheme.typography.labelMedium.fontFamily,
+                    fontSize =  MaterialTheme.typography.labelMedium.fontSize,
                     modifier = Modifier.wrapContentSize(),
                     style = TextStyle(
                         platformStyle = PlatformTextStyle(
@@ -508,31 +520,31 @@ fun EntryFieldWithDialog(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.3f)
-                        .height(1.dp)
+                        .height(MaterialTheme.dimens.entry_field_with_dialog_data_divider)
                         .background(MaterialTheme.colorScheme.onBackground) // Customize the color of the underline
                 )
             }
 
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.entry_field_with_dialog_spacer))
             Text(
                 text = if (value.isNullOrEmpty()) hint?:"" else value,
-                fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                fontFamily =  MaterialTheme.typography.bodySmall.fontFamily,
                 color = if (value.isNullOrEmpty()) Color.Gray else MaterialTheme.colorScheme.onBackground,
-                fontSize = 15.sp,
+                fontSize = MaterialTheme.typography.bodySmall.fontSize,
                 style = TextStyle(
                     platformStyle = PlatformTextStyle(
                         includeFontPadding = false
                     )
                 )
             )
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.entry_field_with_dialog_spacer))
             if (error != null) {
                 Text(
                     text = "* $error",
                     color = MaterialTheme.colorScheme.error,
-                    fontSize = 10.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                    fontWeight = FontWeight.W400,
+                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                    fontFamily = MaterialTheme.typography.bodySmall.fontFamily,
+                    fontWeight = MaterialTheme.typography.bodySmall.fontWeight,
                 )
             }
         }

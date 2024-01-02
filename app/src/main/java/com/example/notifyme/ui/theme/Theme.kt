@@ -2,19 +2,31 @@ package com.example.AlertSoon.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.example.notifyme.ui.theme.CompactDimens
+import com.example.notifyme.ui.theme.CompactMediumDimens
+import com.example.notifyme.ui.theme.CompactSmallDimens
+import com.example.notifyme.ui.theme.ExpandedDimens
+import com.example.notifyme.ui.theme.LocalAppDimens
+import com.example.notifyme.ui.theme.MediumDimens
+import com.example.notifyme.ui.theme.ProvideAppUtils
 import com.kft.emojiex.ui.model.TaskUI
 
 private val LightColors = lightColorScheme(
@@ -83,8 +95,10 @@ private val DarkColors = darkColorScheme(
 )
 
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun AlertSoonTheme(
+    activity: Activity = LocalContext.current as Activity,
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
@@ -103,38 +117,63 @@ fun AlertSoonTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    val window = calculateWindowSizeClass(activity = activity)
+    val config = LocalConfiguration.current
+
+    var typography = CompactTypography
+    var appDimens = CompactDimens
+
+    when (window.widthSizeClass) {
+        WindowWidthSizeClass.Compact -> {
+            if (config.screenWidthDp <= 360) {
+                appDimens = CompactSmallDimens
+                typography = CompactSmallTypography
+                Log.e("AlertSoon", "compact between config.screenWidthDp <= 360")
+            } else if (config.screenWidthDp < 599) {
+                appDimens = CompactMediumDimens
+                typography = CompactMediumTypography
+                Log.e("AlertSoon", "compact between config.screenWidthDp <= 599")
+
+            } else {
+                appDimens = CompactDimens
+                typography = CompactTypography
+                Log.e("AlertSoon", "compact between else")
+
+            }
+        }
+
+        WindowWidthSizeClass.Medium -> {
+            appDimens = MediumDimens
+            typography = MediumTypography
+            Log.e("AlertSoon", "medium")
+
+        }
+
+        WindowWidthSizeClass.Expanded -> {
+            appDimens = ExpandedDimens
+            typography = ExpandedTypography
+            Log.e("AlertSoon", "expanded")
+
+        }
+
+        else -> {
+            appDimens = ExpandedDimens
+            typography = ExpandedTypography
+            Log.e("AlertSoon", "other")
+        }
+    }
+
+    ProvideAppUtils(appDimens = appDimens) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = typography,
+            content = content
+        )
+    }
+
 }
 
-
-
-// Below are the theme for task ui which we are showing in home screen
-
-val darkTaskThemeColors = TaskUI(
-    background = Color.Black,
-    textColor = Color.White,
-    timeColor = Color.White,
-    dividerColor = Color.White,
-    selectedDay = Color.White,
-    unselectedDay = Color.Gray,
-    deleteIconBg = Color.Gray,
-    deleteIconTint = Color.White,
-    snoozeIcon = Color.White
-)
-
-val lightTaskThemeColors = TaskUI(
-    background = Color.White,
-    textColor = Color.Black,
-    timeColor = Color.Black,
-    dividerColor = Color.Black,
-    selectedDay = Color.Black,
-    unselectedDay = Color.Gray,
-    deleteIconBg = Color.Gray,
-    deleteIconTint = Color.Black,
-    snoozeIcon = Color.Black
-)
+val MaterialTheme.dimens
+    @Composable
+    get() = LocalAppDimens.current
 

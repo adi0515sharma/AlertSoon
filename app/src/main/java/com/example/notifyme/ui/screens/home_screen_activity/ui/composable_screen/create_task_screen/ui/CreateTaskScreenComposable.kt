@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -87,6 +88,7 @@ import com.example.AlertSoon.ui.component.SetEntryFieldValue
 import com.example.AlertSoon.ui.component.SetEntryFieldValueForDay
 import com.example.AlertSoon.ui.local_storage.Task.TableOfTask
 import com.example.AlertSoon.ui.navigation.FeatureNavScreen
+import com.example.AlertSoon.ui.theme.dimens
 import com.example.AlertSoon.ui.utils.Constants
 import com.example.AlertSoon.ui.utils.Constants.options
 import com.example.AlertSoon.ui.utils.DateTime
@@ -297,13 +299,13 @@ fun Screen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Spacer(modifier = Modifier.height(13.dp))
+                    Spacer(modifier = Modifier.height(MaterialTheme.dimens.space_between_fields))
 
                     Text(
                         text = "Select Lead Icon",
-                        fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.W700
+                        fontFamily = MaterialTheme.typography.labelLarge.fontFamily,
+                        fontSize = MaterialTheme.typography.labelLarge.fontSize,
+                        fontWeight = MaterialTheme.typography.labelLarge.fontWeight
                     )
                     Text(
                         text = currentTaskState.leadIcon,
@@ -314,8 +316,8 @@ fun Screen(
                         ),
                                 modifier = Modifier
                                     .clickable { showDialog = true }
-                                    .padding(horizontal = 10.dp, vertical = 6.dp),
-                        fontSize = 120.sp,
+                                    .padding(horizontal = MaterialTheme.dimens.select_icon_field_horizontal_padding, vertical = MaterialTheme.dimens.select_lead_icon_field_vertical_padding),
+                        fontSize = MaterialTheme.typography.displayLarge.fontSize,
                     )
                     if (showDialog) {
                         Dialog(
@@ -329,16 +331,16 @@ fun Screen(
                                 modifier = Modifier
                                     .border(
                                         color = MaterialTheme.colorScheme.surfaceVariant,
-                                        width = 1.dp,
-                                        shape = RoundedCornerShape(16.dp)
+                                        width = MaterialTheme.dimens.select_lead_icon_dialog_border_width,
+                                        shape = RoundedCornerShape(MaterialTheme.dimens.select_lead_icon_dialog_rounded_corner_shape)
                                     )
                                     .fillMaxWidth()
-                                    .height(400.dp)
+                                    .height(MaterialTheme.dimens.select_lead_icon_dialog_height)
                                     .background(
                                         color = MaterialTheme.colorScheme.surfaceVariant,
-                                        shape = RoundedCornerShape(16.dp)
+                                        shape = RoundedCornerShape(MaterialTheme.dimens.select_lead_icon_dialog_bg_rounded_corner_shape)
                                     )
-                                    .padding(vertical = 10.dp, horizontal = 10.dp),
+                                    .padding(MaterialTheme.dimens.select_lead_icon_dialog_all_padding),
                                 factory = {
                                     EmojiPickerView(it)
                                         .apply {
@@ -359,7 +361,7 @@ fun Screen(
 
                 }
 
-                Spacer(modifier = Modifier.height(13.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space_between_fields))
                 EntryFieldWithDialog(
                     modifier = Modifier,
                     icon = R.drawable.baseline_title_24,
@@ -369,7 +371,7 @@ fun Screen(
                     currentTaskState.task_title,
                     titleListener
                 )
-                Spacer(modifier = Modifier.height(13.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space_between_fields))
 
                 EntryFieldWithDialog(
                     modifier = Modifier,
@@ -380,7 +382,7 @@ fun Screen(
                     value = currentTaskState.task_description,
                     setEntryFieldValue = descListener
                 )
-                Spacer(modifier = Modifier.height(13.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space_between_fields))
 
                 Column(modifier = Modifier.fillMaxWidth()) {
                     EntryFieldWithDialog(
@@ -410,7 +412,13 @@ fun Screen(
                                 currentTaskState.is_regular = option == options[1]
                                 expanded = false
                             }) {
-                                Text(text = option)
+                                Text(
+                                    text = option,
+                                    fontFamily = MaterialTheme.typography.labelMedium.fontFamily,
+                                    fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                                    fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
+                                    modifier = Modifier.padding(vertical = MaterialTheme.dimens.checkbox_vertical_padding)
+                                )
                             }
                         }
                     }
@@ -418,7 +426,7 @@ fun Screen(
                 }
 
 
-                Spacer(modifier = Modifier.height(13.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space_between_fields))
 
                 if(!currentTaskState.is_regular){
                     EntryFieldWithDialog(
@@ -441,7 +449,7 @@ fun Screen(
                 }
 
 
-                Spacer(modifier = Modifier.height(13.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space_between_fields))
                 EntryFieldWithDialog(
                     modifier = Modifier.clickable { SelectTimePicker(context, timeListener) },
                     title = "Time",
@@ -453,7 +461,7 @@ fun Screen(
                 )
 
                 if(currentTaskState.snozze_time!=null){
-                    Spacer(modifier = Modifier.height(13.dp))
+                    Spacer(modifier = Modifier.height(MaterialTheme.dimens.space_between_fields))
                     ConstraintLayout(modifier = Modifier.fillMaxWidth()){
 
                         val fields = createRef()
@@ -486,8 +494,7 @@ fun Screen(
                                     end.linkTo(parent.end)
                                 }
                                 .padding(end = 13.dp)
-                                .width(35.dp)
-                                .height(35.dp)
+                                .size(MaterialTheme.dimens.card_task_ui_delete_size)
                                 .clickable {
                                     currentTaskState = currentTaskState.copy(snozze_time = null)
                                 }
@@ -495,13 +502,13 @@ fun Screen(
                                     color = MaterialTheme.colorScheme.primary,
                                     shape = CircleShape
                                 )
-                                .padding(5.dp),
+                                .padding(MaterialTheme.dimens.card_task_ui_delete_padding),
                             colorFilter = ColorFilter.tint(color = Color.White)
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(13.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.space_between_fields))
 
                 ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
 
@@ -557,8 +564,7 @@ fun Screen(
                                     end.linkTo(parent.end)
                                 }
                                 .padding(end = 13.dp)
-                                .width(35.dp)
-                                .height(35.dp)
+                                .size(MaterialTheme.dimens.card_task_ui_delete_size)
                                 .clickable {
                                     shouldPlay = !shouldPlay
                                 }
@@ -566,7 +572,7 @@ fun Screen(
                                     color = MaterialTheme.colorScheme.primary,
                                     shape = CircleShape
                                 )
-                                .padding(5.dp),
+                                .padding(MaterialTheme.dimens.card_task_ui_delete_padding),
                             colorFilter = ColorFilter.tint(color = Color.White)
                         )
                     }
@@ -578,7 +584,7 @@ fun Screen(
 
 
             Row(modifier = Modifier
-                .padding(vertical = 10.dp, horizontal = 10.dp)
+                .padding(MaterialTheme.dimens.create_task_section_action_button_padding)
                 .fillMaxWidth()
                 .constrainAs(btn_section) {
                     start.linkTo(parent.start)
@@ -593,7 +599,7 @@ fun Screen(
                         }
                     })
                 }
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(modifier = Modifier.width(MaterialTheme.dimens.create_task_section_action_button_spacer))
                 Box(modifier = Modifier.weight(0.5f)) {
 
                     AppButton(Modifier.fillMaxWidth(),"Save", object : HandleClick {

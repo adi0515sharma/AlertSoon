@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.Typeface
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import com.example.AlertSoon.R
+import com.example.AlertSoon.ui.theme.dimens
 
 @Composable
 fun AppButton(
@@ -34,13 +35,14 @@ isError : Boolean = false){
             handleClick.onClick()
         },
         colors = ButtonDefaults.outlinedButtonColors(containerColor = if(!isError) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onErrorContainer),
-        modifier = modifier.height(45.dp)
+        modifier = modifier.height(MaterialTheme.dimens.button_height)
     ) {
         Text(
             text = text.toUpperCase(),
-            fontFamily = FontFamily(Font(R.font.poppins_regular)),
             color = if(!isError) Color.White else MaterialTheme.colorScheme.onError,
-            fontWeight = FontWeight.W500,
+            fontFamily = MaterialTheme.typography.titleSmall.fontFamily,
+            fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
+            fontSize = MaterialTheme.typography.titleSmall.fontSize,
             style = TextStyle(
                 platformStyle = PlatformTextStyle(
                     includeFontPadding = false
