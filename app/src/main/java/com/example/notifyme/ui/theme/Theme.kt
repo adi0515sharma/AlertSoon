@@ -149,16 +149,11 @@ fun AlertSoonTheme(
 
         }
 
-        WindowWidthSizeClass.Expanded -> {
-            appDimens = ExpandedDimens
-            typography = ExpandedTypography
-            Log.e("AlertSoon", "expanded")
 
-        }
 
         else -> {
-            appDimens = ExpandedDimens
-            typography = ExpandedTypography
+            appDimens = MediumDimens
+            typography = MediumTypography
             Log.e("AlertSoon", "other")
         }
     }
