@@ -6,11 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -20,16 +17,11 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.AlertSoon.R
 import com.example.AlertSoon.ui.theme.dimens
 
 @Composable
-fun NoTaskAvailableUi(){
+fun NoTaskAvailableUi(title : String? = null){
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -45,7 +37,7 @@ fun NoTaskAvailableUi(){
 
         Spacer(modifier = Modifier.height(MaterialTheme.dimens.no_screen_task_spacer))
         Text(
-            text = "No Task Available",
+            text = "No ${title?:"Task"} Available",
             fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
             fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
             fontSize = MaterialTheme.typography.titleMedium.fontSize,

@@ -126,7 +126,7 @@ fun SystemRingtoneScreen(navController: NavController, selected_uri: String? = n
                     LoaderSection()
                 } else {
                     if(music.isEmpty()){
-                        NoTaskAvailableUi()
+                        NoTaskAvailableUi("Ringtone")
                     }
                     else{
                         LazyColumn(
