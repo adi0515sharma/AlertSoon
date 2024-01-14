@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
+
+
     <application
         android:name=".MainActivity"
         android:allowBackup="false"
@@ -53,7 +55,7 @@
 
 
         <activity
-            android:name="com.example.notifyme.ui.screens.lock_screen_activity.LockscreenActivity"
+            android:name="com.alertSoon.alarm.ui.screens.lock_screen_activity.LockscreenActivity"
             android:screenOrientation="portrait"
             android:exported="true"
             android:launchMode="singleTop"
@@ -69,7 +71,7 @@
         </activity>
 
         <receiver
-            android:name="com.example.AlertSoon.ui.utils.notification.OnBootReceived"
+            android:name="com.alertSoon.alarm.ui.utils.notification.OnBootReceived"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

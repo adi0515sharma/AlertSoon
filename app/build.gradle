@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.AlertSoon'
+    namespace 'com.alertSoon.alarm'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.AlertSoon"
+        applicationId "com.alertSoon.alarm"
         minSdk 23
         targetSdk 34
         versionCode 1
