@@ -144,46 +144,32 @@ object DateTime{
 
 
     fun TableOfTask.getNextTimeForRegularTask() : Long{
-        if(!(this.days.contains('1'))){
+
+        if(!(days.contains('1'))){
             return 0L
         }
 
-        val calendar = Calendar.getInstance()
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)-1
+        val index = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1
 
-        var step = 0
-        var index = dayOfWeek
-
-        var result: Long;
-        while (true){
-            if(this.days[index] == '1'){
-
-                val calendar_time = Calendar.getInstance()
-                calendar_time.timeInMillis = this.time_in_long!!
-
-                val calendar = Calendar.getInstance()
-                calendar.add(Calendar.DAY_OF_YEAR, step)
-
-                calendar.set(Calendar.HOUR_OF_DAY, calendar_time.get(Calendar.HOUR_OF_DAY))
-                calendar.set(Calendar.MINUTE, calendar_time.get(Calendar.MINUTE))
-                calendar.set(Calendar.SECOND, 0)
-                calendar.set(Calendar.MILLISECOND, 0)
-
-                if(calendar.timeInMillis > getTime()){
-                    result = calendar.timeInMillis
-                    break
-                }
-            }
-            if(index == this.days.length-1){
-                index = 0
-            }
-            else{
-                index++
-            }
-            step++
+        val findOneAtRightSide = days.indexOf('1',index+1)
+        val step = if(findOneAtRightSide != -1){
+            findOneAtRightSide - index
+        } else{
+            days.length - index +  days.indexOf('1')
         }
 
-        return result
+
+        val taskCalendarTime = Calendar.getInstance()
+        taskCalendarTime.timeInMillis = time_in_long!!
+
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, step)
+
+        calendar.set(Calendar.HOUR_OF_DAY, taskCalendarTime.get(Calendar.HOUR_OF_DAY))
+        calendar.set(Calendar.MINUTE, taskCalendarTime.get(Calendar.MINUTE))
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return calendar.timeInMillis
     }
 
 
