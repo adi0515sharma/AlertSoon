@@ -292,24 +292,24 @@ fun dayInText(txt: String, active: Boolean) {
 @Composable
 fun PreviewRegularTaskUiComponentForWhite() {
 
-    val tableOfTask = TableOfTask(
-        0,
-        "🎯",
-        "Hello world",
-        "This is the sample hello world description",
-        1700133618000,
-        0,
-        0,
-        1700092800000,
-        0,
-        0,
-        0,
-        null,
-        true,
-        "",
-        1700133618000
-    )
-    RegularTaskUiComponent(Modifier, tableOfTask, "0001000", {}, null)
+//    val tableOfTask = TableOfTask(
+//        0,
+//        "🎯",
+//        "Hello world",
+//        "This is the sample hello world description",
+//        1700133618000,
+//
+//        0,
+//        1700092800000,
+//        0,
+//        0,
+//        0,
+//        null,
+//        true,
+//        "",
+//        1700133618000
+//    )
+//    RegularTaskUiComponent(Modifier, tableOfTask, "0001000", {}, null)
 
 }
 
@@ -317,23 +317,23 @@ fun PreviewRegularTaskUiComponentForWhite() {
 @Composable
 fun PreviewRegularTaskUiComponentForBlack() {
 
-    val tableOfTask = TableOfTask(
-        0,
-        "🎯",
-        "Hello world",
-        "This is the sample hello world description",
-        1700133618000,
-        0,
-        0,
-        1700092800000,
-        0,
-        0,
-        0,
-        null,
-        true,
-        "",
-        1700133618000
-    )
-    RegularTaskUiComponent(Modifier, tableOfTask, "0001000", {}, null)
+//    val tableOfTask = TableOfTask(
+//        0,
+//        "🎯",
+//        "Hello world",
+//        "This is the sample hello world description",
+//        1700133618000,
+//        0,
+//        0,
+//        1700092800000,
+//        0,
+//        0,
+//        0,
+//        null,
+//        true,
+//        "",
+//        1700133618000
+//    )
+//    RegularTaskUiComponent(Modifier, tableOfTask, "0001000", {}, null)
 
 }

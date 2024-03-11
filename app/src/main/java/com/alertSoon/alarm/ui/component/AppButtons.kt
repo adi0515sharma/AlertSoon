@@ -22,6 +22,7 @@ import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import com.alertSoon.alarm.R
 import com.alertSoon.alarm.ui.theme.dimens
+import java.util.Locale
 
 @Composable
 fun AppButton(

@@ -168,8 +168,8 @@ fun DeleteDialog(
                     ) {
                         Text(
                             text = "No",
-                            fontFamily = MaterialTheme.typography.titleSmall.fontFamily,
-                            fontSize = MaterialTheme.typography.titleSmall.fontSize,
+                            fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
                             modifier = Modifier.clickable {
                                 setShowDialog(false)
                             },
@@ -178,8 +178,8 @@ fun DeleteDialog(
                         Spacer(modifier = Modifier.width(MaterialTheme.dimens.delete_dialog_action_spacer))
                         Text(
                             text = "Yes",
-                            fontFamily = MaterialTheme.typography.titleSmall.fontFamily,
-                            fontSize = MaterialTheme.typography.titleSmall.fontSize,
+                            fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
                             modifier = Modifier.clickable {
                                 setShowDialog(true)
                             },

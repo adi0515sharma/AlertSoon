@@ -256,10 +256,6 @@ fun Screen(
                 time_in_long = tableOfTask.time_in_long,
                 date_in_long = if(tableOfTask.is_regular) null else tableOfTask.date_in_long,
                 sound = tableOfTask.sound,
-                hour = tableOfTask.hour,
-                minute = tableOfTask.minute,
-                year = tableOfTask.year,
-                month = tableOfTask.month,
                 day_of_month = tableOfTask.day_of_month,
                 is_regular = tableOfTask.is_regular,
                 days = if(tableOfTask.is_regular) tableOfTask.days else "0000000",
@@ -673,7 +669,7 @@ fun Screen(
                                         return
                                     }
                                 }
-                                currentTaskState = currentTaskState.copy(time_in_long = currentTaskState.getNextTimeForRegularTask())
+                                currentTaskState = currentTaskState.copy(time_in_long = currentTaskState.getNextTimeForRegularTask(true))
                             }
                             else
                             {

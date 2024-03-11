@@ -222,8 +222,8 @@ fun CustomDialog(
                     ) {
                         Text(
                             text = "CANCEL",
-                            fontFamily = MaterialTheme.typography.titleSmall.fontFamily,
-                            fontSize = MaterialTheme.typography.titleSmall.fontSize,
+                            fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
                             modifier = Modifier.clickable {
                                 setShowDialog(false)
                             },
@@ -232,8 +232,8 @@ fun CustomDialog(
                         Spacer(modifier = Modifier.width(MaterialTheme.dimens.dialog_action_button_spacing))
                         Text(
                             text = "SAVE",
-                            fontFamily = MaterialTheme.typography.titleSmall.fontFamily,
-                            fontSize = MaterialTheme.typography.titleSmall.fontSize,
+                            fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
                             modifier = Modifier.clickable {
                                 setValue(txtField)
                                 setShowDialog(false)
@@ -309,8 +309,8 @@ fun DialogOfDays(
                     ) {
                         Text(
                             text = "CANCEL",
-                            fontFamily = MaterialTheme.typography.titleSmall.fontFamily,
-                            fontSize = MaterialTheme.typography.titleSmall.fontSize,
+                            fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.clickable {
                                 setShowDialog(false)
@@ -319,8 +319,8 @@ fun DialogOfDays(
                         Spacer(modifier = Modifier.width(MaterialTheme.dimens.dialog_action_button_spacing))
                         Text(
                             text = "SAVE",
-                            fontFamily = MaterialTheme.typography.titleSmall.fontFamily,
-                            fontSize = MaterialTheme.typography.titleSmall.fontSize,
+                            fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.clickable {
                                 setValue(daysValue)

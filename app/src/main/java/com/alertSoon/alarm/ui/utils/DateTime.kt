@@ -2,7 +2,6 @@ package com.alertSoon.alarm.ui.utils
 
 import com.alertSoon.alarm.ui.local_storage.Task.TableOfTask
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -36,14 +35,7 @@ object DateTime{
         return formattedTime
     }
 
-    fun getDate() : Long {
-        val calendarDate: Calendar = Calendar.getInstance()
-        calendarDate.set(Calendar.HOUR_OF_DAY, 0)
-        calendarDate.set(Calendar.MINUTE, 0)
-        calendarDate.set(Calendar.SECOND, 0)
-        calendarDate.set(Calendar.MILLISECOND, 0)
-        return calendarDate.timeInMillis
-    }
+
 
 
     fun getTime() : Long {
@@ -53,15 +45,6 @@ object DateTime{
         return calendarDate.timeInMillis
     }
 
-    fun getTimePlusMinutes() : Long {
-        val calendarDate: Calendar = Calendar.getInstance()
-        calendarDate.set(Calendar.SECOND,0)
-        calendarDate.set(Calendar.MILLISECOND,0)
-
-        calendarDate.add(Calendar.MINUTE,15)
-        return calendarDate.timeInMillis
-    }
-    fun getDateInFormat(calendar : Calendar) = SimpleDateFormat("dd MMMM, yyyy", Locale.US).format(Date(calendar.timeInMillis))
     fun getDateInFormat(date : Long?) = if(date!=null) SimpleDateFormat("dd MMMM, yyyy", Locale.US).format(Date(date)) else null
 
 
@@ -101,18 +84,6 @@ object DateTime{
         return calendarDate.timeInMillis
     }
 
-    fun getOnlyDate(current : Long) : Long{
-        val calendar : Calendar = Calendar.getInstance()
-        calendar.timeInMillis = current
-
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-
-        return calendar.timeInMillis
-    }
-
     fun getTimeTextForSnooze(timeInMills : Long) : String{
 
         val timeInString = getTimeInFormat(timeInMills)
@@ -134,29 +105,43 @@ object DateTime{
         return "${getDateInFormat(calendarOfSelectedTime.timeInMillis)} at $timeInString"
     }
 
-    fun getTodaysDay() : String{
-        val calendar = Calendar.getInstance()
-        val currentDate = calendar.time
-        val sdf = SimpleDateFormat("EEEE")
-        val dayOfWeek = sdf.format(currentDate)
-        return dayOfWeek.lowercase()
+    fun isPast(compare_withable_time: Long?): Boolean{
+
+        var calendarTime = Calendar.getInstance()
+
+        val taskCalendarTime = Calendar.getInstance()
+        taskCalendarTime.timeInMillis = compare_withable_time!!
+
+        calendarTime.set(Calendar.HOUR_OF_DAY, taskCalendarTime.get(Calendar.HOUR_OF_DAY))
+        calendarTime.set(Calendar.MINUTE, taskCalendarTime.get(Calendar.MINUTE))
+        calendarTime.set(Calendar.MILLISECOND,0)
+        calendarTime.set(Calendar.SECOND,0)
+        return isExperied(calendarTime.timeInMillis)
     }
 
 
-    fun TableOfTask.getNextTimeForRegularTask() : Long{
+    fun TableOfTask.getNextTimeForRegularTask(newTask : Boolean = false) : Long{
 
         if(!(days.contains('1'))){
             return 0L
         }
 
+
         val index = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1
 
-        val findOneAtRightSide = days.indexOf('1',index+1)
-        val step = if(findOneAtRightSide != -1){
-            findOneAtRightSide - index
-        } else{
-            days.length - index +  days.indexOf('1')
+        val step = if(newTask && days[index] == '1' && !isPast(time_in_long)){
+            0
         }
+        else{
+            val findOneAtRightSide = days.indexOf('1',index+1)
+            val jumps = if(findOneAtRightSide != -1){
+                findOneAtRightSide - index
+            } else{
+                days.length - index +  days.indexOf('1')
+            }
+            jumps
+        }
+
 
 
         val taskCalendarTime = Calendar.getInstance()
@@ -173,9 +158,7 @@ object DateTime{
     }
 
 
-    fun isThisTaskShouldScheduleForToday(days : String) : Boolean{
-        val calendar = Calendar.getInstance()
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)-1
-        return days[dayOfWeek] == '1'
+    fun isExperied(time_in_long : Long?) : Boolean{
+        return getTime() >= time_in_long!!
     }
 }

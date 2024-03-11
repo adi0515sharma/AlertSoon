@@ -4,14 +4,15 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.icu.number.IntegerWidth
+import android.os.Build
+import android.provider.Settings
 import android.util.Log
-import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import com.alertSoon.alarm.ui.local_storage.Task.TableOfTask
 import com.alertSoon.alarm.ui.local_storage.Task.TaskRespository
 import com.alertSoon.alarm.ui.utils.DateTime.getNextTimeForRegularTask
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -20,6 +21,8 @@ class AlarmMangerHandler @Inject constructor(
     val context: Context,
     val taskRespository: TaskRespository
 ) {
+
+
 
 
     fun createAlarm(tableOfTask: TableOfTask? = null) {
@@ -46,9 +49,16 @@ class AlarmMangerHandler @Inject constructor(
 
 
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Log.e("AlertSoon","alarmManager.canScheduleExactAlarms() = ${alarmManager.canScheduleExactAlarms()}" )
+            if (!alarmManager.canScheduleExactAlarms()) {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, tableOfTask.snozze_time ?: tableOfTask.time_in_long!!, pendingIntent)
+                return
+            }
+        }
         alarmManager.setAlarmClock(
             AlarmManager.AlarmClockInfo(
-                tableOfTask.snozze_time ?: tableOfTask.time_in_long!!,
+                tableOfTask. snozze_time ?: tableOfTask.time_in_long!!,
                 pendingIntent
             ), pendingIntent
         );
@@ -114,7 +124,7 @@ class AlarmMangerHandler @Inject constructor(
             return
         }
 
-        val snoozeTimeMillis: Long = Calendar.getInstance().timeInMillis + 1 * 60 * 1000 // Add 10 minutes (10 * 60 seconds * 1000 milliseconds)
+        val snoozeTimeMillis: Long = Calendar.getInstance().timeInMillis + 10 * 60 * 1000 // Add 10 minutes (10 * 60 seconds * 1000 milliseconds)
         tableOfTask.snozze_time = snoozeTimeMillis
 
         createAlarm(tableOfTask)

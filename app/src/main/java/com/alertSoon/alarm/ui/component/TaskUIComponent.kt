@@ -54,24 +54,24 @@ import com.alertSoon.alarm.ui.utils.DateTime.getTime
 @Composable
 fun PreviewForTaskUiComponentForBlack() {
 
-    val tableOfTask = TableOfTask(
-        0,
-        "🎯",
-        "Hello world",
-        "This is the sample hello world description",
-        1700133618000,
-        0,
-        0,
-        1700092800000,
-        0,
-        0,
-        0,
-        null,
-        true,
-        "",
-        1700133618000
-    )
-    TaskUIComponent(tableOfTask, false, {}, null)
+//    val tableOfTask = TableOfTask(
+//        0,
+//        "🎯",
+//        "Hello world",
+//        "This is the sample hello world description",
+//        1700133618000,
+//        0,
+//        0,
+//        1700092800000,
+//        0,
+//        0,
+//        0,
+//        null,
+//        true,
+//        "",
+//        1700133618000
+//    )
+//    TaskUIComponent(tableOfTask, false, {}, null)
 
 }
 

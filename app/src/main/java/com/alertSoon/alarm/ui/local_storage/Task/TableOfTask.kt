@@ -30,17 +30,10 @@ data class TableOfTask(
     @ColumnInfo("hour")
     val hour: Int?=null,
 
-    @ColumnInfo("minute")
-    val minute: Int?=null,
 
     @ColumnInfo("date_in_long")
     val date_in_long: Long? = null,
 
-    @ColumnInfo("year")
-    val year: Int?=null,
-
-    @ColumnInfo("month")
-    val month: Int?=null,
 
     @ColumnInfo("day_of_month")
     val day_of_month: Int?=null,
