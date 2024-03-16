@@ -3,7 +3,7 @@
 AlertSoon App is alarm app. Inside this you can create 2 different types of alarm 1. one time and 2. regular 
 before that lets see the ui of application we have 2 modes dark and light.
 
-[<img src="app/libs/images/play_store.png" width="400" height="140">](https://play.google.com/store/apps/details?id=com.alertSoon.alarm)
+[<img src="app/libs/images/play_store.png" width="380" height="120">](https://play.google.com/store/apps/details?id=com.alertSoon.alarm)
 
 ## Feature's
 1. Create alarm (one time or regular) 
